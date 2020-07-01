@@ -39,11 +39,7 @@ public class RPBeeGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-<<<<<<< HEAD
 		shapeRenderer.setColor(0, 0, 1, 1);
-=======
-		shapeRenderer.setColor(1, 0, 0, 1);
->>>>>>> parent of 38d2ba4... Update RPBeeGame.java
 		shapeRenderer.circle(circleX, circleY, 75);
 		shapeRenderer.end();
 	}
