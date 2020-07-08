@@ -3,12 +3,15 @@ package com.rpbee;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -21,18 +24,32 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class RPBeeGame extends ApplicationAdapter {
 
 
-	private	static final float	VIRTUAL_WIDTH	=	384.0f;
-	private	static final float	VIRTUAL_HEIGHT	=	216.0f;
-	private	static final float	CAMERA_SPEED	=	5.0f;
+	private static final float VIRTUAL_WIDTH = 368.0f;
 
+	private static final float VIRTUAL_HEIGHT = 288.0f;
+
+
+
+	private static final float CAMERA_SPEED = 100.0f;
+
+
+	/*
 	private OrthographicCamera camera;
-
 	private Viewport viewport;
 
 	private TiledMap map;
 	private TmxMapLoader loader;
 	private OrthogonalTiledMapRenderer renderer;
-	private Vector2 direction;
+	private Vector2 direction;*/
+
+	private TiledMap map;
+	private AssetManager manager;
+
+	private int tileWidth, tileHeight,
+			mapWidthInTiles, mapHeightInTiles,
+			mapWidthInPixels, mapHeightInPixels;
+	private OrthographicCamera camera;
+	private OrthogonalTiledMapRenderer renderer;
 	/*
 	ShapeRenderer shapeRenderer;
 
@@ -45,20 +62,51 @@ public class RPBeeGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		//shapeRenderer = new ShapeRenderer();
-		camera = new OrthographicCamera();
+		/*camera = new OrthographicCamera();
+
+		camera.setToOrtho(false, 10, 10);
 
 		viewport = new FitViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
 
-		loader = new	TmxMapLoader(new ExternalFileHandleResolver());
-		map	= loader.load("maps/prologue.tmx");
-		renderer = new	OrthogonalTiledMapRenderer(map);
-		direction =	new	Vector2();
+
+
+		loader = new TmxMapLoader();
+
+		map = loader.load("maps/test.tmx");
+
+		renderer = new OrthogonalTiledMapRenderer(map, 1/1.7f);
+
+
+
+		direction = new Vector2();*/
+		manager = new AssetManager();
+		manager.setLoader(TiledMap.class, new TmxMapLoader());
+		manager.load("maps/test.tmx", TiledMap.class);
+		manager.finishLoading();
+
+		map = manager.get("maps/test.tmx", TiledMap.class);
+
+		MapProperties properties = map.getProperties();
+		tileWidth         = properties.get("tilewidth", Integer.class);
+		tileHeight        = properties.get("tileheight", Integer.class);
+		mapWidthInTiles   = properties.get("width", Integer.class);
+		mapHeightInTiles  = properties.get("height", Integer.class);
+		mapWidthInPixels  = mapWidthInTiles  * tileWidth;
+		mapHeightInPixels = mapHeightInTiles * tileHeight;
+
+		camera = new OrthographicCamera(320.f, 180.f);
+		camera.position.x = mapWidthInPixels * .5f;
+		camera.position.y = mapHeightInPixels * .35f;
+		renderer = new OrthogonalTiledMapRenderer(map);
+
 	}
 
 	@Override
 	public void dispose() {
-		map.dispose();
-		renderer.dispose();
+		/*map.dispose();
+
+		renderer.dispose();*/
+		manager.dispose();
 		//shapeRenderer.dispose();
 	}
 
@@ -85,19 +133,30 @@ public class RPBeeGame extends ApplicationAdapter {
 		shapeRenderer.circle(circleX, circleY, 75);
 		shapeRenderer.end();*/
 
-		Gdx.gl.glClearColor(0.8f,	0.8f,	0.8f,	1.0f);
+		/*Gdx.gl.glClearColor(0.8f,	0.8f,	0.8f,	1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		updateCamera();
+		//updateCamera();
+		camera.update();
+		renderer.setView(camera);
+		// Rendering
+		renderer.render(decorationLayersIndices);
+		renderer.getBatch().begin();
+		renderer.renderTileLayer(terrainLayer);
+		renderer.getBatch().end();*/
+		Gdx.gl.glClearColor(.5f, .7f, .9f, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		camera.update();
 		renderer.setView(camera);
 		renderer.render();
 	}
 
-	@Override
+	/*@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height);
-	}
+	}*/
 
-	private void updateCamera() {
+	/*private void updateCamera() {
 
 		direction.set(0.0f, 0.0f);
 
@@ -173,6 +232,6 @@ public class RPBeeGame extends ApplicationAdapter {
 
 		camera.update();
 
-	}
+	}*/
 
 }
