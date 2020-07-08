@@ -93,6 +93,7 @@ public class RPBeeGame extends ApplicationAdapter implements InputProcessor {
 		/*map.dispose();
 
 		renderer.dispose();*/
+		tiledMap.dispose();
 		//shapeRenderer.dispose();
 	}
 
