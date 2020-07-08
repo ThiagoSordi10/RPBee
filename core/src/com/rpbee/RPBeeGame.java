@@ -3,6 +3,7 @@ package com.rpbee;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -21,7 +23,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class RPBeeGame extends ApplicationAdapter {
+public class RPBeeGame extends ApplicationAdapter implements InputProcessor {
 
 
 	private static final float VIRTUAL_WIDTH = 368.0f;
@@ -32,7 +34,10 @@ public class RPBeeGame extends ApplicationAdapter {
 
 	private static final float CAMERA_SPEED = 100.0f;
 
-
+	Texture img;
+	TiledMap tiledMap;
+	OrthographicCamera camera;
+	TiledMapRenderer tiledMapRenderer;
 	/*
 	private OrthographicCamera camera;
 	private Viewport viewport;
@@ -42,14 +47,7 @@ public class RPBeeGame extends ApplicationAdapter {
 	private OrthogonalTiledMapRenderer renderer;
 	private Vector2 direction;*/
 
-	private TiledMap map;
-	private AssetManager manager;
 
-	private int tileWidth, tileHeight,
-			mapWidthInTiles, mapHeightInTiles,
-			mapWidthInPixels, mapHeightInPixels;
-	private OrthographicCamera camera;
-	private OrthogonalTiledMapRenderer renderer;
 	/*
 	ShapeRenderer shapeRenderer;
 
@@ -79,26 +77,15 @@ public class RPBeeGame extends ApplicationAdapter {
 
 
 		direction = new Vector2();*/
-		manager = new AssetManager();
-		manager.setLoader(TiledMap.class, new TmxMapLoader());
-		manager.load("maps/test.tmx", TiledMap.class);
-		manager.finishLoading();
+		float w = Gdx.graphics.getWidth();
+		float h = Gdx.graphics.getHeight();
 
-		map = manager.get("maps/test.tmx", TiledMap.class);
-
-		MapProperties properties = map.getProperties();
-		tileWidth         = properties.get("tilewidth", Integer.class);
-		tileHeight        = properties.get("tileheight", Integer.class);
-		mapWidthInTiles   = properties.get("width", Integer.class);
-		mapHeightInTiles  = properties.get("height", Integer.class);
-		mapWidthInPixels  = mapWidthInTiles  * tileWidth;
-		mapHeightInPixels = mapHeightInTiles * tileHeight;
-
-		camera = new OrthographicCamera(320.f, 180.f);
-		camera.position.x = mapWidthInPixels * .5f;
-		camera.position.y = mapHeightInPixels * .35f;
-		renderer = new OrthogonalTiledMapRenderer(map);
-
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false,w,h);
+		camera.update();
+		tiledMap = new TmxMapLoader().load("maps/test.tmx");
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
@@ -106,7 +93,6 @@ public class RPBeeGame extends ApplicationAdapter {
 		/*map.dispose();
 
 		renderer.dispose();*/
-		manager.dispose();
 		//shapeRenderer.dispose();
 	}
 
@@ -143,12 +129,64 @@ public class RPBeeGame extends ApplicationAdapter {
 		renderer.getBatch().begin();
 		renderer.renderTileLayer(terrainLayer);
 		renderer.getBatch().end();*/
-		Gdx.gl.glClearColor(.5f, .7f, .9f, 1);
+		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		camera.update();
-		renderer.setView(camera);
-		renderer.render();
+		tiledMapRenderer.setView(camera);
+		tiledMapRenderer.render();
+	}
+	@Override
+	public boolean keyDown(int keycode) {
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		if(keycode == Input.Keys.LEFT)
+			camera.translate(-32,0);
+		if(keycode == Input.Keys.RIGHT)
+			camera.translate(32,0);
+		if(keycode == Input.Keys.UP)
+			camera.translate(0,-32);
+		if(keycode == Input.Keys.DOWN)
+			camera.translate(0,32);
+		if(keycode == Input.Keys.NUM_1)
+			tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
+		if(keycode == Input.Keys.NUM_2)
+			tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		return false;
 	}
 
 	/*@Override
