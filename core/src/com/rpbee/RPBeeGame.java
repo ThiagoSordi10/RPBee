@@ -83,7 +83,7 @@ public class RPBeeGame extends ApplicationAdapter implements InputProcessor {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
 		camera.update();
-		tiledMap = new TmxMapLoader().load("maps/test.tmx");
+		tiledMap = new TmxMapLoader().load("maps/prologue.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 		Gdx.input.setInputProcessor(this);
 	}
