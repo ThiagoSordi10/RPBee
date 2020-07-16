@@ -38,7 +38,7 @@
    eJzt12tOGlEchvFJlfvFdgk1setQhLkDuoQ2sQupFZgZQN2SF+5gN9Guw8cvfiCSSCmZMnmf5PcND4fknHj+hqHU7hYcG0aICF300D+Oc0dKxZt5YhgWbDhw4cFHHQ00Tzb/novK5msote0+cE73sI8U0sggixzyKKCIEso4WPNsf+Xz35b+5uj03/0GpbbVHef2Hg94xABDjDDGBFPMMMcCT2vej8/chUPdB7WD/eDcXuInrtBCGx0ECBGhix76uMYNbnXmVcKrVA3jFFXUYMKCDQcuPPioo4EmznBefXvN5ffUy6zxXfOG2tH2aswfSCGNDLLIIY8CiiihjAN8xKfa2+stv6deZo0v+l+jdrR7zvkDHjHAECOMMcEUM8yxwBN+rbgbSiWtS5P5A1dooY0OAoSI0EUPfVzjxly9nt5TKmlVLeYPmLBgw4ELDz7qaKCJM2v1WnpPqaS1bzN/II0MssghjwKKKKFsx71TpeJrwPkfYoQxJphihjkWa9wPvbNU0mo5zB/oIECICF300Hfev5beWSqJWS7zBxy48Ny/W+c3d+OP7odKWBmP+QM55FHw4t6RUv9PQ+7DCGNMMNX9UOq1ts/8gQAhIj/uHSmllFJKqff0DJFeiRk=
   </data>
  </layer>
- <objectgroup id="8" name="terreno" visible="0" offsetx="-0.666667" offsety="-0.666667">
+ <objectgroup id="8" name="terreno" offsetx="-0.666667" offsety="-0.666667">
   <object id="5" x="0.666667" y="272.667" width="687.333" height="47.3333"/>
   <object id="10" x="689.333" y="238" width="220.667" height="82"/>
   <object id="13" x="991.333" y="254.667" width="783.333" height="65.3333"/>
@@ -47,21 +47,21 @@
   <object id="17" x="2495.33" y="270.667" width="704" height="48.6667"/>
   <object id="34" x="2404.67" y="77.6667" width="219" height="69"/>
  </objectgroup>
- <objectgroup id="10" name="obstáculos" visible="0">
+ <objectgroup id="10" name="obstáculos">
   <object id="23" x="291.333" y="252" width="28.6667" height="19.3333"/>
   <object id="24" x="322.667" y="236" width="28" height="35.3333"/>
   <object id="25" x="354" y="220" width="30.6667" height="51.3333"/>
   <object id="26" x="385.333" y="189.333" width="63.3333" height="82"/>
   <object id="27" x="1112.67" y="236" width="68" height="18"/>
  </objectgroup>
- <objectgroup id="14" name="bau" visible="0">
+ <objectgroup id="14" name="bau">
   <object id="35" x="2512" y="66">
    <properties>
     <property name="itens" value=""/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="11" name="polen" visible="0">
+ <objectgroup id="11" name="polen">
   <object id="28" x="615.333" y="262">
    <properties>
     <property name="polen" value=""/>
