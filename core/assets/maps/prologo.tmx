@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="200" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="36">
- <tileset firstgid="1" name="spritesheet (1)" tilewidth="16" tileheight="16" tilecount="24192" columns="192">
-  <image source="spritesheet_1.png" width="3074" height="2020"/>
+ <tileset firstgid="1" name="spritesheet" tilewidth="16" tileheight="16" tilecount="24192" columns="192">
+  <image source="spritesheet.png" width="3074" height="2020"/>
  </tileset>
  <layer id="3" name="backclean" width="200" height="20">
   <data encoding="base64" compression="zlib">
