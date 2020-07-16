@@ -23,7 +23,8 @@ public class Anthon extends Sprite {
     public State previousState;
 
     private Animation<TextureRegion> anthonRun;
-    private Animation<TextureRegion> anthonJump;
+    private TextureRegion anthonJump;
+    private Animation<TextureRegion> anthonBeforeJump;
     //private TextureRegion anthonDead;
 
     private float stateTimer;
@@ -53,11 +54,7 @@ public class Anthon extends Sprite {
 
 
         //get jump animation frames and add them to marioJump Animation
-        for(int i = 0; i < 2; i++){
-            frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), i*256, 0, 256, 256));
-        }
-        anthonJump  = new Animation(0.1f, frames);
-        frames.clear();
+        anthonJump  = new TextureRegion(screen.getAtlas().findRegion("anthon"), 256, 0, 256, 256);
 
         //create texture region for mario standing
         anthonStand = new TextureRegion(screen.getAtlas().findRegion("anthon"), 768, 0, 256, 256);
@@ -109,7 +106,7 @@ public class Anthon extends Sprite {
 //                //region = anthonDead;
 //                break;
             case JUMPING:
-                region = anthonJump.getKeyFrame(stateTimer, true);
+                region = anthonJump;
                 break;
             case RUNNING:
                 region = anthonRun.getKeyFrame(stateTimer, true);
@@ -146,7 +143,7 @@ public class Anthon extends Sprite {
 //        if(anthonIsDead){
 //            return State.DEAD;
 //        }
-        if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)){
+        if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) ){
             return State.JUMPING;
         }
         //if negative in Y-Axis mario is falling
@@ -230,7 +227,7 @@ public class Anthon extends Sprite {
 
     public void jump(){
         if ( currentState != State.JUMPING ) {
-            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+            b2body.applyLinearImpulse(new Vector2(0, 3f), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
         }
     }
