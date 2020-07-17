@@ -40,6 +40,8 @@ public class Anthon extends Sprite {
     private boolean timeToRedefineAnthon;
     private PlayScreen screen;
 
+    private static float health;
+
     //private Array<FireBall> fireballs;
 
     public Anthon(PlayScreen screen){
@@ -50,6 +52,7 @@ public class Anthon extends Sprite {
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
+        health = 20;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -121,18 +124,16 @@ public class Anthon extends Sprite {
         //update sprite with the correct frame depending on Anthon's current action
         setRegion(getFrame(delta));
 
-        if(timeToDefineWatchfulAnthon){
-            defineWatchfulAnthon();
-        }
-        if(timeToRedefineAnthon){
-            redefineAnthon();
-        }
 
 //        for(FireBall  ball : fireballs) {
 //            ball.update(delta);
 //            if(ball.isDestroyed())
 //                fireballs.removeValue(ball, true);
 //        }
+    }
+
+    public static float getHealth(){
+        return health;
     }
 
     public TextureRegion getFrame(float delta){
@@ -230,59 +231,8 @@ public class Anthon extends Sprite {
 //        b2body.createFixture(fdef).setUserData(this);
     }
 
-    public void defineWatchfulAnthon(){
-        Vector2 currentPosition = b2body.getPosition();
-        world.destroyBody(b2body);
-
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(currentPosition.add(0, 10 / RPBeeGame.PPM));
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
-
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(12 / RPBeeGame.PPM);
-        fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT;
-        fdef.shape = shape;
-
-        b2body.createFixture(fdef).setUserData(this);
-
-//        EdgeShape head = new EdgeShape();
-//        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
-//        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
-//        fdef.shape = head;
-//        fdef.isSensor = true;
-//
-//        b2body.createFixture(fdef).setUserData(this);
-        timeToDefineWatchfulAnthon = false;
-    }
-
-    public void redefineAnthon(){
-        Vector2 position = b2body.getPosition();
-        world.destroyBody(b2body);
-
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(position);
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
-
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(12 / RPBeeGame.PPM);
-        fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT;
-        fdef.shape = shape;
-
-        b2body.createFixture(fdef).setUserData(this);
-
-//        EdgeShape head = new EdgeShape();
-//        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
-//        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
-//        fdef.shape = head;
-//        fdef.isSensor = true;
-//
-//        b2body.createFixture(fdef).setUserData(this);
+    public void hit(float damage){
+        health += damage;
     }
 
     public void die() {

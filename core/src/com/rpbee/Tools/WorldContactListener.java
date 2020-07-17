@@ -15,11 +15,20 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef){
             case RPBeeGame.BEE_BIT | RPBeeGame.GROUND_BIT:
+                float height;
+                Anthon anthon;
                 if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
                     Gdx.app.log("colisao", ""+((Anthon) fixA.getUserData()).b2body.getLinearVelocity().y);
+                    height = ((Anthon) fixA.getUserData()).b2body.getLinearVelocity().y;
+                    anthon = (Anthon) fixA.getUserData();
                 }else{
                     Gdx.app.log("colisao", ""+((Anthon) fixB.getUserData()).b2body.getLinearVelocity().y);
+                    height = ((Anthon) fixB.getUserData()).b2body.getLinearVelocity().y;
+                    anthon = (Anthon) fixB.getUserData();
                     //altas quedas matam
+                }
+                if(height < -6){
+                    anthon.hit(height);
                 }
         }
 //            case MarioBros.MARIO_HEAD_BIT | MarioBros.BRICK_BIT:

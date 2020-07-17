@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
+import com.rpbee.Sprites.Anthon;
 
 public class Hud implements Disposable {
     //Scene2D.ui Stage and its own Viewport for HUD
@@ -32,9 +33,9 @@ public class Hud implements Disposable {
     Label timeLabel;
     Label levelLabel;
     Label flyBarLabel;
-    Label lifeLabel;
+    Label healthLabel;
     Label flyBarTextLabel;
-    Label lifeTextLabel;
+    Label healthTextLabel;
     Label levelTextLabel;
     Label anthonLabel;
 
@@ -65,22 +66,23 @@ public class Hud implements Disposable {
         //timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelTextLabel = new Label("Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        lifeLabel = new Label(String.format("%.2f", life), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        lifeTextLabel = new Label("Vida", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        healthLabel = new Label(String.format("%.2f", Anthon.getHealth()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        healthTextLabel = new Label("Vida", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         flyBarLabel = new Label(String.format("%.2f", flyBar), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         flyBarTextLabel = new Label("Voo", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         anthonLabel = new Label("Anthon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
+
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(anthonLabel).expandX().padTop(10);
         table.add(flyBarTextLabel).expandX().padTop(10);
-        table.add(lifeTextLabel).expandX().padTop(10);
+        table.add(healthTextLabel).expandX().padTop(10);
         table.add(levelTextLabel).expandX().padTop(10);
         //add a second row to our table
         table.row();
         table.add(xpLabel).expandX();
         table.add(flyBarLabel).expandX();
-        table.add(lifeLabel).expandX();
+        table.add(healthLabel).expandX();
         table.add(levelLabel).expandX();
 
         //add our table to the stage
@@ -99,6 +101,7 @@ public class Hud implements Disposable {
 //            countDownLabel.setText(String.format("%03d", worldTimer));
 //            timeCount = 0;
 //        }
+        healthLabel.setText(String.format("%.2f", Anthon.getHealth()));
     }
 
     public static void addScore(int value){
