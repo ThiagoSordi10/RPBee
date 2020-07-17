@@ -54,7 +54,7 @@ public class PlayScreen implements Screen {
 //    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     public PlayScreen(RPBeeGame game){
-        atlas = new TextureAtlas("rpbee.pack");
+        atlas = new TextureAtlas("rpbee.atlas");
         this.game = game;
         //cam that follow mario
         gameCam = new OrthographicCamera();

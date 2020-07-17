@@ -53,52 +53,52 @@ public class Anthon extends Sprite {
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
-        //get run animation frames and add them to marioRun Animation
-        for(int i = 4; i < 7; i++){
+        //get run animation frames and add them to anthonRun Animation
+        for(int i = 3; i < 6; i++){
             frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), i*256, 0, 256, 256));
         }
         anthonRun = new Animation(0.1f, frames);
         frames.clear();
 
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 1536, 256, 256, 256));
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 768, 512, 256, 256));
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 0, 768, 256, 256));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 256, 256, 256, 256));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 1280, 256, 256, 256));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 2304, 256, 256, 256));
         anthonWatchfulRun = new Animation(0.1f, frames);
         frames.clear();
 
         //Anthon flying
-        for(int i = 2; i < 4; i++){
+        for(int i = 1; i < 3; i++){
             frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), i*256, 0, 256, 256));
         }
         anthonFly = new Animation(0.1f, frames);
         frames.clear();
 
 
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 256, 256, 256, 256));
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 1280, 256, 256, 256));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 1792, 0, 256, 256));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 0, 256, 256, 256));
         anthonWatchfulFly = new Animation(0.1f, frames);
         frames.clear();
 
 
-        //get jump animation frames and add them to marioJump Animation
-        anthonJump  = new TextureRegion(screen.getAtlas().findRegion("anthon"), 256, 0, 256, 256);
+        //get jump animation frames and add them to anthonJump Animation
+        anthonJump  = new TextureRegion(screen.getAtlas().findRegion("anthon"), 0, 0, 256, 256);
 
-        //create texture region for mario standing
-        anthonStand = new TextureRegion(screen.getAtlas().findRegion("anthon"), 512, 0, 256, 256);
+        //create texture region for anthon standing
+        anthonStand = new TextureRegion(screen.getAtlas().findRegion("anthon"), 256, 0, 256, 256);
 
-        for(int i = 0; i < 3; i++){
-            frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), i*256, 256, 256, 256));
+        for(int i = 6; i < 9; i++){
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), i*256, 0, 256, 256));
         }
         anthonWatchfulStand = new Animation(0.1f, frames);
         frames.clear();
 
-        //create dead mario texture region
+        //create dead anthon texture region
         //anthonDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);
 
-        //define mario in Box2d
+        //define anthon in Box2d
         defineAnthon();
 
-        //set initial values for marios location, width and height. And initial frame as marioStand.
+        //set initial values for anthon's location, width and height. And initial frame as anthonStand.
         setBounds(0,0,256 / RPBeeGame.PPM * 0.2f ,256 / RPBeeGame.PPM * 0.2f);
         setRegion(anthonStand);
 
@@ -116,7 +116,7 @@ public class Anthon extends Sprite {
 
         //update our sprite to correspond with the position of our Box2D body
 
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2.3f);
 
         //update sprite with the correct frame depending on Anthon's current action
         setRegion(getFrame(delta));
@@ -136,7 +136,7 @@ public class Anthon extends Sprite {
     }
 
     public TextureRegion getFrame(float delta){
-        //get marios current state. ie. jumping, running, standing...
+        //get anthon's current state. ie. jumping, running, standing...
         currentState = getState();
 
         TextureRegion region;
@@ -161,12 +161,12 @@ public class Anthon extends Sprite {
                 break;
         }
 
-        //if mario is running left and the texture isnt facing left... flip it.
+        //if anthon is running left and the texture isnt facing left... flip it.
         if((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()){
             region.flip(true, false);
             runningRight = false;
         }
-        //if mario is running right and the texture isnt facing right... flip it.
+        //if anthon is running right and the texture isnt facing right... flip it.
         else if((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){
             region.flip(true, false);
             runningRight = true;
@@ -182,7 +182,7 @@ public class Anthon extends Sprite {
 
     public State getState() {
         //Test to Box2D for velocity on the X and Y-Axis
-        //if mario is going positive in Y-Axis he is jumping... or if he just jumped and is falling remain in jump state
+        //if anthon is going positive in Y-Axis he is jumping... or if he just jumped and is falling remain in jump state
 //        if(anthonIsDead){
 //            return State.DEAD;
 //        }
@@ -192,11 +192,11 @@ public class Anthon extends Sprite {
         else if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) ){
             return State.JUMPING;
         }
-        //if negative in Y-Axis mario is falling
+        //if negative in Y-Axis anthon is falling
         else if(b2body.getLinearVelocity().y < 0){
             return State.FALLING;
         }
-        //if mario is positive or negative in the X axis he is running
+        //if anthon is positive or negative in the X axis he is running
         else if(b2body.getLinearVelocity().x != 0){
             return State.RUNNING;
         }
