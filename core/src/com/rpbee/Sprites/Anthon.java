@@ -17,21 +17,27 @@ import com.rpbee.Screens.PlayScreen;
 public class Anthon extends Sprite {
     public World world;
     public Body b2body;
-    private TextureRegion anthonStand;
 
     public enum State { FALLING, JUMPING, STANDING, RUNNING, FLYING, DEAD };
     public State currentState;
     public State previousState;
 
+    private TextureRegion anthonStand;
     private Animation<TextureRegion> anthonRun;
     private TextureRegion anthonJump;
     private Animation<TextureRegion> anthonFly;
-    private Animation<TextureRegion> anthonBeforeJump;
+    private Animation<TextureRegion> anthonWatchfulStand;
+    private Animation<TextureRegion> anthonWatchfulRun;
+    private Animation<TextureRegion> anthonWatchfulJump;
+    private Animation<TextureRegion> anthonWatchfulFly;
     //private TextureRegion anthonDead;
 
     private float stateTimer;
     private boolean runningRight;
     private boolean anthonIsDead;
+    private boolean anthonIsWatchful;
+    private boolean timeToDefineWatchfulAnthon;
+    private boolean timeToRedefineAnthon;
     private PlayScreen screen;
 
     //private Array<FireBall> fireballs;
@@ -54,10 +60,23 @@ public class Anthon extends Sprite {
         anthonRun = new Animation(0.1f, frames);
         frames.clear();
 
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 1536, 256, 256, 256));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 768, 512, 256, 256));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 0, 768, 256, 256));
+        anthonWatchfulRun = new Animation(0.1f, frames);
+        frames.clear();
+
+        //Anthon flying
         for(int i = 2; i < 4; i++){
             frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), i*256, 0, 256, 256));
         }
         anthonFly = new Animation(0.1f, frames);
+        frames.clear();
+
+
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 256, 256, 256, 256));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 1280, 256, 256, 256));
+        anthonWatchfulFly = new Animation(0.1f, frames);
         frames.clear();
 
 
@@ -66,6 +85,12 @@ public class Anthon extends Sprite {
 
         //create texture region for mario standing
         anthonStand = new TextureRegion(screen.getAtlas().findRegion("anthon"), 512, 0, 256, 256);
+
+        for(int i = 0; i < 3; i++){
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), i*256, 256, 256, 256));
+        }
+        anthonWatchfulStand = new Animation(0.1f, frames);
+        frames.clear();
 
         //create dead mario texture region
         //anthonDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);
@@ -96,6 +121,13 @@ public class Anthon extends Sprite {
         //update sprite with the correct frame depending on Anthon's current action
         setRegion(getFrame(delta));
 
+        if(timeToDefineWatchfulAnthon){
+            defineWatchfulAnthon();
+        }
+        if(timeToRedefineAnthon){
+            redefineAnthon();
+        }
+
 //        for(FireBall  ball : fireballs) {
 //            ball.update(delta);
 //            if(ball.isDestroyed())
@@ -117,15 +149,15 @@ public class Anthon extends Sprite {
                 region = anthonJump;
                 break;
             case RUNNING:
-                region = anthonRun.getKeyFrame(stateTimer, true);
+                region = anthonIsWatchful ? anthonWatchfulRun.getKeyFrame(stateTimer, true) : anthonRun.getKeyFrame(stateTimer, true);
                 break;
             case FLYING:
-                region = anthonFly.getKeyFrame(stateTimer, true);
+                region = anthonIsWatchful ? anthonWatchfulFly.getKeyFrame(stateTimer, true) : anthonFly.getKeyFrame(stateTimer, true);
                 break;
             case FALLING:
             case STANDING:
             default:
-                region = anthonStand;
+                region = anthonIsWatchful ? anthonWatchfulStand.getKeyFrame(stateTimer, true) : anthonStand;
                 break;
         }
 
@@ -184,6 +216,61 @@ public class Anthon extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(12 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT;
+        fdef.shape = shape;
+
+        b2body.createFixture(fdef).setUserData(this);
+
+//        EdgeShape head = new EdgeShape();
+//        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
+//        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
+//        fdef.shape = head;
+//        fdef.isSensor = true;
+//
+//        b2body.createFixture(fdef).setUserData(this);
+    }
+
+    public void defineWatchfulAnthon(){
+        Vector2 currentPosition = b2body.getPosition();
+        world.destroyBody(b2body);
+
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(currentPosition.add(0, 10 / RPBeeGame.PPM));
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(12 / RPBeeGame.PPM);
+        fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT;
+        fdef.shape = shape;
+
+        b2body.createFixture(fdef).setUserData(this);
+
+//        EdgeShape head = new EdgeShape();
+//        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
+//        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
+//        fdef.shape = head;
+//        fdef.isSensor = true;
+//
+//        b2body.createFixture(fdef).setUserData(this);
+        timeToDefineWatchfulAnthon = false;
+    }
+
+    public void redefineAnthon(){
+        Vector2 position = b2body.getPosition();
+        world.destroyBody(b2body);
+
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(position);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        b2body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        CircleShape shape = new CircleShape();
+        shape.setRadius(12 / RPBeeGame.PPM);
+        fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
         fdef.filter.maskBits = RPBeeGame.GROUND_BIT;
         fdef.shape = shape;
 
@@ -214,6 +301,17 @@ public class Anthon extends Sprite {
 
             b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
         }
+    }
+
+    public void watchful(){
+        if(!isWatchful()){
+            anthonIsWatchful = true;
+            //timeToDefineWatchfulAnthon = true;
+        }
+    }
+
+    public boolean isWatchful() {
+        return anthonIsWatchful;
     }
 
 //    public void hit(Enemy enemy){

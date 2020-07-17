@@ -1,6 +1,9 @@
 package com.rpbee.Tools;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
+import com.rpbee.RPBeeGame;
+import com.rpbee.Sprites.Anthon;
 
 public class WorldContactListener implements ContactListener {
     @Override
@@ -10,7 +13,15 @@ public class WorldContactListener implements ContactListener {
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
-//        switch (cDef){
+        switch (cDef){
+            case RPBeeGame.BEE_BIT | RPBeeGame.GROUND_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
+                    Gdx.app.log("colisao", ""+((Anthon) fixA.getUserData()).b2body.getLinearVelocity().y);
+                }else{
+                    Gdx.app.log("colisao", ""+((Anthon) fixB.getUserData()).b2body.getLinearVelocity().y);
+                    //altas quedas matam
+                }
+        }
 //            case MarioBros.MARIO_HEAD_BIT | MarioBros.BRICK_BIT:
 //            case MarioBros.MARIO_HEAD_BIT | MarioBros.COIN_BIT:
 //                if(fixA.getFilterData().categoryBits == MarioBros.MARIO_HEAD_BIT){

@@ -35,20 +35,20 @@ public class B2WorldCreator {
             body.createFixture(fdef);
         }
 
-        //Create pipe bodies/fixtures
-//        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            bdef.type = BodyDef.BodyType.StaticBody;
-//            bdef.position.set((rect.getX() + rect.getWidth()/2) / MarioBros.PPM, (rect.getY() + rect.getHeight()/2) / MarioBros.PPM);
-//
-//            body = world.createBody(bdef);
-//
-//            shape.setAsBox(rect.getWidth()/2 / MarioBros.PPM, rect.getHeight()/2 / MarioBros.PPM);
-//            fdef.shape = shape;
-//            fdef.filter.categoryBits = MarioBros.OBJECT_BIT;
-//            body.createFixture(fdef);
-//        }
+        //Create chest bodies/fixtures
+        for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() + rect.getWidth()/2) / RPBeeGame.PPM, (rect.getY() + rect.getHeight()/2) / RPBeeGame.PPM);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox(rect.getWidth()/2 / RPBeeGame.PPM, rect.getHeight()/2 / RPBeeGame.PPM);
+            fdef.shape = shape;
+            fdef.filter.categoryBits = RPBeeGame.OBJECT_BIT;
+            body.createFixture(fdef);
+        }
 //
 //        //Create brick bodies/fixtures
 //        for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){

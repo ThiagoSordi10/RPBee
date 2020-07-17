@@ -121,6 +121,9 @@ public class PlayScreen implements Screen {
             if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
                 player.fly();
             }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
+                player.watchful();
+            }
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){
                 player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
             }
@@ -154,7 +157,7 @@ public class PlayScreen implements Screen {
         //hud.update(delta);
 
         //attach gamecam to player x coord
-        if(player.currentState != Anthon.State.DEAD){
+        if(player.currentState != Anthon.State.DEAD && player.currentState != Anthon.State.STANDING){
             gameCam.position.x = player.b2body.getPosition().x;
         }
         //update camera coordinates after changes

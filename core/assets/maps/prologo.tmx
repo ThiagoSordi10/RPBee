@@ -25,7 +25,7 @@
  </layer>
  <layer id="2" name="terreno" width="200" height="20">
   <data encoding="base64" compression="zlib">
-   eJztmtluEzEUho/Spg2ZybQNmwg3LGoTXqNckiZQNqlXLG/CIi5oUyibQEJsbwJCCNSFN2B7Ef4RsWJGtsd2m3HanF/65ObY43H822N7UiIWi8VisVgsFmu8daJJ1GiGbgWLxfJVe5poCWzERE/AU/AMPI/VsQ7KdqdDt5p1EPSyRfSqFboVZsUVohpYrhFdBlfAVXCtpo4lKDtTCd1qFqsYtatYP0A9IToMjoCj4FiijnVQtlsN3WoWqxjFEdYPkJQsQdmZKHSrWaxitFkm2gKHMParpfx0G2V3yqFbzWIVo9UpojXwFWP/Wyk/7aHs+lToVrPGXa7vlfhd03Al/OA+HQ25vlfid03DlfCD+3Q05PpeSRdLz9KzfJ721iI8OF+V3mNE3KejIOFHA2P8ZDJIxd/ZeEORt43rd8B39tJZ6bwoo99KYAJsgq1ob/pU7NUea/bFurirfqCNP8Ev8Bv8OUDjQPihGve2aQ99ug4eGfpcFR/n/XU6L76g3xcniT4j/Qg+7fH8EHu1S5p9sSqu29PNrxAtrAzSJmiBc+ANvHwL3oH34EOsLpeNmcrMZ8i7TnV9toyPVvFd1mLz/FCtG3K5Dvq1Cy5q+tzViyL12vE3SN38f2F4Nqjy0nnxAOk9cB/cAXfjgR/yM8fnfg+luuY0++JsvJLof3OKNWfU6/3PN8BNcAvclvJ046HoPN+xJs4ftuuHLn9OwsaLNBX+q/zdMHjvElfF8vJN9ximpxdAGyzV/n/m+NQp1yWecXn0Jv6tWaZxkvX1eP/zKXAanAFnpTzdeCg6z/csJ58/bPZT2TmimlM2yP6r/F02eO8SV8Xy8k33GKanEYhBDSSpp2DWs85sXTbzozNpWD/648R2ro0SaX/4zg/V+cN27dgNsv8qf+sG733idU2drnVZ/3/MPkW3fohxErp9u/lePmc5sUcN3f79wl8CZDYI
+   eJztmtluEzEUho/Spg2ZpW3YRLhhUZvwCu1duSRNoGxSr1jehEVc0KZQNoGEoPAmIIRAXXgDWngR/lFjxYxsj2eSjNPm/NInJ8cez4mPPV4mRCwWi8VisVgs1mjrTI2oWnPtRe/amyfan3ftBYuVvxqTREtgwyd6AV6CV+C137V9XCDaXDiwNVG2Nenaa9ZR0Ns60bu6ay/M8ktEAVgOiK6DG+AmuBWobSHKTpVce81i5aNGGfMHqIREx8EJcBKcCtW2Jsq2yq69ZrHyke9h/gBhwRKUnfJce81i5aOtItE2OIa+Xy4kpzsou1t07TWLlY9WJ4jWwA/0/Z+F5LSNsusTrr1mjbpszpWSbHzW1D+JeHCbDofSnivxWdNgJeLBbTocSnuupLNFe+lp3k9n1iJicLksnWN43KbDIBGPKvr42bCbis9xe1WRt4Prd8EvjmVqReOiiHYrgDGwBba9/rSpWKs916yLdfa0+g0f98A++AP+HqF+IOKh6ve2aRttug6eGdpcZR/l9XU0Lr6j3RfHib4h/QK+9nl8iLXaNc26WGXXrelmV4jmVrppDdTBJfAh+u8D2ASfwGdfXS5uM5WZjZF0ner6eJksWsVvWfPN40M1b8jlmmjXFriqafO0schT71O+g9SN/zeGZ4MqLxoXT5A+Ao/BA/DQ78ZDfuZkud9Tqa4Zzbo4bi+F+ndOvmaPervz/Q64C+6B+1Kerj/knZe1r4n9h+38ocufkbCJRZSK+Kviu2GIfRq7ypaUb7rHIGN6BTTAUvD/MydLnXJd4hmXRHvsYM4y9ZN4XE93vp8D58EFcFHK0/WHvPOy7uXk/YfNeio+RlRjygY5/qr4Lhtin8ausiXlm+4xyJh6wAcBCKOYgumMdcbrshkfzXHD/NHpJ7ZjbZiI2iPr+FDtP2znjl6Q46+Kb8UQ+yz2iqbOtHVZ/z/mkKKbP0Q/ce1fL78ry15OrFFd+39Y+Aeu0Tiz
   </data>
  </layer>
  <layer id="6" name="castelo" width="200" height="20">
@@ -52,29 +52,29 @@
   <object id="26" x="385.333" y="189.333" width="63.3333" height="82"/>
   <object id="27" x="1112.67" y="236" width="68" height="18"/>
  </objectgroup>
- <objectgroup id="14" name="bau" visible="0">
-  <object id="35" x="2512" y="66">
+ <objectgroup id="14" name="bau">
+  <object id="35" x="2548" y="52.6667" width="26.6667" height="24">
    <properties>
     <property name="itens" value=""/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="11" name="polen" visible="0">
+ <objectgroup id="11" name="polen">
   <object id="28" x="615.333" y="262">
    <properties>
     <property name="polen" value=""/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="9" name="inimigo" visible="0">
+ <objectgroup id="9" name="inimigo">
   <object id="18" x="1528" y="244.667"/>
  </objectgroup>
- <objectgroup id="12" name="polinizar" visible="0" offsetx="-1.33333" offsety="-1.33333">
+ <objectgroup id="12" name="polinizar" offsetx="-1.33333" offsety="-1.33333">
   <object id="29" x="2744.85" y="260.848"/>
   <object id="30" x="2835.15" y="260.97"/>
   <object id="31" x="2928" y="260.909"/>
  </objectgroup>
- <objectgroup id="13" name="checkpoint" visible="0">
+ <objectgroup id="13" name="checkpoint">
   <object id="32" x="3178.5" y="260"/>
  </objectgroup>
 </map>
