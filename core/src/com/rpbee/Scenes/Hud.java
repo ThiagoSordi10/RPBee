@@ -21,21 +21,31 @@ public class Hud implements Disposable {
     private Integer worldTimer;
     private boolean timeUp; // true when the world timer reaches 0
     private float timeCount;
-    private static Integer score;
+    private float life;
+    private float flyBar;
+    private int level;
+    private static Integer xp;
 
     //Scene2D widgets
     Label countDownLabel;
-    static Label scoreLabel;
+    static Label xpLabel;
     Label timeLabel;
     Label levelLabel;
-    Label worldLabel;
-    Label marioLabel;
+    Label flyBarLabel;
+    Label lifeLabel;
+    Label flyBarTextLabel;
+    Label lifeTextLabel;
+    Label levelTextLabel;
+    Label anthonLabel;
 
     public Hud(SpriteBatch sb){
         //define our tracking variables
         worldTimer = 300;
         timeCount = 0;
-        score = 0;
+        xp = 0;
+        life = 20;
+        flyBar = 10;
+
 
         //setup the HUD viewport using a new camera separate from our gamecam
         //define our stage using that viewport and our games spritebatch
@@ -50,22 +60,28 @@ public class Hud implements Disposable {
         table.setFillParent(true);
 
         //define our labels using the String, and a Label style consisting of a font and color
-        countDownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        scoreLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        worldLabel = new Label("World", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        marioLabel = new Label("Mario", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        //countDownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        xpLabel = new Label(String.format("%06d", xp), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        //timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        levelLabel = new Label("1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        levelTextLabel = new Label("Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        lifeLabel = new Label(String.format("%.2f", life), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        lifeTextLabel = new Label("Vida", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        flyBarLabel = new Label(String.format("%.2f", flyBar), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        flyBarTextLabel = new Label("Voo", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        anthonLabel = new Label("Anthon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         //add our labels to our table, padding the top, and giving them all equal width with expandX
-        table.add(marioLabel).expandX().padTop(10);
-        table.add(worldLabel).expandX().padTop(10);
-        table.add(timeLabel).expandX().padTop(10);
+        table.add(anthonLabel).expandX().padTop(10);
+        table.add(flyBarTextLabel).expandX().padTop(10);
+        table.add(lifeTextLabel).expandX().padTop(10);
+        table.add(levelTextLabel).expandX().padTop(10);
         //add a second row to our table
         table.row();
-        table.add(scoreLabel).expandX();
+        table.add(xpLabel).expandX();
+        table.add(flyBarLabel).expandX();
+        table.add(lifeLabel).expandX();
         table.add(levelLabel).expandX();
-        table.add(countDownLabel).expandX();
 
         //add our table to the stage
         stage.addActor(table);
@@ -73,21 +89,21 @@ public class Hud implements Disposable {
     }
 
     public void update(float delta){
-        timeCount += delta;
-        if(timeCount >= 1){
-            if (worldTimer > 0) {
-                worldTimer--;
-            } else {
-                timeUp = true;
-            }
-            countDownLabel.setText(String.format("%03d", worldTimer));
-            timeCount = 0;
-        }
+//        timeCount += delta;
+//        if(timeCount >= 1){
+//            if (worldTimer > 0) {
+//                worldTimer--;
+//            } else {
+//                timeUp = true;
+//            }
+//            countDownLabel.setText(String.format("%03d", worldTimer));
+//            timeCount = 0;
+//        }
     }
 
     public static void addScore(int value){
-        score += value;
-        scoreLabel.setText(String.format("%06d", score));
+        xp += value;
+        xpLabel.setText(String.format("%06d", xp));
     }
 
 

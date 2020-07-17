@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
+import com.rpbee.Scenes.Hud;
 import com.rpbee.Sprites.Anthon;
 import com.rpbee.Tools.B2WorldCreator;
 import com.rpbee.Tools.WorldContactListener;
@@ -33,7 +34,7 @@ public class PlayScreen implements Screen {
     //Basic playscreen view
     private OrthographicCamera gameCam;
     private Viewport gamePort;
-    //private Hud hud;
+    private Hud hud;
 
     //Tiled map variables
     private TmxMapLoader mapLoader;
@@ -61,7 +62,7 @@ public class PlayScreen implements Screen {
         //create a FitViewport to maintain virtual aspect ratio despite screen size
         gamePort = new FitViewport(RPBeeGame.V_WIDTH / RPBeeGame.PPM, RPBeeGame.V_HEIGHT / RPBeeGame.PPM, gameCam);
         //create our game HUD for scores/timers/level info
-        //hud = new Hud(game.batch);
+        hud = new Hud(game.batch);
 
         //Load map and setup map renderer
         mapLoader = new TmxMapLoader();
@@ -154,7 +155,7 @@ public class PlayScreen implements Screen {
 //        for(Item item : items){
 //            item.update(delta);
 //        }
-        //hud.update(delta);
+        hud.update(delta);
 
         //attach gamecam to player x coord
         if(player.currentState != Anthon.State.DEAD && player.currentState != Anthon.State.STANDING){
@@ -193,8 +194,8 @@ public class PlayScreen implements Screen {
         game.batch.end();
 
         //Draw HUD
-//        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-//        hud.stage.draw();
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
 
 //        if(gameOver()){
 //            game.setScreen(new GameOverScreen(game));
@@ -243,8 +244,8 @@ public class PlayScreen implements Screen {
         renderer.dispose();
         world.dispose();
         b2dr.dispose();
-        //hud.dispose();
+        hud.dispose();
     }
 
-//    public Hud getHud(){ return hud; }
+    public Hud getHud(){ return hud; }
 }
