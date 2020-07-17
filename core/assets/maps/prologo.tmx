@@ -38,7 +38,7 @@
    eJzt12tOGlEchvGpF+6gLsEm7ToEYe6AXUKbtAupFZgZQLslL9xBN6Hr8PGLTYgkpdaMTN4n+X3DwyE5J56/YSi1uQVHhhEiQhc99I/i3JFS8WaWDcOCDQcuPPioo4Fm+fXf873y+jWUeuu2OKfb2MEuUkgjgyxyyKOAIkrYW/Nsf+Xz35b+5tPx//sNSr1Vl5zbK1zjBgMMMcIYE0wxwxwL3K55Pw65Cx91H9QG9pNze4pfOEMLbXQQIESELnro4xwX+K0zrxJepWoYx6iiBhMWbDhw4cFHHQ00cYIv1ZfXXH5PPc0aPzRvqA1tu8b8gV2kkEYGWeSQRwFFlLCHfRzUXl5v+T31NGt81v8ataFdcc6vcYMBhhhhjAmmmGGOBW5xt+JuKJW0Tk3mD5yhhTY6CBAiQhc99HGOC3P1enpPqaRVtZg/YMKCDQcuPPioo4EmTqzVa+k9pZLWjs38gRTSyCCLHPIooIiSHfdOlYqvAed/iBHGmGCKGeZYrHE/9M5SSavlMH+ggwAhInTRQ9/5+7X0zlJJzHKZP+DAhef+2zr33I0H3Q+VsNIe8weyyCHvxb0jpd5PQ+7DCGNMMNX9UOq5ts/8gQAhIj/uHSmllFJ/sj/EvQOl3m+PdYyJYg==
   </data>
  </layer>
- <objectgroup id="8" name="terreno" offsetx="-0.666667" offsety="-0.666667">
+ <objectgroup id="8" name="terreno" visible="0" offsetx="-0.666667" offsety="-0.666667">
   <object id="5" x="0.666667" y="272.667" width="687.333" height="47.3333"/>
   <object id="10" x="689.333" y="238" width="220.667" height="82"/>
   <object id="13" x="991.333" y="254.667" width="783.333" height="65.3333"/>
@@ -47,36 +47,36 @@
   <object id="17" x="2495.33" y="270.667" width="704" height="48.6667"/>
   <object id="34" x="2404.67" y="77.6667" width="219" height="69"/>
  </objectgroup>
- <objectgroup id="10" name="obstáculos">
+ <objectgroup id="10" name="obstáculos" visible="0">
   <object id="23" x="291.333" y="252" width="28.6667" height="19.3333"/>
   <object id="24" x="322.667" y="236" width="28" height="35.3333"/>
   <object id="25" x="354" y="220" width="30.6667" height="51.3333"/>
   <object id="26" x="385.333" y="189.333" width="63.3333" height="82"/>
   <object id="27" x="1112.67" y="236" width="68" height="18"/>
  </objectgroup>
- <objectgroup id="14" name="bau">
+ <objectgroup id="14" name="bau" visible="0">
   <object id="35" x="2512" y="66">
    <properties>
     <property name="itens" value=""/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="11" name="polen">
+ <objectgroup id="11" name="polen" visible="0">
   <object id="28" x="615.333" y="262">
    <properties>
     <property name="polen" value=""/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="9" name="inimigo">
+ <objectgroup id="9" name="inimigo" visible="0">
   <object id="18" x="1528" y="244.667"/>
  </objectgroup>
- <objectgroup id="12" name="polinizar" offsetx="-1.33333" offsety="-1.33333">
+ <objectgroup id="12" name="polinizar" visible="0" offsetx="-1.33333" offsety="-1.33333">
   <object id="29" x="2744.85" y="260.848"/>
   <object id="30" x="2835.15" y="260.97"/>
   <object id="31" x="2928" y="260.909"/>
  </objectgroup>
- <objectgroup id="13" name="checkpoint">
+ <objectgroup id="13" name="checkpoint" visible="0">
   <object id="32" x="3178.5" y="260"/>
  </objectgroup>
 </map>
