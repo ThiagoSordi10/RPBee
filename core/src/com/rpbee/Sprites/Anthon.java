@@ -1,6 +1,7 @@
 package com.rpbee.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -18,12 +19,13 @@ public class Anthon extends Sprite {
     public Body b2body;
     private TextureRegion anthonStand;
 
-    public enum State { FALLING, JUMPING, STANDING, RUNNING, DEAD };
+    public enum State { FALLING, JUMPING, STANDING, RUNNING, FLYING, DEAD };
     public State currentState;
     public State previousState;
 
     private Animation<TextureRegion> anthonRun;
     private TextureRegion anthonJump;
+    private Animation<TextureRegion> anthonFly;
     private Animation<TextureRegion> anthonBeforeJump;
     //private TextureRegion anthonDead;
 
@@ -52,12 +54,18 @@ public class Anthon extends Sprite {
         anthonRun = new Animation(0.1f, frames);
         frames.clear();
 
+        for(int i = 2; i < 4; i++){
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), i*256, 0, 256, 256));
+        }
+        anthonFly = new Animation(0.1f, frames);
+        frames.clear();
+
 
         //get jump animation frames and add them to marioJump Animation
         anthonJump  = new TextureRegion(screen.getAtlas().findRegion("anthon"), 256, 0, 256, 256);
 
         //create texture region for mario standing
-        anthonStand = new TextureRegion(screen.getAtlas().findRegion("anthon"), 768, 0, 256, 256);
+        anthonStand = new TextureRegion(screen.getAtlas().findRegion("anthon"), 512, 0, 256, 256);
 
         //create dead mario texture region
         //anthonDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);
@@ -85,7 +93,7 @@ public class Anthon extends Sprite {
 
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
 
-        //update sprite with the correct frame depending on marios current action
+        //update sprite with the correct frame depending on Anthon's current action
         setRegion(getFrame(delta));
 
 //        for(FireBall  ball : fireballs) {
@@ -110,6 +118,9 @@ public class Anthon extends Sprite {
                 break;
             case RUNNING:
                 region = anthonRun.getKeyFrame(stateTimer, true);
+                break;
+            case FLYING:
+                region = anthonFly.getKeyFrame(stateTimer, true);
                 break;
             case FALLING:
             case STANDING:
@@ -143,7 +154,10 @@ public class Anthon extends Sprite {
 //        if(anthonIsDead){
 //            return State.DEAD;
 //        }
-        if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) ){
+        if(b2body.getLinearVelocity().y > 0 && currentState == State.FLYING){
+            return State.FLYING;
+        }
+        else if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) ){
             return State.JUMPING;
         }
         //if negative in Y-Axis mario is falling
@@ -230,6 +244,11 @@ public class Anthon extends Sprite {
             b2body.applyLinearImpulse(new Vector2(0, 3f), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
         }
+    }
+
+    public void fly(){
+            b2body.applyLinearImpulse(new Vector2(0, 3f), b2body.getWorldCenter(), true);
+            currentState = State.FLYING;
     }
 
 //    public void fire(){
