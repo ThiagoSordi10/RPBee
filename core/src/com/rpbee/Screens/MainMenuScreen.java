@@ -96,7 +96,8 @@ public class MainMenuScreen implements Screen{
         btnExit.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.dispose();
+                Gdx.app.exit();
+                System.exit(0);
             };
         });
         Gdx.gl.glClearColor(0,0,0,1);
