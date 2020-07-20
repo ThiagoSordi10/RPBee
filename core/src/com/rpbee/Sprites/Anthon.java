@@ -41,6 +41,7 @@ public class Anthon extends Sprite {
     private PlayScreen screen;
 
     private static float health;
+    private static float flyEnergy;
 
     //private Array<FireBall> fireballs;
 
@@ -53,6 +54,7 @@ public class Anthon extends Sprite {
         stateTimer = 0;
         runningRight = true;
         health = 20;
+        flyEnergy = 40;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -124,6 +126,12 @@ public class Anthon extends Sprite {
         //update sprite with the correct frame depending on Anthon's current action
         setRegion(getFrame(delta));
 
+        if(getState() == State.STANDING && (flyEnergy+0.2f) <= 40 && stateTimer > 1){
+            setFlyEnergy(0.2f);
+        }else if((getState() == State.RUNNING || getState() != State.JUMPING) && (flyEnergy+0.01f) <= 40){
+            setFlyEnergy(0.01f);
+        }
+
 
 //        for(FireBall  ball : fireballs) {
 //            ball.update(delta);
@@ -135,6 +143,13 @@ public class Anthon extends Sprite {
     public static float getHealth(){
         return health;
     }
+    public static float getFlyEnergy(){
+        return flyEnergy;
+    }
+
+    public static void setFlyEnergy(float amount){
+        flyEnergy += amount;
+    }
 
     public TextureRegion getFrame(float delta){
         //get anthon's current state. ie. jumping, running, standing...
@@ -143,9 +158,9 @@ public class Anthon extends Sprite {
         TextureRegion region;
         //depending on the state, get corresponding animation keyFrame.
         switch (currentState){
-//            case DEAD:
-//                //region = anthonDead;
-//                break;
+            case DEAD:
+                region = anthonJump;
+                break;
             case JUMPING:
                 region = anthonJump;
                 break;
@@ -153,7 +168,7 @@ public class Anthon extends Sprite {
                 region = anthonIsWatchful ? anthonWatchfulRun.getKeyFrame(stateTimer, true) : anthonRun.getKeyFrame(stateTimer, true);
                 break;
             case FLYING:
-                region = anthonIsWatchful ? anthonWatchfulFly.getKeyFrame(stateTimer, true) : anthonFly.getKeyFrame(stateTimer, true);
+                    region = anthonIsWatchful ? anthonWatchfulFly.getKeyFrame(stateTimer, true) : anthonFly.getKeyFrame(stateTimer, true);
                 break;
             case FALLING:
             case STANDING:
@@ -184,10 +199,11 @@ public class Anthon extends Sprite {
     public State getState() {
         //Test to Box2D for velocity on the X and Y-Axis
         //if anthon is going positive in Y-Axis he is jumping... or if he just jumped and is falling remain in jump state
-//        if(anthonIsDead){
-//            return State.DEAD;
-//        }
-        if(b2body.getLinearVelocity().y > 0 && currentState == State.FLYING){
+        if(anthonIsDead){
+            return State.DEAD;
+        }
+        if(b2body.getLinearVelocity().y > 0 && currentState == State.FLYING && flyEnergy > 0){
+            setFlyEnergy(-0.05f);
             return State.FLYING;
         }
         else if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) ){
@@ -217,7 +233,7 @@ public class Anthon extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(12 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT | RPBeeGame.CHEST_BIT;
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);
@@ -233,6 +249,9 @@ public class Anthon extends Sprite {
 
     public void hit(float damage){
         health += damage;
+        if(health <= 0){
+            die();
+        }
     }
 
     public void die() {
@@ -249,7 +268,7 @@ public class Anthon extends Sprite {
                 fixture.setFilterData(filter);
             }
 
-            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+            b2body.applyLinearImpulse(new Vector2(0, 2f), b2body.getWorldCenter(), true);
         }
     }
 

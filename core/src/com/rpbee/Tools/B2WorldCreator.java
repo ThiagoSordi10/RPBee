@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
+import com.rpbee.Sprites.TileObjects.Chest;
 
 public class B2WorldCreator {
 
@@ -37,17 +38,7 @@ public class B2WorldCreator {
 
         //Create chest bodies/fixtures
         for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth()/2) / RPBeeGame.PPM, (rect.getY() + rect.getHeight()/2) / RPBeeGame.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth()/2 / RPBeeGame.PPM, rect.getHeight()/2 / RPBeeGame.PPM);
-            fdef.shape = shape;
-            fdef.filter.categoryBits = RPBeeGame.OBJECT_BIT;
-            body.createFixture(fdef);
+            new Chest(screen, object);
         }
 //
 //        //Create brick bodies/fixtures

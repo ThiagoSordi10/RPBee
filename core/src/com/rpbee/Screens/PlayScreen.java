@@ -119,7 +119,7 @@ public class PlayScreen implements Screen {
             if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
                 player.jump();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && Anthon.getFlyEnergy() > 4){
                 player.fly();
             }
             if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
@@ -197,10 +197,10 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
 
-//        if(gameOver()){
-//            game.setScreen(new GameOverScreen(game));
-//            dispose();
-//        }
+        if(gameOver()){
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
     }
 
     @Override
@@ -217,7 +217,7 @@ public class PlayScreen implements Screen {
     }
 
     public boolean gameOver(){
-        if(player.currentState == Anthon.State.DEAD && player.getStateTimer() > 3){
+        if(player.currentState == Anthon.State.DEAD && player.getStateTimer() > 2){
             return true;
         }
         return false;

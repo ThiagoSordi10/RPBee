@@ -1,5 +1,6 @@
 package com.rpbee.Scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,8 +23,6 @@ public class Hud implements Disposable {
     private Integer worldTimer;
     private boolean timeUp; // true when the world timer reaches 0
     private float timeCount;
-    private float life;
-    private float flyBar;
     private int level;
     private static Integer xp;
 
@@ -44,8 +43,6 @@ public class Hud implements Disposable {
         worldTimer = 300;
         timeCount = 0;
         xp = 0;
-        life = 20;
-        flyBar = 10;
 
 
         //setup the HUD viewport using a new camera separate from our gamecam
@@ -68,7 +65,7 @@ public class Hud implements Disposable {
         levelTextLabel = new Label("Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         healthLabel = new Label(String.format("%.2f", Anthon.getHealth()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         healthTextLabel = new Label("Vida", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        flyBarLabel = new Label(String.format("%.2f", flyBar), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        flyBarLabel = new Label(String.format("%.2f", Anthon.getFlyEnergy()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         flyBarTextLabel = new Label("Voo", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         anthonLabel = new Label("Anthon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
@@ -102,6 +99,7 @@ public class Hud implements Disposable {
 //            timeCount = 0;
 //        }
         healthLabel.setText(String.format("%.2f", Anthon.getHealth()));
+        flyBarLabel.setText(String.format("%.2f", Anthon.getFlyEnergy()));
     }
 
     public static void addScore(int value){

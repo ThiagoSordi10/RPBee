@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Sprites.Anthon;
+import com.rpbee.Sprites.TileObjects.Chest;
 
 public class WorldContactListener implements ContactListener {
     @Override
@@ -30,6 +31,15 @@ public class WorldContactListener implements ContactListener {
                 if(height < -6){
                     anthon.hit(height);
                 }
+                break;
+            case RPBeeGame.BEE_BIT | RPBeeGame.CHEST_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
+                    ((Chest) fixB.getUserData()).onContact((Anthon) fixA.getUserData());
+                }else{
+                    ((Chest) fixA.getUserData()).onContact((Anthon) fixB.getUserData());
+                }
+                break;
+                
         }
 //            case MarioBros.MARIO_HEAD_BIT | MarioBros.BRICK_BIT:
 //            case MarioBros.MARIO_HEAD_BIT | MarioBros.COIN_BIT:
@@ -89,7 +99,21 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
 
+        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+
+        switch (cDef){
+            case RPBeeGame.BEE_BIT | RPBeeGame.CHEST_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
+                    ((Chest) fixB.getUserData()).afterContact((Anthon) fixA.getUserData());
+                }else{
+                    ((Chest) fixA.getUserData()).afterContact((Anthon) fixB.getUserData());
+                }
+                break;
+
+        }
     }
 
     @Override
