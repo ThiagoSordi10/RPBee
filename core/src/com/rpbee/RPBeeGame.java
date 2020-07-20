@@ -18,6 +18,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.rpbee.Screens.MainMenuScreen;
 import com.rpbee.Screens.PlayScreen;
 
 public class RPBeeGame extends Game {
@@ -58,7 +59,7 @@ public class RPBeeGame extends Game {
 //		manager.load("audio/sounds/powerdown.wav", Sound.class);
 //		manager.load("audio/sounds/mariodie.wav", Sound.class);
 //		manager.finishLoading();
-		setScreen(new PlayScreen(this));
+		setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
