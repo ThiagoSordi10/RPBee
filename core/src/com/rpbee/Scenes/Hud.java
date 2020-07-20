@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
@@ -37,6 +38,10 @@ public class Hud implements Disposable {
     Label healthTextLabel;
     Label levelTextLabel;
     Label anthonLabel;
+    Label watchfulTextLabel;
+    Label watchfulLabel;
+
+    Table tableWatchful;
 
     public Hud(SpriteBatch sb){
         //define our tracking variables
@@ -69,6 +74,8 @@ public class Hud implements Disposable {
         flyBarTextLabel = new Label("Voo", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         anthonLabel = new Label("Anthon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
+        watchfulTextLabel = new Label("Modo Atento", new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
+        watchfulLabel = new Label(String.format("%.2f", Anthon.getWatchfulEnergy()), new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
 
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(anthonLabel).expandX().padTop(10);
@@ -85,6 +92,13 @@ public class Hud implements Disposable {
         //add our table to the stage
         stage.addActor(table);
 
+        //define a table used to organize our hud's labels
+        tableWatchful = new Table();
+        //Top-Align table
+        tableWatchful.bottom();
+        //make the table fill the entire stage
+        tableWatchful.setFillParent(true);
+
     }
 
     public void update(float delta){
@@ -100,12 +114,27 @@ public class Hud implements Disposable {
 //        }
         healthLabel.setText(String.format("%.2f", Anthon.getHealth()));
         flyBarLabel.setText(String.format("%.2f", Anthon.getFlyEnergy()));
+        watchfulLabel.setText(String.format("%.2f", Anthon.getWatchfulEnergy()));
     }
 
     public static void addScore(int value){
         xp += value;
         xpLabel.setText(String.format("%06d", xp));
     }
+
+    public void addWatchfulBar(){
+        tableWatchful.add(watchfulTextLabel).expandX();
+        tableWatchful.row();
+        tableWatchful.add(watchfulLabel).expandX();
+
+        stage.addActor(tableWatchful);
+    }
+
+    public void removeWatchfulBar(){
+        tableWatchful.removeActor(watchfulTextLabel);
+        tableWatchful.removeActor(watchfulLabel);
+    }
+
 
 
     @Override

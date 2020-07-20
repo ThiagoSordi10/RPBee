@@ -122,7 +122,7 @@ public class PlayScreen implements Screen {
             if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && Anthon.getFlyEnergy() > 4){
                 player.fly();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.F) && player.anthonCanWatchful()){
                 player.watchful();
             }
             if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){
@@ -155,6 +155,11 @@ public class PlayScreen implements Screen {
 //        for(Item item : items){
 //            item.update(delta);
 //        }
+        if(!player.isWatchful()){
+            hud.removeWatchfulBar();
+        }else{
+            hud.addWatchfulBar();
+        }
         hud.update(delta);
 
         //attach gamecam to player x coord

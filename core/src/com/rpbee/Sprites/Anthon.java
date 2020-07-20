@@ -36,12 +36,14 @@ public class Anthon extends Sprite {
     private boolean runningRight;
     private boolean anthonIsDead;
     private boolean anthonIsWatchful;
-    private boolean timeToDefineWatchfulAnthon;
-    private boolean timeToRedefineAnthon;
+    private boolean anthonCanWatchful;
     private PlayScreen screen;
 
+
+    private float timeCount;
     private static float health;
     private static float flyEnergy;
+    private static float watchfulEnergy;
 
     //private Array<FireBall> fireballs;
 
@@ -55,6 +57,7 @@ public class Anthon extends Sprite {
         runningRight = true;
         health = 20;
         flyEnergy = 40;
+        watchfulEnergy = 30;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -132,12 +135,33 @@ public class Anthon extends Sprite {
             setFlyEnergy(0.01f);
         }
 
+        //if anthon is watchful but the energy ends, it ends watchful
+        if(anthonIsWatchful && watchfulEnergy <= 0){
+            anthonIsWatchful = false;
+        }
+
+        //If anthon isnt watchful and the energy is low it recharges
+        if(!anthonIsWatchful && watchfulEnergy+30f <= 30){
+            setWatchfulEnergy(30f);
+        }else if(!anthonIsWatchful && anthonCanWatchful == false){
+            timeCount += delta;
+            //After recharges it takes 5 sec yet to enable use watchful again
+            if(timeCount > 5){
+                anthonCanWatchful = true;
+                timeCount = 0;
+            }
+        }
+
 
 //        for(FireBall  ball : fireballs) {
 //            ball.update(delta);
 //            if(ball.isDestroyed())
 //                fireballs.removeValue(ball, true);
 //        }
+    }
+
+    public boolean anthonCanWatchful(){
+        return anthonCanWatchful;
     }
 
     public static float getHealth(){
@@ -149,6 +173,14 @@ public class Anthon extends Sprite {
 
     public static void setFlyEnergy(float amount){
         flyEnergy += amount;
+    }
+
+    public static float getWatchfulEnergy(){
+        return watchfulEnergy;
+    }
+
+    public static void setWatchfulEnergy(float amount){
+        watchfulEnergy += amount;
     }
 
     public TextureRegion getFrame(float delta){
@@ -165,15 +197,30 @@ public class Anthon extends Sprite {
                 region = anthonJump;
                 break;
             case RUNNING:
-                region = anthonIsWatchful ? anthonWatchfulRun.getKeyFrame(stateTimer, true) : anthonRun.getKeyFrame(stateTimer, true);
+                if(anthonIsWatchful){
+                    region = anthonWatchfulRun.getKeyFrame(stateTimer, true);
+                    setWatchfulEnergy(-0.1f);
+                }else{
+                    region = anthonRun.getKeyFrame(stateTimer, true);
+                }
                 break;
             case FLYING:
-                    region = anthonIsWatchful ? anthonWatchfulFly.getKeyFrame(stateTimer, true) : anthonFly.getKeyFrame(stateTimer, true);
+                if(anthonIsWatchful){
+                    region = anthonWatchfulFly.getKeyFrame(stateTimer, true);
+                    setWatchfulEnergy(-0.2f);
+                }else{
+                    region = anthonFly.getKeyFrame(stateTimer, true);
+                }
                 break;
             case FALLING:
             case STANDING:
             default:
-                region = anthonIsWatchful ? anthonWatchfulStand.getKeyFrame(stateTimer, true) : anthonStand;
+                if(anthonIsWatchful){
+                    region = anthonWatchfulStand.getKeyFrame(stateTimer, true);
+                    setWatchfulEnergy(-0.05f);
+                }else{
+                    region = anthonStand;
+                }
                 break;
         }
 
@@ -274,7 +321,9 @@ public class Anthon extends Sprite {
 
     public void watchful(){
         if(!isWatchful()){
+            Gdx.app.log("Watchful", "ativado");
             anthonIsWatchful = true;
+            anthonCanWatchful = false;
             //timeToDefineWatchfulAnthon = true;
         }
     }
