@@ -39,6 +39,13 @@ public class WorldContactListener implements ContactListener {
                     ((Chest) fixA.getUserData()).onContact((Anthon) fixB.getUserData());
                 }
                 break;
+            case RPBeeGame.BEE_BIT | RPBeeGame.ENEMY_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
+                    ((Anthon) fixA.getUserData()).hit(-10);
+                }else{
+                    ((Anthon) fixB.getUserData()).hit(-10);
+                }
+                break;
                 
         }
 //            case MarioBros.MARIO_HEAD_BIT | MarioBros.BRICK_BIT:

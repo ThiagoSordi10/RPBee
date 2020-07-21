@@ -61,6 +61,7 @@ public class Sunflower extends Enemy {
         fdef.filter.categoryBits = RPBeeGame.ENEMY_BIT;
         fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.BEE_BIT;
         fdef.shape = shape;
+        fdef.restitution = 1.5f;
 
         b2body.createFixture(fdef).setUserData(this);
 
