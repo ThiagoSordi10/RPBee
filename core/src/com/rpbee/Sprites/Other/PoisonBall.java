@@ -19,7 +19,7 @@ public class PoisonBall extends Sprite {
     boolean poisonRight;
     Body b2body;
 
-    public PoisonBall(PlayScreen screen, float x, float y, boolean poisonRight){
+    public PoisonBall(PlayScreen screen, float x, float y, boolean poisonRight, float playerX, float playerY, float enemyX, float enemyY){
         this.poisonRight = poisonRight;
         this.screen = screen;
         this.world = screen.getWorld();
@@ -31,10 +31,10 @@ public class PoisonBall extends Sprite {
         poison = new TextureRegion(screen.getAtlas().findRegion("explosion"), 16, 0, 16, 16);
         setRegion(poison);
         setBounds(x, y, 16 / RPBeeGame.PPM, 16 / RPBeeGame.PPM);
-        definePoisonBall();
+        definePoisonBall(playerX, playerY, enemyX, enemyY);
     }
 
-    public void definePoisonBall(){
+    public void definePoisonBall(float playerX, float playerY, float enemyX, float enemyY){
         BodyDef bdef = new BodyDef();
         bdef.position.set(poisonRight ? getX() + 12 /RPBeeGame.PPM : getX() - 12 /RPBeeGame.PPM, getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -51,7 +51,7 @@ public class PoisonBall extends Sprite {
         fdef.restitution = 1;
         fdef.friction = 0;
         b2body.createFixture(fdef).setUserData(this);
-        b2body.setLinearVelocity(new Vector2(poisonRight ? 2 : -2, 2.5f));
+        b2body.setLinearVelocity(new Vector2(poisonRight ? (playerX + enemyX)/5 : (-playerX - enemyX) / 5, (playerY - enemyY)*5));
     }
 
     public void update(float delta){
@@ -63,7 +63,7 @@ public class PoisonBall extends Sprite {
             destroyed = true;
         }
         if(b2body.getLinearVelocity().y > 2f)
-            b2body.setLinearVelocity(b2body.getLinearVelocity().x, 2f);
+            //b2body.setLinearVelocity(b2body.getLinearVelocity().x, 2f);
         if((poisonRight && b2body.getLinearVelocity().x < 0) || (!poisonRight && b2body.getLinearVelocity().x > 0))
             setToDestroy();
     }

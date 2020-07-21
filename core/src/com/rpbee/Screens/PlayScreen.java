@@ -147,7 +147,7 @@ public class PlayScreen implements Screen {
 
         player.update(delta);
         for(Enemy enemy : creator.getEnemies()){
-            enemy.update(delta, player.getX());
+            enemy.update(delta, player.getX(), player.getY());
             if(enemy.getX() < player.getX() + 224 / RPBeeGame.PPM){
                 enemy.b2body.setActive(true);
             }

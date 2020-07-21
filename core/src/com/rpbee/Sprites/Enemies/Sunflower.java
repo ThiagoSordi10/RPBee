@@ -16,9 +16,6 @@ import com.rpbee.Sprites.Anthon;
 import com.rpbee.Sprites.Other.PoisonBall;
 
 public class Sunflower extends Enemy {
-    public enum State {STANDING, ATTACKING}
-    public State currentState;
-    public State previousState;
     private float stateTimer;
     private TextureRegion stand;
     private boolean setToDestroy;
@@ -37,10 +34,9 @@ public class Sunflower extends Enemy {
         angle = 0;
         poisonballs = new Array<PoisonBall>();
 
-        currentState = previousState = State.STANDING;
     }
 
-    public void update(float delta, float playerPos){
+    public void update(float delta, float playerX, float playerY){
         stateTimer += delta;
         if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
@@ -53,18 +49,13 @@ public class Sunflower extends Enemy {
             setRegion(stand);
 
             //Throw poison in player direction
-            if(b2body.isActive() && getX() < playerPos + 200 / RPBeeGame.PPM && stateTimer > 1 && getX() > playerPos){
-                poison(false);
-                currentState = State.ATTACKING;
+            if(b2body.isActive() && getX() < playerX + 224 / RPBeeGame.PPM && stateTimer > 1 && getX() > playerX){
+                poison(false, playerX, playerY);
                 stateTimer = 0;
-            }else if(b2body.isActive() && getX() + 200 / RPBeeGame.PPM > playerPos   && stateTimer > 1 && playerPos > getX()){
-                poison(true);
-                currentState = State.ATTACKING;
+            }else if(b2body.isActive() && getX() + 224 / RPBeeGame.PPM > playerX   && stateTimer > 1 && playerX > getX()){
+                poison(true, playerX, playerY);
                 stateTimer = 0;
-            }else{
-                currentState = State.STANDING;
             }
-            previousState = currentState;
 
             for(PoisonBall  ball : poisonballs) {
                 ball.update(delta);
@@ -117,8 +108,8 @@ public class Sunflower extends Enemy {
         }
     }
 
-    public void poison(boolean directionRight){
-        poisonballs.add(new PoisonBall(screen, b2body.getPosition().x, b2body.getPosition().y, directionRight));
+    public void poison(boolean directionRight, float playerX, float playerY){
+        poisonballs.add(new PoisonBall(screen, b2body.getPosition().x, b2body.getPosition().y, directionRight, playerX, playerY, getX(), getY()));
     }
 
     public void onEnemyHit(Enemy enemy){
