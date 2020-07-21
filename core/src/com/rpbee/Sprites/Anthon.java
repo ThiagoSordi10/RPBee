@@ -1,11 +1,7 @@
 package com.rpbee.Sprites;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -45,6 +41,10 @@ public class Anthon extends Sprite {
     private static float flyEnergy;
     private static float watchfulEnergy;
 
+    private float maxHealth = 20;
+    private float maxFlyEnergy = 40;
+    private float maxWatchfulEnergy = 30;
+
     //private Array<FireBall> fireballs;
 
     public Anthon(PlayScreen screen){
@@ -55,9 +55,9 @@ public class Anthon extends Sprite {
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
-        health = 20;
-        flyEnergy = 40;
-        watchfulEnergy = 30;
+        health = maxHealth;
+        flyEnergy = maxFlyEnergy;
+        watchfulEnergy = maxWatchfulEnergy;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -130,10 +130,14 @@ public class Anthon extends Sprite {
         setRegion(getFrame(delta));
 
         //Recharge fly bar
-        if(getState() == State.STANDING && (flyEnergy+0.2f) <= 40 && stateTimer > 1){
-            setFlyEnergy(0.2f);
-        }else if((getState() == State.RUNNING || getState() != State.JUMPING) && (flyEnergy+0.01f) <= 40){
-            setFlyEnergy(0.01f);
+        if(getState() == State.STANDING && (flyEnergy+0.2f) <= maxFlyEnergy && stateTimer > 1){
+            chargeFlyEnergy(0.2f);
+        }else if((getState() == State.RUNNING || getState() != State.JUMPING) && (flyEnergy+0.01f) <= maxFlyEnergy){
+            chargeFlyEnergy(0.01f);
+        }
+
+        if(maxFlyEnergy - flyEnergy < 0.05f){
+            chargeFlyEnergy(maxFlyEnergy - flyEnergy);
         }
 
         //if anthon is watchful but the energy ends, it ends watchful
@@ -142,8 +146,8 @@ public class Anthon extends Sprite {
         }
 
         //If anthon isnt watchful and the energy is low it recharges
-        if(!anthonIsWatchful && watchfulEnergy+30f <= 30){
-            setWatchfulEnergy(30f);
+        if(!anthonIsWatchful && watchfulEnergy+30f <= maxWatchfulEnergy){
+            chargeWatchfulEnergy(30f);
         }else if(!anthonIsWatchful && anthonCanWatchful == false){
             timeCount += delta;
             //After recharges it takes 5 sec yet to enable use watchful again
@@ -172,7 +176,7 @@ public class Anthon extends Sprite {
         return flyEnergy;
     }
 
-    public static void setFlyEnergy(float amount){
+    public static void chargeFlyEnergy(float amount){
         flyEnergy += amount;
     }
 
@@ -180,7 +184,7 @@ public class Anthon extends Sprite {
         return watchfulEnergy;
     }
 
-    public static void setWatchfulEnergy(float amount){
+    public static void chargeWatchfulEnergy(float amount){
         watchfulEnergy += amount;
     }
 
@@ -200,7 +204,7 @@ public class Anthon extends Sprite {
             case RUNNING:
                 if(anthonIsWatchful){
                     region = anthonWatchfulRun.getKeyFrame(stateTimer, true);
-                    setWatchfulEnergy(-0.1f);
+                    chargeWatchfulEnergy(-0.1f);
                 }else{
                     region = anthonRun.getKeyFrame(stateTimer, true);
                 }
@@ -208,7 +212,7 @@ public class Anthon extends Sprite {
             case FLYING:
                 if(anthonIsWatchful){
                     region = anthonWatchfulFly.getKeyFrame(stateTimer, true);
-                    setWatchfulEnergy(-0.2f);
+                    chargeWatchfulEnergy(-0.2f);
                 }else{
                     region = anthonFly.getKeyFrame(stateTimer, true);
                 }
@@ -218,7 +222,7 @@ public class Anthon extends Sprite {
             default:
                 if(anthonIsWatchful){
                     region = anthonWatchfulStand.getKeyFrame(stateTimer, true);
-                    setWatchfulEnergy(-0.05f);
+                    chargeWatchfulEnergy(-0.05f);
                 }else{
                     region = anthonStand;
                 }
@@ -251,7 +255,7 @@ public class Anthon extends Sprite {
             return State.DEAD;
         }
         if(b2body.getLinearVelocity().y > 0 && currentState == State.FLYING && flyEnergy > 0){
-            setFlyEnergy(-0.05f);
+            chargeFlyEnergy(-0.05f);
             return State.FLYING;
         }
         else if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) ){
