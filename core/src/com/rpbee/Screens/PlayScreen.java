@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Scenes.Hud;
 import com.rpbee.Sprites.Anthon;
+import com.rpbee.Sprites.Enemies.Enemy;
 import com.rpbee.Tools.B2WorldCreator;
 import com.rpbee.Tools.WorldContactListener;
 
@@ -145,12 +146,12 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(delta);
-//        for(Enemy enemy : creator.getEnemies()){
-//            enemy.update(delta);
-//            if(enemy.getX() < player.getX() + 224 / MarioBros.PPM){
-//                enemy.b2body.setActive(true);
-//            }
-//        }
+        for(Enemy enemy : creator.getEnemies()){
+            enemy.update(delta);
+            if(enemy.getX() < player.getX() + 224 / RPBeeGame.PPM){
+                enemy.b2body.setActive(true);
+            }
+        }
 //
 //        for(Item item : items){
 //            item.update(delta);
@@ -190,9 +191,9 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-//        for(Enemy enemy : creator.getEnemies()){
-//            enemy.draw(game.batch);
-//        }
+        for(Enemy enemy : creator.getEnemies()){
+            enemy.draw(game.batch);
+        }
 //        for(Item item : items){
 //            item.draw(game.batch);
 //        }

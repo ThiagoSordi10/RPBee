@@ -6,8 +6,22 @@ filter: Nearest,Nearest
 repeat: none
 anthon
   rotate: false
-  xy: 2, 2
+  xy: 2, 260
   size: 2816, 512
   orig: 2816, 512
+  offset: 0, 0
+  index: -1
+bau
+  rotate: false
+  xy: 2, 2
+  size: 512, 256
+  orig: 512, 256
+  offset: 0, 0
+  index: -1
+inimigo1
+  rotate: false
+  xy: 2820, 516
+  size: 256, 256
+  orig: 256, 256
   offset: 0, 0
   index: -1

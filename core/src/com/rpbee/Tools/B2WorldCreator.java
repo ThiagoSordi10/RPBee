@@ -8,9 +8,13 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
+import com.rpbee.Sprites.Enemies.Enemy;
+import com.rpbee.Sprites.Enemies.Sunflower;
 import com.rpbee.Sprites.TileObjects.Chest;
 
 public class B2WorldCreator {
+
+    private Array<Sunflower> sunflowers;
 
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
@@ -40,6 +44,14 @@ public class B2WorldCreator {
         for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
             new Chest(screen, object);
         }
+
+        //create all sunflowers
+        sunflowers = new Array<Sunflower>();
+        for(MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            sunflowers.add(new Sunflower(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM));
+        }
 //
 //        //Create brick bodies/fixtures
 //        for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
@@ -68,5 +80,11 @@ public class B2WorldCreator {
 //
 //            turtles.add(new Turtle(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
 //        }
+    }
+
+    public Array<Enemy> getEnemies(){
+        Array<Enemy> enemies = new Array<Enemy>();
+        enemies.addAll(sunflowers);
+        return enemies;
     }
 }

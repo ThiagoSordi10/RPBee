@@ -129,6 +129,7 @@ public class Anthon extends Sprite {
         //update sprite with the correct frame depending on Anthon's current action
         setRegion(getFrame(delta));
 
+        //Recharge fly bar
         if(getState() == State.STANDING && (flyEnergy+0.2f) <= 40 && stateTimer > 1){
             setFlyEnergy(0.2f);
         }else if((getState() == State.RUNNING || getState() != State.JUMPING) && (flyEnergy+0.01f) <= 40){
@@ -280,7 +281,7 @@ public class Anthon extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(12 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT | RPBeeGame.CHEST_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT | RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT;
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);
