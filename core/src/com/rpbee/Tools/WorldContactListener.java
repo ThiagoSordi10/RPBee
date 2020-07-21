@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Sprites.Anthon;
+import com.rpbee.Sprites.Other.PoisonBall;
 import com.rpbee.Sprites.TileObjects.Chest;
 
 public class WorldContactListener implements ContactListener {
@@ -45,6 +46,12 @@ public class WorldContactListener implements ContactListener {
                 }else{
                     ((Anthon) fixB.getUserData()).hit(-10);
                 }
+                break;
+            case RPBeeGame.POISONBALL_BIT | RPBeeGame.GROUND_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.POISONBALL_BIT)
+                    ((PoisonBall)fixA.getUserData()).setToDestroy();
+                else
+                    ((PoisonBall)fixB.getUserData()).setToDestroy();
                 break;
                 
         }

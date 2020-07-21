@@ -13,13 +13,18 @@ import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Anthon;
+import com.rpbee.Sprites.Other.PoisonBall;
 
 public class Sunflower extends Enemy {
+    public enum State {STANDING, ATTACKING}
+    public State currentState;
+    public State previousState;
     private float stateTimer;
     private TextureRegion stand;
     private boolean setToDestroy;
     private boolean destroyed;
     float angle;
+    private Array<PoisonBall> poisonballs;
 
     public Sunflower(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -30,9 +35,12 @@ public class Sunflower extends Enemy {
         setToDestroy = false;
         destroyed = false;
         angle = 0;
+        poisonballs = new Array<PoisonBall>();
+
+        currentState = previousState = State.STANDING;
     }
 
-    public void update(float delta){
+    public void update(float delta, float playerPos){
         stateTimer += delta;
         if(setToDestroy && !destroyed){
             world.destroyBody(b2body);
@@ -40,11 +48,32 @@ public class Sunflower extends Enemy {
             //setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));
             stateTimer = 0;
         }else if(!destroyed) {
-            //controlar ataques
 //            b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2.3f);
             setRegion(stand);
+
+            //Throw poison in player direction
+            if(b2body.isActive() && getX() < playerPos + 200 / RPBeeGame.PPM && stateTimer > 1 && getX() > playerPos){
+                poison(false);
+                currentState = State.ATTACKING;
+                stateTimer = 0;
+            }else if(b2body.isActive() && getX() + 200 / RPBeeGame.PPM > playerPos   && stateTimer > 1 && playerPos > getX()){
+                poison(true);
+                currentState = State.ATTACKING;
+                stateTimer = 0;
+            }else{
+                currentState = State.STANDING;
+            }
+            previousState = currentState;
+
+            for(PoisonBall  ball : poisonballs) {
+                ball.update(delta);
+                if(ball.isDestroyed())
+                    poisonballs.removeValue(ball, true);
+            }
+
         }
+
     }
 
     @Override
@@ -83,7 +112,13 @@ public class Sunflower extends Enemy {
     public void draw(Batch batch){
         if(!destroyed || stateTimer < 1){
             super.draw(batch);
+            for(PoisonBall ball : poisonballs)
+                ball.draw(batch);
         }
+    }
+
+    public void poison(boolean directionRight){
+        poisonballs.add(new PoisonBall(screen, b2body.getPosition().x, b2body.getPosition().y, directionRight));
     }
 
     public void onEnemyHit(Enemy enemy){
