@@ -44,7 +44,6 @@ public class Sunflower extends Enemy {
             //setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));
             stateTimer = 0;
         }else if(!destroyed) {
-//            b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2.3f);
             setRegion(stand);
 

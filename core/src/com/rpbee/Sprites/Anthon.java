@@ -2,6 +2,7 @@ package com.rpbee.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
+import com.rpbee.Sprites.Other.HoneyBall;
 
 public class Anthon extends Sprite {
     public World world;
@@ -45,7 +47,7 @@ public class Anthon extends Sprite {
     private float maxFlyEnergy = 40;
     private float maxWatchfulEnergy = 30;
 
-    //private Array<FireBall> fireballs;
+    private Array<HoneyBall> honeyballs;
 
     public Anthon(PlayScreen screen){
         //initialize default values
@@ -110,17 +112,12 @@ public class Anthon extends Sprite {
         setBounds(0,0,256 / RPBeeGame.PPM * 0.2f ,256 / RPBeeGame.PPM * 0.2f);
         setRegion(anthonStand);
 
-        //fireballs = new Array<FireBall>();
+        honeyballs = new Array<HoneyBall>();
     }
 
     public void update(float delta){
         // time is up : too late mario dies T_T
         // the !isDead() method is used to prevent multiple invocation
-        // of "die music" and jumping
-        // there is probably better ways to do that but it works for now.
-//        if (screen.getHud().isTimeUp() && !isDead()) {
-//            die();
-//        }
 
         //update our sprite to correspond with the position of our Box2D body
 
@@ -157,12 +154,11 @@ public class Anthon extends Sprite {
             }
         }
 
-
-//        for(FireBall  ball : fireballs) {
-//            ball.update(delta);
-//            if(ball.isDestroyed())
-//                fireballs.removeValue(ball, true);
-//        }
+        for(HoneyBall  ball : honeyballs) {
+            ball.update(delta);
+            if(ball.isDestroyed())
+                honeyballs.removeValue(ball, true);
+        }
     }
 
     public boolean anthonCanWatchful(){
@@ -373,13 +369,13 @@ public class Anthon extends Sprite {
             currentState = State.FLYING;
     }
 
-//    public void fire(){
-//        fireballs.add(new FireBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
-//    }
+    public void honey(){
+        honeyballs.add(new HoneyBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
+    }
 
-//    public void draw(Batch batch){
-//        super.draw(batch);
-//        for(FireBall ball : fireballs)
-//            ball.draw(batch);
-//    }
+    public void draw(Batch batch){
+        super.draw(batch);
+        for(HoneyBall ball : honeyballs)
+            ball.draw(batch);
+    }
 }
