@@ -67,7 +67,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="9" name="inimigo">
+ <objectgroup id="9" name="inimigo_girassol">
   <object id="18" x="1528" y="244.667"/>
  </objectgroup>
  <objectgroup id="12" name="polinizar" offsetx="-1.33333" offsety="-1.33333">

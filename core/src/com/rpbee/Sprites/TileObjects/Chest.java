@@ -26,7 +26,7 @@ public class Chest extends InteractiveTileObject {
         Gdx.app.log("Chest", "Collision");
         if(object.getProperties().containsKey("fechado")){
             //MarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
-            Gdx.app.log("ABRIR BAU", "Pressione F");
+            Gdx.app.log("ABRIR BAU", "Pressione E");
             canOpen = true;
         }else{
             Gdx.app.log("ABRIR BAU", "Bau ja aberto");

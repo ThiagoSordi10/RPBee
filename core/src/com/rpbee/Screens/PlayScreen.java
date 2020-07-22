@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Scenes.Hud;
 import com.rpbee.Sprites.Anthon;
+import com.rpbee.Sprites.Enemies.Enemy;
 import com.rpbee.Tools.B2WorldCreator;
 import com.rpbee.Tools.WorldContactListener;
 
@@ -131,9 +132,9 @@ public class PlayScreen implements Screen {
             if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
             }
-//            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-//                player.fire();
-//            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.U)){
+                player.honey();
+            }
         }
     }
 
@@ -145,12 +146,15 @@ public class PlayScreen implements Screen {
         world.step(1/60f, 6, 2);
 
         player.update(delta);
-//        for(Enemy enemy : creator.getEnemies()){
-//            enemy.update(delta);
-//            if(enemy.getX() < player.getX() + 224 / MarioBros.PPM){
-//                enemy.b2body.setActive(true);
-//            }
-//        }
+        for(Enemy enemy : creator.getEnemies()){
+            enemy.update(delta, player.getX(), player.getY());
+            if(enemy.getX() < player.getX() + 224 / RPBeeGame.PPM){
+                enemy.b2body.setActive(true);
+            }
+            if(enemy.getX() < player.getX() - 224 / RPBeeGame.PPM){
+                enemy.b2body.setActive(false);
+            }
+        }
 //
 //        for(Item item : items){
 //            item.update(delta);
@@ -165,6 +169,23 @@ public class PlayScreen implements Screen {
         //attach gamecam to player x coord
         if(player.currentState != Anthon.State.DEAD && player.currentState != Anthon.State.STANDING){
             gameCam.position.x = player.b2body.getPosition().x;
+        }
+
+
+        //Player cant go up out of screen
+        if(player.b2body.getPosition().y * 1.05f > gamePort.getWorldHeight()){
+            player.setVelocity(player.b2body.getLinearVelocity().x, -0.5f);
+        }
+        //Player cant go right out of screen
+        if(player.b2body.getPosition().x * 1.05f < 0){
+            player.setVelocity(0.5f,player.b2body.getLinearVelocity().y);
+        }
+        //Die when fall into hole
+        if(player.b2body.getPosition().y < 0){
+            player.die();
+        }
+        if(player.getIsInHoney()){
+            player.setVelocity(player.b2body.getLinearVelocity().x/5, player.b2body.getLinearVelocity().y/5);
         }
         //update camera coordinates after changes
         gameCam.update();
@@ -190,9 +211,9 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-//        for(Enemy enemy : creator.getEnemies()){
-//            enemy.draw(game.batch);
-//        }
+        for(Enemy enemy : creator.getEnemies()){
+            enemy.draw(game.batch);
+        }
 //        for(Item item : items){
 //            item.draw(game.batch);
 //        }

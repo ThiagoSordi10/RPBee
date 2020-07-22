@@ -1,9 +1,6 @@
 package com.rpbee.Sprites;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
+import com.rpbee.Sprites.Other.HoneyBall;
 
 public class Anthon extends Sprite {
     public World world;
@@ -37,6 +35,7 @@ public class Anthon extends Sprite {
     private boolean anthonIsDead;
     private boolean anthonIsWatchful;
     private boolean anthonCanWatchful;
+    private boolean isInHoney;
     private PlayScreen screen;
 
 
@@ -45,7 +44,11 @@ public class Anthon extends Sprite {
     private static float flyEnergy;
     private static float watchfulEnergy;
 
-    //private Array<FireBall> fireballs;
+    private float maxHealth = 20;
+    private float maxFlyEnergy = 40;
+    private float maxWatchfulEnergy = 30;
+
+    private Array<HoneyBall> honeyballs;
 
     public Anthon(PlayScreen screen){
         //initialize default values
@@ -55,9 +58,9 @@ public class Anthon extends Sprite {
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
-        health = 20;
-        flyEnergy = 40;
-        watchfulEnergy = 30;
+        health = maxHealth;
+        flyEnergy = maxFlyEnergy;
+        watchfulEnergy = maxWatchfulEnergy;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -110,17 +113,12 @@ public class Anthon extends Sprite {
         setBounds(0,0,256 / RPBeeGame.PPM * 0.2f ,256 / RPBeeGame.PPM * 0.2f);
         setRegion(anthonStand);
 
-        //fireballs = new Array<FireBall>();
+        honeyballs = new Array<HoneyBall>();
     }
 
     public void update(float delta){
         // time is up : too late mario dies T_T
         // the !isDead() method is used to prevent multiple invocation
-        // of "die music" and jumping
-        // there is probably better ways to do that but it works for now.
-//        if (screen.getHud().isTimeUp() && !isDead()) {
-//            die();
-//        }
 
         //update our sprite to correspond with the position of our Box2D body
 
@@ -129,10 +127,15 @@ public class Anthon extends Sprite {
         //update sprite with the correct frame depending on Anthon's current action
         setRegion(getFrame(delta));
 
-        if(getState() == State.STANDING && (flyEnergy+0.2f) <= 40 && stateTimer > 1){
+        //Recharge fly bar
+        if(getState() == State.STANDING && (flyEnergy+0.2f) <= maxFlyEnergy && stateTimer > 1){
             setFlyEnergy(0.2f);
-        }else if((getState() == State.RUNNING || getState() != State.JUMPING) && (flyEnergy+0.01f) <= 40){
+        }else if((getState() == State.RUNNING || getState() != State.JUMPING) && (flyEnergy+0.01f) <= maxFlyEnergy){
             setFlyEnergy(0.01f);
+        }
+
+        if(maxFlyEnergy - flyEnergy < 0.05f){
+            setFlyEnergy(maxFlyEnergy - flyEnergy);
         }
 
         //if anthon is watchful but the energy ends, it ends watchful
@@ -141,7 +144,7 @@ public class Anthon extends Sprite {
         }
 
         //If anthon isnt watchful and the energy is low it recharges
-        if(!anthonIsWatchful && watchfulEnergy+30f <= 30){
+        if(!anthonIsWatchful && watchfulEnergy+30f <= maxWatchfulEnergy){
             setWatchfulEnergy(30f);
         }else if(!anthonIsWatchful && anthonCanWatchful == false){
             timeCount += delta;
@@ -152,12 +155,11 @@ public class Anthon extends Sprite {
             }
         }
 
-
-//        for(FireBall  ball : fireballs) {
-//            ball.update(delta);
-//            if(ball.isDestroyed())
-//                fireballs.removeValue(ball, true);
-//        }
+        for(HoneyBall  ball : honeyballs) {
+            ball.update(delta);
+            if(ball.isDestroyed())
+                honeyballs.removeValue(ball, true);
+        }
     }
 
     public boolean anthonCanWatchful(){
@@ -171,7 +173,7 @@ public class Anthon extends Sprite {
         return flyEnergy;
     }
 
-    public static void setFlyEnergy(float amount){
+    public void setFlyEnergy(float amount){
         flyEnergy += amount;
     }
 
@@ -179,8 +181,16 @@ public class Anthon extends Sprite {
         return watchfulEnergy;
     }
 
-    public static void setWatchfulEnergy(float amount){
+    public void setWatchfulEnergy(float amount){
         watchfulEnergy += amount;
+    }
+
+    public void setIsInHoney(boolean is){
+        isInHoney = is;
+    }
+
+    public boolean getIsInHoney(){
+        return isInHoney;
     }
 
     public TextureRegion getFrame(float delta){
@@ -280,7 +290,8 @@ public class Anthon extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(12 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT | RPBeeGame.CHEST_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT |
+                RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT | RPBeeGame.HONEY_SENSOR_BIT;
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);
@@ -295,7 +306,8 @@ public class Anthon extends Sprite {
     }
 
     public void hit(float damage){
-        health += damage;
+
+        health += anthonIsWatchful ? damage/2 : damage;
         if(health <= 0){
             die();
         }
@@ -317,6 +329,10 @@ public class Anthon extends Sprite {
 
             b2body.applyLinearImpulse(new Vector2(0, 2f), b2body.getWorldCenter(), true);
         }
+    }
+
+    public void setVelocity(float x, float y){
+        b2body.setLinearVelocity(new Vector2(x,y));
     }
 
     public void watchful(){
@@ -357,7 +373,7 @@ public class Anthon extends Sprite {
 
     public void jump(){
         if ( currentState != State.JUMPING ) {
-            b2body.applyLinearImpulse(new Vector2(0, 3f), b2body.getWorldCenter(), true);
+            b2body.applyLinearImpulse(new Vector2(0,3f), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
         }
     }
@@ -367,13 +383,13 @@ public class Anthon extends Sprite {
             currentState = State.FLYING;
     }
 
-//    public void fire(){
-//        fireballs.add(new FireBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
-//    }
+    public void honey(){
+        honeyballs.add(new HoneyBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
+    }
 
-//    public void draw(Batch batch){
-//        super.draw(batch);
-//        for(FireBall ball : fireballs)
-//            ball.draw(batch);
-//    }
+    public void draw(Batch batch){
+        super.draw(batch);
+        for(HoneyBall ball : honeyballs)
+            ball.draw(batch);
+    }
 }

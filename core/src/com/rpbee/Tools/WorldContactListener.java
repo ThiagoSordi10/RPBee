@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Sprites.Anthon;
+import com.rpbee.Sprites.Other.HoneyBall;
+import com.rpbee.Sprites.Other.PoisonBall;
 import com.rpbee.Sprites.TileObjects.Chest;
 
 public class WorldContactListener implements ContactListener {
@@ -13,11 +15,11 @@ public class WorldContactListener implements ContactListener {
         Fixture fixB = contact.getFixtureB();
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+        Anthon anthon;
 
         switch (cDef){
             case RPBeeGame.BEE_BIT | RPBeeGame.GROUND_BIT:
                 float height;
-                Anthon anthon;
                 if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
                     Gdx.app.log("colisao", ""+((Anthon) fixA.getUserData()).b2body.getLinearVelocity().y);
                     height = ((Anthon) fixA.getUserData()).b2body.getLinearVelocity().y;
@@ -38,6 +40,46 @@ public class WorldContactListener implements ContactListener {
                 }else{
                     ((Chest) fixA.getUserData()).onContact((Anthon) fixB.getUserData());
                 }
+                break;
+            case RPBeeGame.BEE_BIT | RPBeeGame.ENEMY_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
+                    ((Anthon) fixA.getUserData()).hit(-10);
+                }else{
+                    ((Anthon) fixB.getUserData()).hit(-10);
+                }
+                break;
+            case RPBeeGame.POISONBALL_BIT | RPBeeGame.GROUND_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.POISONBALL_BIT)
+                    ((PoisonBall)fixA.getUserData()).setToDestroy();
+                else
+                    ((PoisonBall)fixB.getUserData()).setToDestroy();
+                break;
+            case RPBeeGame.POISONBALL_BIT | RPBeeGame.BEE_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT) {
+                    ((Anthon) fixA.getUserData()).hit(-5);
+                    ((PoisonBall) fixB.getUserData()).setToDestroy();
+                }
+                else {
+                    //dano devera ser atributo do inimigo que jogou a poison ball
+                    ((Anthon) fixB.getUserData()).hit(-5);
+                    ((PoisonBall) fixA.getUserData()).setToDestroy();
+                }
+                break;
+            case RPBeeGame.HONEYBALL_BIT | RPBeeGame.GROUND_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEYBALL_BIT)
+                    ((HoneyBall)fixA.getUserData()).setToDestroy();
+                else
+                    ((HoneyBall)fixB.getUserData()).setToDestroy();
+                break;
+            case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_BIT:
+                Gdx.app.log("HONEY", "aNTHON DENTRO");
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEYBALL_BIT){
+                    anthon = ((Anthon)fixB.getUserData());
+                }
+                else{
+                    anthon = ((Anthon)fixA.getUserData());
+                }
+                anthon.setIsInHoney(true);
                 break;
                 
         }
@@ -103,6 +145,7 @@ public class WorldContactListener implements ContactListener {
         Fixture fixB = contact.getFixtureB();
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+        Anthon anthon;
 
         switch (cDef){
             case RPBeeGame.BEE_BIT | RPBeeGame.CHEST_BIT:
@@ -111,6 +154,16 @@ public class WorldContactListener implements ContactListener {
                 }else{
                     ((Chest) fixA.getUserData()).afterContact((Anthon) fixB.getUserData());
                 }
+                break;
+            case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_BIT:
+                Gdx.app.log("HONEY", "aNTHON DENTRO");
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEYBALL_BIT){
+                    anthon = ((Anthon)fixB.getUserData());
+                }
+                else{
+                    anthon = ((Anthon)fixA.getUserData());
+                }
+                anthon.setIsInHoney(false);
                 break;
 
         }
