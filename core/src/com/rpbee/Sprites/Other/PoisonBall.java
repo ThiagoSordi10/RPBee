@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
+import com.rpbee.Sprites.Anthon;
 
 public class PoisonBall extends Sprite {
     PlayScreen screen;
@@ -65,7 +66,9 @@ public class PoisonBall extends Sprite {
         stateTime += delta;
         setRegion(poison);
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+
         if(setToDestroy && !destroyed && stateTime < 1){
+            //Before destroy set animation of explosion
             setRegion(explosion.getKeyFrame(stateTime, false));
             for (Fixture fixture : b2body.getFixtureList()) {
                 fixture.setRestitution(0);

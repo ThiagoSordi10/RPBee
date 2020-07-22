@@ -170,6 +170,12 @@ public class PlayScreen implements Screen {
         if(player.currentState != Anthon.State.DEAD && player.currentState != Anthon.State.STANDING){
             gameCam.position.x = player.b2body.getPosition().x;
         }
+
+
+        //Player cant go up out of screen
+        if(player.b2body.getPosition().y * 1.05f > gamePort.getWorldHeight()){
+            player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, -0.5f));
+        }
         //update camera coordinates after changes
         gameCam.update();
         //renderer draw only what our camera can see
