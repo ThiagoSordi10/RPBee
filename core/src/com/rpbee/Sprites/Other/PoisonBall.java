@@ -29,8 +29,10 @@ public class PoisonBall extends Sprite {
 
         frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), 288, 0, 96, 96));
         frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), 384, 0, 96, 96));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), 672, 0, 96, 96));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), 768, 0, 96, 96));
 
-        explosion = new Animation(0.5f, frames);
+        explosion = new Animation(0.25f, frames);
         frames.clear();
 
         poison = new TextureRegion(screen.getAtlas().findRegion("explosion"), 96, 0, 96, 96);
@@ -63,10 +65,14 @@ public class PoisonBall extends Sprite {
         stateTime += delta;
         setRegion(poison);
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        if(setToDestroy && !destroyed && stateTime < 2){
-            setRegion(explosion.getKeyFrame(stateTime, true));
+        if(setToDestroy && !destroyed && stateTime < 1){
+            setRegion(explosion.getKeyFrame(stateTime, false));
+            for (Fixture fixture : b2body.getFixtureList()) {
+                fixture.setRestitution(0);
+            }
+            b2body.setLinearVelocity(new Vector2(0, 0));
         }
-        else if((stateTime > 3 || setToDestroy) && !destroyed) {
+        else if((stateTime > 1 || setToDestroy) && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
         }

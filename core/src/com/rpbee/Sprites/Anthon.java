@@ -300,7 +300,8 @@ public class Anthon extends Sprite {
     }
 
     public void hit(float damage){
-        health += damage;
+
+        health += anthonIsWatchful ? damage/2 : damage;
         if(health <= 0){
             die();
         }
