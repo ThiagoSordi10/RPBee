@@ -14,6 +14,7 @@ public class HoneyBall extends Sprite {
     World world;
     Array<TextureRegion> frames;
     Animation<TextureRegion> honeyAnimation;
+    Animation<TextureRegion> explosion;
     float stateTime;
     boolean destroyed;
     boolean setToDestroy;
@@ -29,6 +30,13 @@ public class HoneyBall extends Sprite {
             frames.add(new TextureRegion(screen.getAtlas().findRegion("mel"), i * 256, 0, 256, 256));
         }
         honeyAnimation = new Animation(0.1f, frames);
+        frames.clear();
+
+        for (int i = 2; i < 5; i++) {
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), i * 96, 0, 96, 96));
+        }
+
+        explosion = new Animation(0.5f, frames);
         frames.clear();
 
         setRegion(honeyAnimation.getKeyFrame(0));
@@ -53,13 +61,32 @@ public class HoneyBall extends Sprite {
         fdef.friction = 0;
         b2body.createFixture(fdef).setUserData(this);
         b2body.setLinearVelocity(new Vector2(honeyRight ? 2 : -2, 2.5f));
+
+        //Sensor to know when bee is in the honey without contact at all
+        CircleShape shapeSensor = new CircleShape();
+        shapeSensor.setRadius(16 / RPBeeGame.PPM);
+        fdef.filter.categoryBits = RPBeeGame.HONEY_SENSOR_BIT;
+        fdef.filter.maskBits = RPBeeGame.BEE_BIT;
+        fdef.shape = shapeSensor;
+        fdef.isSensor = true;
+
+        b2body.createFixture(fdef).setUserData(this);
     }
 
     public void update(float delta) {
         stateTime += delta;
         setRegion(honeyAnimation.getKeyFrame(stateTime, true));
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        if ((stateTime > 3 || setToDestroy) && !destroyed) {
+        //before destroy make an explosion of honey
+        if(setToDestroy && !destroyed && stateTime < 10){
+            //Before destroy set animation of explosion
+            setRegion(explosion.getKeyFrame(stateTime, false));
+            //reset bounds to lower image
+            setBounds(getX(), getY(), 64 / RPBeeGame.PPM, 64 / RPBeeGame.PPM);
+            b2body.setType(BodyDef.BodyType.StaticBody);
+            //b2body.setLinearVelocity(new Vector2(0, 0));
+        }
+        else if ((stateTime > 10 || setToDestroy) && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
         }
@@ -71,6 +98,7 @@ public class HoneyBall extends Sprite {
 
     public void setToDestroy() {
         setToDestroy = true;
+        stateTime = 0;
     }
 
     public boolean isDestroyed() {

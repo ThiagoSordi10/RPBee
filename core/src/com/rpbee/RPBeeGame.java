@@ -38,7 +38,7 @@ public class RPBeeGame extends Game {
 	public static final short ENEMY_BIT = 64;
 	public static final short HONEYBALL_BIT = 128;
 	//public static final short ITEM_BIT = 256;
-	//public static final short MARIO_HEAD_BIT = 512;
+	public static final short HONEY_SENSOR_BIT = 512;
 	public static final short POISONBALL_BIT = 1024;
 
 	public SpriteBatch batch; //All screen have access

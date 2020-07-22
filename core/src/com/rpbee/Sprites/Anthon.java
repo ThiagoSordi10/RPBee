@@ -35,6 +35,7 @@ public class Anthon extends Sprite {
     private boolean anthonIsDead;
     private boolean anthonIsWatchful;
     private boolean anthonCanWatchful;
+    private boolean isInHoney;
     private PlayScreen screen;
 
 
@@ -172,7 +173,7 @@ public class Anthon extends Sprite {
         return flyEnergy;
     }
 
-    public static void setFlyEnergy(float amount){
+    public void setFlyEnergy(float amount){
         flyEnergy += amount;
     }
 
@@ -180,8 +181,16 @@ public class Anthon extends Sprite {
         return watchfulEnergy;
     }
 
-    public static void setWatchfulEnergy(float amount){
+    public void setWatchfulEnergy(float amount){
         watchfulEnergy += amount;
+    }
+
+    public void setIsInHoney(boolean is){
+        isInHoney = is;
+    }
+
+    public boolean getIsInHoney(){
+        return isInHoney;
     }
 
     public TextureRegion getFrame(float delta){
@@ -281,7 +290,8 @@ public class Anthon extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(12 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT | RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT |
+                RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT | RPBeeGame.HONEY_SENSOR_BIT;
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);
@@ -319,6 +329,10 @@ public class Anthon extends Sprite {
 
             b2body.applyLinearImpulse(new Vector2(0, 2f), b2body.getWorldCenter(), true);
         }
+    }
+
+    public void setVelocity(float x, float y){
+        b2body.setLinearVelocity(new Vector2(x,y));
     }
 
     public void watchful(){
@@ -359,7 +373,7 @@ public class Anthon extends Sprite {
 
     public void jump(){
         if ( currentState != State.JUMPING ) {
-            b2body.applyLinearImpulse(new Vector2(0, 3f), b2body.getWorldCenter(), true);
+            b2body.applyLinearImpulse(new Vector2(0,3f), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
         }
     }

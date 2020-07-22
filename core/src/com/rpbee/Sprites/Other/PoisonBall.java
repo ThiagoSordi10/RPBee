@@ -87,6 +87,7 @@ public class PoisonBall extends Sprite {
 
     public void setToDestroy(){
         setToDestroy = true;
+        stateTime = 0;
     }
 
     public boolean isDestroyed(){
