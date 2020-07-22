@@ -40,13 +40,19 @@ public class Anthon extends Sprite {
 
 
     private float timeCount;
+    //current values
     private static float health;
     private static float flyEnergy;
     private static float watchfulEnergy;
 
+    //values maximum
     private float maxHealth = 20;
     private float maxFlyEnergy = 40;
     private float maxWatchfulEnergy = 30;
+
+    //watchful reduces damage
+    private float watchfulDamageLoss;
+    private float flyEnergyLoss;
 
     private Array<HoneyBall> honeyballs;
 
@@ -58,9 +64,12 @@ public class Anthon extends Sprite {
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
+
         health = maxHealth;
         flyEnergy = maxFlyEnergy;
         watchfulEnergy = maxWatchfulEnergy;
+        watchfulDamageLoss = 2;
+        flyEnergyLoss = -0.05f;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -260,7 +269,7 @@ public class Anthon extends Sprite {
             return State.DEAD;
         }
         if(b2body.getLinearVelocity().y > 0 && currentState == State.FLYING && flyEnergy > 0){
-            setFlyEnergy(-0.05f);
+            setFlyEnergy(flyEnergyLoss);
             return State.FLYING;
         }
         else if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) ){
@@ -307,7 +316,7 @@ public class Anthon extends Sprite {
 
     public void hit(float damage){
 
-        health += anthonIsWatchful ? damage/2 : damage;
+        health += anthonIsWatchful ? damage/watchfulDamageLoss : damage;
         if(health <= 0){
             die();
         }
@@ -347,21 +356,6 @@ public class Anthon extends Sprite {
     public boolean isWatchful() {
         return anthonIsWatchful;
     }
-
-//    public void hit(Enemy enemy){
-//        if(enemy instanceof Turtle && ((Turtle)enemy).getCurrentState() == Turtle.State.STANDING_SHELL){
-//            ((Turtle)enemy).kick(b2body.getPosition().x < enemy.b2body.getPosition().x ? Turtle.KICK_RIGHT_SPEED : Turtle.KICK_LEFT_SPEED);
-//        }else {
-//            if (marioIsBig) {
-//                marioIsBig = false;
-//                timeToRedefineMario = true;
-//                setBounds(getX(), getY(), getWidth(), getHeight() / 2);
-//                MarioBros.manager.get("audio/sounds/powerdown.wav", Sound.class).play();
-//            } else {
-//                die();
-//            }
-//        }
-//    }
 
     public boolean isDead(){
         return anthonIsDead;

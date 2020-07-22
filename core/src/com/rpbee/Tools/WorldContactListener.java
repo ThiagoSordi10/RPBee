@@ -72,7 +72,6 @@ public class WorldContactListener implements ContactListener {
                     ((HoneyBall)fixB.getUserData()).setToDestroy();
                 break;
             case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_BIT:
-                Gdx.app.log("HONEY", "aNTHON DENTRO");
                 if(fixA.getFilterData().categoryBits == RPBeeGame.HONEYBALL_BIT){
                     anthon = ((Anthon)fixB.getUserData());
                 }
@@ -156,7 +155,6 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
             case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_BIT:
-                Gdx.app.log("HONEY", "aNTHON DENTRO");
                 if(fixA.getFilterData().categoryBits == RPBeeGame.HONEYBALL_BIT){
                     anthon = ((Anthon)fixB.getUserData());
                 }
