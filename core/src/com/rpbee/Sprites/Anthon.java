@@ -131,13 +131,13 @@ public class Anthon extends Sprite {
 
         //Recharge fly bar
         if(getState() == State.STANDING && (flyEnergy+0.2f) <= maxFlyEnergy && stateTimer > 1){
-            chargeFlyEnergy(0.2f);
+            setFlyEnergy(0.2f);
         }else if((getState() == State.RUNNING || getState() != State.JUMPING) && (flyEnergy+0.01f) <= maxFlyEnergy){
-            chargeFlyEnergy(0.01f);
+            setFlyEnergy(0.01f);
         }
 
         if(maxFlyEnergy - flyEnergy < 0.05f){
-            chargeFlyEnergy(maxFlyEnergy - flyEnergy);
+            setFlyEnergy(maxFlyEnergy - flyEnergy);
         }
 
         //if anthon is watchful but the energy ends, it ends watchful
@@ -147,7 +147,7 @@ public class Anthon extends Sprite {
 
         //If anthon isnt watchful and the energy is low it recharges
         if(!anthonIsWatchful && watchfulEnergy+30f <= maxWatchfulEnergy){
-            chargeWatchfulEnergy(30f);
+            setWatchfulEnergy(30f);
         }else if(!anthonIsWatchful && anthonCanWatchful == false){
             timeCount += delta;
             //After recharges it takes 5 sec yet to enable use watchful again
@@ -176,7 +176,7 @@ public class Anthon extends Sprite {
         return flyEnergy;
     }
 
-    public static void chargeFlyEnergy(float amount){
+    public static void setFlyEnergy(float amount){
         flyEnergy += amount;
     }
 
@@ -184,7 +184,7 @@ public class Anthon extends Sprite {
         return watchfulEnergy;
     }
 
-    public static void chargeWatchfulEnergy(float amount){
+    public static void setWatchfulEnergy(float amount){
         watchfulEnergy += amount;
     }
 
@@ -204,7 +204,7 @@ public class Anthon extends Sprite {
             case RUNNING:
                 if(anthonIsWatchful){
                     region = anthonWatchfulRun.getKeyFrame(stateTimer, true);
-                    chargeWatchfulEnergy(-0.1f);
+                    setWatchfulEnergy(-0.1f);
                 }else{
                     region = anthonRun.getKeyFrame(stateTimer, true);
                 }
@@ -212,7 +212,7 @@ public class Anthon extends Sprite {
             case FLYING:
                 if(anthonIsWatchful){
                     region = anthonWatchfulFly.getKeyFrame(stateTimer, true);
-                    chargeWatchfulEnergy(-0.2f);
+                    setWatchfulEnergy(-0.2f);
                 }else{
                     region = anthonFly.getKeyFrame(stateTimer, true);
                 }
@@ -222,7 +222,7 @@ public class Anthon extends Sprite {
             default:
                 if(anthonIsWatchful){
                     region = anthonWatchfulStand.getKeyFrame(stateTimer, true);
-                    chargeWatchfulEnergy(-0.05f);
+                    setWatchfulEnergy(-0.05f);
                 }else{
                     region = anthonStand;
                 }
@@ -255,7 +255,7 @@ public class Anthon extends Sprite {
             return State.DEAD;
         }
         if(b2body.getLinearVelocity().y > 0 && currentState == State.FLYING && flyEnergy > 0){
-            chargeFlyEnergy(-0.05f);
+            setFlyEnergy(-0.05f);
             return State.FLYING;
         }
         else if(b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) ){
@@ -285,7 +285,7 @@ public class Anthon extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(12 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT | RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT | RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT;
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);

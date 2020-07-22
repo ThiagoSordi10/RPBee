@@ -53,6 +53,17 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((PoisonBall)fixB.getUserData()).setToDestroy();
                 break;
+            case RPBeeGame.POISONBALL_BIT | RPBeeGame.BEE_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT) {
+                    ((Anthon) fixA.getUserData()).hit(-5);
+                    ((PoisonBall) fixB.getUserData()).setToDestroy();
+                }
+                else {
+                    //dano devera ser atributo do inimigo que jogou a poison ball
+                    ((Anthon) fixB.getUserData()).hit(-5);
+                    ((PoisonBall) fixA.getUserData()).setToDestroy();
+                }
+                break;
                 
         }
 //            case MarioBros.MARIO_HEAD_BIT | MarioBros.BRICK_BIT:

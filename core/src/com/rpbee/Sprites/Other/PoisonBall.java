@@ -1,5 +1,6 @@
 package com.rpbee.Sprites.Other;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -12,6 +13,7 @@ public class PoisonBall extends Sprite {
     PlayScreen screen;
     World world;
     Array<TextureRegion> frames;
+    Animation<TextureRegion> explosion;
     TextureRegion poison;
     float stateTime;
     boolean destroyed;
@@ -25,10 +27,13 @@ public class PoisonBall extends Sprite {
         this.world = screen.getWorld();
         frames = new Array<TextureRegion>();
 
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), 16, 0, 16, 16));
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), 16, 0, 16, 16));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), 288, 0, 96, 96));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), 384, 0, 96, 96));
 
-        poison = new TextureRegion(screen.getAtlas().findRegion("explosion"), 16, 0, 16, 16);
+        explosion = new Animation(0.5f, frames);
+        frames.clear();
+
+        poison = new TextureRegion(screen.getAtlas().findRegion("explosion"), 96, 0, 96, 96);
         setRegion(poison);
         setBounds(x, y, 16 / RPBeeGame.PPM, 16 / RPBeeGame.PPM);
         definePoisonBall(playerX, playerY, enemyX, enemyY);
@@ -58,7 +63,10 @@ public class PoisonBall extends Sprite {
         stateTime += delta;
         setRegion(poison);
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        if((stateTime > 3 || setToDestroy) && !destroyed) {
+        if(setToDestroy && !destroyed && stateTime < 2){
+            setRegion(explosion.getKeyFrame(stateTime, true));
+        }
+        else if((stateTime > 3 || setToDestroy) && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
         }
