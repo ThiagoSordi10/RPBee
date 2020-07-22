@@ -31,7 +31,7 @@ public class Anthon extends Sprite {
     private float stateTimer;
     private boolean runningRight;
     private boolean anthonIsDead;
-    private static boolean anthonIsWatchful;
+    private boolean anthonIsWatchful;
     private boolean anthonCanWatchful;
     private PlayScreen screen;
 
@@ -334,7 +334,7 @@ public class Anthon extends Sprite {
         }
     }
 
-    public static boolean isWatchful() {
+    public boolean isWatchful() {
         return anthonIsWatchful;
     }
 

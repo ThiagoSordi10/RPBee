@@ -176,6 +176,14 @@ public class PlayScreen implements Screen {
         if(player.b2body.getPosition().y * 1.05f > gamePort.getWorldHeight()){
             player.b2body.setLinearVelocity(new Vector2(player.b2body.getLinearVelocity().x, -0.5f));
         }
+        //Player cant go right out of screen
+        if(player.b2body.getPosition().x * 1.05f < 0){
+            player.b2body.setLinearVelocity(new Vector2(0.5f, player.b2body.getLinearVelocity().y));
+        }
+        //Die when fall into hole
+        if(player.b2body.getPosition().y < 0){
+            player.die();
+        }
         //update camera coordinates after changes
         gameCam.update();
         //renderer draw only what our camera can see
