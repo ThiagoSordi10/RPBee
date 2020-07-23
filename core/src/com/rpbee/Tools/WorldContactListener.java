@@ -115,7 +115,6 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
             case RPBeeGame.ENEMY_BIT | RPBeeGame.BEE_STING_BIT:
-                Gdx.app.log("COlisao", "Inimigo e ferrao");
                 if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_STING_BIT){
                     ((BeeSting)fixA.getUserData()).setToDestroy();
                     ((Enemy)fixB.getUserData()).hit(((BeeSting)fixA.getUserData()).getAnthon());

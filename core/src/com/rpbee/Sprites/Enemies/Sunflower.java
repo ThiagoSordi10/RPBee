@@ -1,5 +1,6 @@
 package com.rpbee.Sprites.Enemies;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -37,30 +38,30 @@ public class Sunflower extends Enemy {
 
     public void update(float delta, float playerX, float playerY){
         stateTimer += delta;
-        if(setToDestroy && !destroyed && stateTimer > 3){
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2.3f);
+        if(setToDestroy && !destroyed){
+            b2body.setType(BodyDef.BodyType.DynamicBody);
+        }
+        if(setToDestroy && !destroyed && stateTimer > 2){
             world.destroyBody(b2body);
             destroyed = true;
             //setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));
             stateTimer = 0;
         }else if(!destroyed) {
-            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2.3f);
             setRegion(stand);
-
             //Throw poison in player direction
-            if(b2body.isActive() && getX() < playerX + 224 / RPBeeGame.PPM && stateTimer > 1 && getX() > playerX){
+            if(getX() < playerX + 224 / RPBeeGame.PPM && stateTimer > 1 && getX() > playerX){
                 poison(false, playerX, playerY);
                 stateTimer = 0;
-            }else if(b2body.isActive() && getX() + 224 / RPBeeGame.PPM > playerX   && stateTimer > 1 && playerX > getX()){
+            }else if(getX() + 224 / RPBeeGame.PPM > playerX   && stateTimer > 1 && playerX > getX()) {
                 poison(true, playerX, playerY);
                 stateTimer = 0;
             }
-
-            for(PoisonBall  ball : poisonballs) {
-                ball.update(delta);
-                if(ball.isDestroyed())
-                    poisonballs.removeValue(ball, true);
-            }
-
+        }
+        for(PoisonBall  ball : poisonballs) {
+            ball.update(delta);
+            if(ball.isDestroyed())
+                poisonballs.removeValue(ball, true);
         }
 
     }
@@ -100,6 +101,7 @@ public class Sunflower extends Enemy {
 
 //            MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
 //            MarioBros.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
+        if(!setToDestroy){
             setToDestroy = true;
             Filter filter = new Filter();
             filter.maskBits = RPBeeGame.NOTHING_BIT;
@@ -107,9 +109,8 @@ public class Sunflower extends Enemy {
             for (Fixture fixture : b2body.getFixtureList()) {
                 fixture.setFilterData(filter);
             }
-
-            b2body.setType(BodyDef.BodyType.DynamicBody);
-
+            stateTimer = 0;
+        }
     }
 
     public void onEnemyHit(Enemy enemy){
@@ -122,7 +123,6 @@ public class Sunflower extends Enemy {
 
     @Override
     public void hit(Anthon anthon) {
-        setToDestroy = true;
         health -= anthon.getBeeStingDamage();
         if(health <= 0){
             die();

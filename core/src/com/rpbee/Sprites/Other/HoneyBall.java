@@ -82,6 +82,9 @@ public class HoneyBall extends Sprite {
         if(setToDestroy && !destroyed && stateTime < 10){
             //Before destroy set animation of explosion
             setRegion(explosion.getKeyFrame(stateTime, false));
+            //reset bounds to lower image
+            setBounds(getX(), getY(), 64 / RPBeeGame.PPM, 64 / RPBeeGame.PPM);
+            b2body.setType(BodyDef.BodyType.StaticBody);
         }
         else if ((stateTime > 10 || setToDestroy) && !destroyed) {
             world.destroyBody(b2body);
@@ -96,9 +99,6 @@ public class HoneyBall extends Sprite {
     public void setToDestroy() {
         setToDestroy = true;
         stateTime = 0;
-        //reset bounds to lower image
-        setBounds(getX(), getY(), 64 / RPBeeGame.PPM, 64 / RPBeeGame.PPM);
-        b2body.setType(BodyDef.BodyType.StaticBody);
     }
 
     public boolean isDestroyed() {
