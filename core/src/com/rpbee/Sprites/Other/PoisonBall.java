@@ -15,6 +15,9 @@ import com.rpbee.Sprites.Enemies.Enemy;
 public class PoisonBall extends Sprite {
     PlayScreen screen;
     World world;
+    public enum State { FLYING, EXPLODING };
+    public State currentState;
+    public State previousState;
     Array<TextureRegion> frames;
     Animation<TextureRegion> explosion;
     TextureRegion poison;
@@ -49,6 +52,7 @@ public class PoisonBall extends Sprite {
         poison = new TextureRegion(screen.getAtlas().findRegion("explosion"), 96, 0, 96, 96);
         setRegion(poison);
         setBounds(enemy.b2body.getPosition().x, enemy.b2body.getPosition().y, 16 / RPBeeGame.PPM, 16 / RPBeeGame.PPM);
+        currentState = previousState = State.FLYING;
         definePoisonBall();
     }
 
@@ -73,21 +77,19 @@ public class PoisonBall extends Sprite {
     }
 
     public void update(float delta){
-        stateTime += delta;
-        setRegion(poison);
+        setRegion(getFrame(delta));
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
 
-        if(setToDestroy && !destroyed && stateTime < 1){
+        if(stateTime > 1 && currentState == State.EXPLODING) {
+            world.destroyBody(b2body);
+            destroyed = true;
+        }
+        else if(currentState == State.EXPLODING){
             //Before destroy set animation of explosion
-            setRegion(explosion.getKeyFrame(stateTime, false));
             for (Fixture fixture : b2body.getFixtureList()) {
                 fixture.setRestitution(0);
             }
             b2body.setLinearVelocity(new Vector2(0, 0));
-        }
-        else if((stateTime > 1 || setToDestroy) && !destroyed) {
-            world.destroyBody(b2body);
-            destroyed = true;
         }
         if(isInHoney){
             b2body.setLinearVelocity(new Vector2(b2body.getLinearVelocity().x/5, b2body.getLinearVelocity().y/5));
@@ -118,5 +120,33 @@ public class PoisonBall extends Sprite {
 
     public boolean isDestroyed(){
         return destroyed;
+    }
+
+    public TextureRegion getFrame(float delta){
+        currentState = getState();
+
+        TextureRegion region;
+        switch (currentState){
+
+            case EXPLODING:
+                region = explosion.getKeyFrame(stateTime, false);
+                break;
+            case FLYING:
+            default:
+                region = poison;
+                break;
+        }
+        stateTime = currentState == previousState ? stateTime + delta : 0;
+        previousState = currentState;
+        return region;
+    }
+
+    public State getState() {
+        if(setToDestroy){
+            return State.EXPLODING;
+        }
+        else{
+            return State.FLYING;
+        }
     }
 }

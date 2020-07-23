@@ -1,5 +1,6 @@
 package com.rpbee.Sprites.Other;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,13 +9,18 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
+import com.rpbee.Sprites.Anthon;
 
 public class HoneyBall extends Sprite {
     PlayScreen screen;
     World world;
+    public enum State { FLYING, EXPLODING, DISSOLVING };
+    public State currentState;
+    public State previousState;
     Array<TextureRegion> frames;
     Animation<TextureRegion> honeyAnimation;
     Animation<TextureRegion> explosion;
+    Animation<TextureRegion> dissolve;
     float stateTime;
     boolean destroyed;
     boolean setToDestroy;
@@ -39,8 +45,15 @@ public class HoneyBall extends Sprite {
         explosion = new Animation(0.5f, frames);
         frames.clear();
 
+        for (int i = 5; i < 10; i++) {
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("explosion"), i * 96, 0, 96, 96));
+        }
+        dissolve = new Animation(0.5f, frames);
+        frames.clear();
+
         setRegion(honeyAnimation.getKeyFrame(0));
         setBounds(x, y, 96 / RPBeeGame.PPM, 96 / RPBeeGame.PPM);
+        currentState = previousState = State.FLYING;
         defineHoneyBall();
     }
 
@@ -74,19 +87,16 @@ public class HoneyBall extends Sprite {
     }
 
     public void update(float delta) {
-        stateTime += delta;
-        setRegion(honeyAnimation.getKeyFrame(stateTime, true));
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        setRegion(getFrame(delta));
 
         //before destroy make an explosion of honey
-        if(setToDestroy && !destroyed && stateTime < 10){
-            //Before destroy set animation of explosion
-            setRegion(explosion.getKeyFrame(stateTime, false));
+        if(currentState == State.EXPLODING){
             //reset bounds to lower image
             setBounds(getX(), getY(), 64 / RPBeeGame.PPM, 64 / RPBeeGame.PPM);
             b2body.setType(BodyDef.BodyType.StaticBody);
         }
-        else if ((stateTime > 10 || setToDestroy) && !destroyed) {
+        else if (stateTime > 2.5f && currentState == State.DISSOLVING) {
             world.destroyBody(b2body);
             destroyed = true;
         }
@@ -99,6 +109,39 @@ public class HoneyBall extends Sprite {
     public void setToDestroy() {
         setToDestroy = true;
         stateTime = 0;
+    }
+
+    public TextureRegion getFrame(float delta){
+        currentState = getState();
+
+        TextureRegion region;
+        switch (currentState){
+            case DISSOLVING:
+                region = dissolve.getKeyFrame(stateTime, false);
+                break;
+            case EXPLODING:
+                region = explosion.getKeyFrame(stateTime, false);
+                break;
+            case FLYING:
+            default:
+                region = honeyAnimation.getKeyFrame(stateTime, true);
+                break;
+        }
+        stateTime = currentState == previousState ? stateTime + delta : 0;
+        previousState = currentState;
+        return region;
+    }
+
+    public State getState() {
+        if(setToDestroy && stateTime < 10 && currentState != State.DISSOLVING){
+            return State.EXPLODING;
+        }
+        else if(setToDestroy && (stateTime >= 10 || currentState == State.DISSOLVING)){
+            return State.DISSOLVING;
+        }
+        else{
+            return State.FLYING;
+        }
     }
 
     public boolean isDestroyed() {
