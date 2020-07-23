@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Sprites.Anthon;
+import com.rpbee.Sprites.Enemies.Enemy;
 import com.rpbee.Sprites.Other.HoneyBall;
 import com.rpbee.Sprites.Other.PoisonBall;
 import com.rpbee.Sprites.TileObjects.Chest;
@@ -72,13 +73,29 @@ public class WorldContactListener implements ContactListener {
                     ((HoneyBall)fixB.getUserData()).setToDestroy();
                 break;
             case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_BIT:
-                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEYBALL_BIT){
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEY_SENSOR_BIT){
                     anthon = ((Anthon)fixB.getUserData());
                 }
                 else{
                     anthon = ((Anthon)fixA.getUserData());
                 }
                 anthon.setIsInHoney(true);
+                break;
+            case RPBeeGame.HONEYBALL_BIT | RPBeeGame.ENEMY_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEY_SENSOR_BIT){
+                    ((HoneyBall)fixA.getUserData()).setToDestroy();
+                }
+                else{
+                    ((HoneyBall)fixB.getUserData()).setToDestroy();
+                }
+                break;
+            case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.POISONBALL_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEY_SENSOR_BIT){
+                    ((PoisonBall)fixB.getUserData()).setIsInHoney(true);
+                }
+                else{
+                    ((PoisonBall)fixA.getUserData()).setIsInHoney(true);
+                }
                 break;
                 
         }
@@ -163,7 +180,14 @@ public class WorldContactListener implements ContactListener {
                 }
                 anthon.setIsInHoney(false);
                 break;
-
+            case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.POISONBALL_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEY_SENSOR_BIT){
+                    ((PoisonBall)fixB.getUserData()).setIsInHoney(false);
+                }
+                else{
+                    ((PoisonBall)fixA.getUserData()).setIsInHoney(false);
+                }
+                break;
         }
     }
 

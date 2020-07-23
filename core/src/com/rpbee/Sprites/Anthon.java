@@ -305,7 +305,7 @@ public class Anthon extends Sprite {
 
         b2body.createFixture(fdef).setUserData(this);
 
-//        EdgeShape head = new EdgeShape();
+//        EdgeShape head = new EdgeShape();G
 //        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
 //        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
 //        fdef.shape = head;

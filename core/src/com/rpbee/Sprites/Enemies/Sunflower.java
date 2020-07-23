@@ -78,7 +78,7 @@ public class Sunflower extends Enemy {
         shape.setAsBox(10 / RPBeeGame.PPM, 32 / RPBeeGame.PPM);
         //shape.setRadius(6 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.ENEMY_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.BEE_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.BEE_BIT | RPBeeGame.HONEYBALL_BIT;
         fdef.shape = shape;
         fdef.restitution = 1.5f;
 
@@ -108,7 +108,7 @@ public class Sunflower extends Enemy {
     }
 
     public void poison(boolean directionRight, float playerX, float playerY){
-        poisonballs.add(new PoisonBall(screen, b2body.getPosition().x, b2body.getPosition().y, directionRight, playerX, playerY, getX(), getY()));
+        poisonballs.add(new PoisonBall(screen, this, directionRight, playerX, playerY));
     }
 
     public void onEnemyHit(Enemy enemy){

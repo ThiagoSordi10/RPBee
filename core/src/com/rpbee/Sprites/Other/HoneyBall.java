@@ -64,9 +64,9 @@ public class HoneyBall extends Sprite {
 
         //Sensor to know when bee is in the honey without contact at all
         CircleShape shapeSensor = new CircleShape();
-        shapeSensor.setRadius(16 / RPBeeGame.PPM);
+        shapeSensor.setRadius(24 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.HONEY_SENSOR_BIT;
-        fdef.filter.maskBits = RPBeeGame.BEE_BIT;
+        fdef.filter.maskBits = RPBeeGame.BEE_BIT | RPBeeGame.POISONBALL_BIT;
         fdef.shape = shapeSensor;
         fdef.isSensor = true;
 
@@ -77,6 +77,7 @@ public class HoneyBall extends Sprite {
         stateTime += delta;
         setRegion(honeyAnimation.getKeyFrame(stateTime, true));
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+
         //before destroy make an explosion of honey
         if(setToDestroy && !destroyed && stateTime < 10){
             //Before destroy set animation of explosion
@@ -84,7 +85,6 @@ public class HoneyBall extends Sprite {
             //reset bounds to lower image
             setBounds(getX(), getY(), 64 / RPBeeGame.PPM, 64 / RPBeeGame.PPM);
             b2body.setType(BodyDef.BodyType.StaticBody);
-            //b2body.setLinearVelocity(new Vector2(0, 0));
         }
         else if ((stateTime > 10 || setToDestroy) && !destroyed) {
             world.destroyBody(b2body);
