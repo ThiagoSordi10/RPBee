@@ -130,8 +130,6 @@ public class Anthon extends Sprite {
     }
 
     public void update(float delta){
-        // time is up : too late mario dies T_T
-        // the !isDead() method is used to prevent multiple invocation
 
         //update our sprite to correspond with the position of our Box2D body
 
