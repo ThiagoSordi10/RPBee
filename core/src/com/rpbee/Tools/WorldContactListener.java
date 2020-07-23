@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Sprites.Anthon;
 import com.rpbee.Sprites.Enemies.Enemy;
+import com.rpbee.Sprites.Other.BeeSting;
 import com.rpbee.Sprites.Other.HoneyBall;
 import com.rpbee.Sprites.Other.PoisonBall;
 import com.rpbee.Sprites.TileObjects.Chest;
@@ -97,6 +98,33 @@ public class WorldContactListener implements ContactListener {
                     ((PoisonBall)fixA.getUserData()).setIsInHoney(true);
                 }
                 break;
+            case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_STING_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEY_SENSOR_BIT){
+                    ((BeeSting)fixB.getUserData()).setIsInHoney(true);
+                }
+                else{
+                    ((BeeSting)fixA.getUserData()).setIsInHoney(true);
+                }
+                break;
+            case RPBeeGame.GROUND_BIT | RPBeeGame.BEE_STING_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_STING_BIT){
+                    ((BeeSting)fixA.getUserData()).setToDestroy();
+                }
+                else{
+                    ((BeeSting)fixB.getUserData()).setToDestroy();
+                }
+                break;
+            case RPBeeGame.ENEMY_BIT | RPBeeGame.BEE_STING_BIT:
+                Gdx.app.log("COlisao", "Inimigo e ferrao");
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_STING_BIT){
+                    ((BeeSting)fixA.getUserData()).setToDestroy();
+                    ((Enemy)fixB.getUserData()).hit(((BeeSting)fixA.getUserData()).getAnthon());
+                }
+                else{
+                    ((BeeSting)fixB.getUserData()).setToDestroy();
+                    ((Enemy)fixA.getUserData()).hit(((BeeSting)fixB.getUserData()).getAnthon());
+                }
+                break;
                 
         }
 //            case MarioBros.MARIO_HEAD_BIT | MarioBros.BRICK_BIT:
@@ -186,6 +214,14 @@ public class WorldContactListener implements ContactListener {
                 }
                 else{
                     ((PoisonBall)fixA.getUserData()).setIsInHoney(false);
+                }
+                break;
+            case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_STING_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEY_SENSOR_BIT){
+                    ((BeeSting)fixB.getUserData()).setIsInHoney(false);
+                }
+                else{
+                    ((BeeSting)fixA.getUserData()).setIsInHoney(false);
                 }
                 break;
         }

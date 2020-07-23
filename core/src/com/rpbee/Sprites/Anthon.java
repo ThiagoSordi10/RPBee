@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
+import com.rpbee.Sprites.Other.BeeSting;
 import com.rpbee.Sprites.Other.HoneyBall;
 
 public class Anthon extends Sprite {
@@ -49,12 +50,14 @@ public class Anthon extends Sprite {
     private float maxHealth = 20;
     private float maxFlyEnergy = 40;
     private float maxWatchfulEnergy = 30;
+    private float beeStingDamage = 15;
 
     //watchful reduces damage
     private float watchfulDamageLoss;
     private float flyEnergyLoss;
 
     private Array<HoneyBall> honeyballs;
+    private Array<BeeSting> beeStings;
 
     public Anthon(PlayScreen screen){
         //initialize default values
@@ -123,6 +126,7 @@ public class Anthon extends Sprite {
         setRegion(anthonStand);
 
         honeyballs = new Array<HoneyBall>();
+        beeStings = new Array<BeeSting>();
     }
 
     public void update(float delta){
@@ -169,6 +173,12 @@ public class Anthon extends Sprite {
             if(ball.isDestroyed())
                 honeyballs.removeValue(ball, true);
         }
+
+        for(BeeSting sting : beeStings){
+            sting.update(delta);
+            if(sting.isDestroyed())
+                beeStings.removeValue(sting, true);
+        }
     }
 
     public boolean anthonCanWatchful(){
@@ -200,6 +210,10 @@ public class Anthon extends Sprite {
 
     public boolean getIsInHoney(){
         return isInHoney;
+    }
+
+    public float getBeeStingDamage(){
+        return beeStingDamage;
     }
 
     public TextureRegion getFrame(float delta){
@@ -381,9 +395,16 @@ public class Anthon extends Sprite {
         honeyballs.add(new HoneyBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
     }
 
+    public void sting(){
+        beeStings.add(new BeeSting(screen, this, runningRight ? true : false));
+    }
+
     public void draw(Batch batch){
         super.draw(batch);
         for(HoneyBall ball : honeyballs)
             ball.draw(batch);
+        for(BeeSting sting : beeStings){
+            sting.draw(batch);
+        }
     }
 }

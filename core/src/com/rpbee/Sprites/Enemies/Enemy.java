@@ -18,12 +18,13 @@ public abstract class Enemy extends Sprite {
         this.screen = screen;
         setPosition(x, y);
         defineEnemy();
-        b2body.setActive(false);
+        //b2body.setActive(false);
     }
 
     protected abstract void defineEnemy();
+    public abstract void die();
     public abstract void update(float delta, float playerX, float playerY);
-    public abstract void hitOnHead(Anthon anthon);
+    public abstract void hit(Anthon anthon);
     public abstract void onEnemyHit(Enemy enemy);
 
 }

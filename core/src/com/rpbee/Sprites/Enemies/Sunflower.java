@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
@@ -22,6 +19,7 @@ public class Sunflower extends Enemy {
     private boolean destroyed;
     float angle;
     private Array<PoisonBall> poisonballs;
+    private float health;
 
     public Sunflower(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -33,12 +31,13 @@ public class Sunflower extends Enemy {
         destroyed = false;
         angle = 0;
         poisonballs = new Array<PoisonBall>();
+        health = 20;
 
     }
 
     public void update(float delta, float playerX, float playerY){
         stateTimer += delta;
-        if(setToDestroy && !destroyed){
+        if(setToDestroy && !destroyed && stateTimer > 3){
             world.destroyBody(b2body);
             destroyed = true;
             //setRegion(new TextureRegion(screen.getAtlas().findRegion("goomba"), 32, 0, 16, 16));
@@ -78,25 +77,11 @@ public class Sunflower extends Enemy {
         shape.setAsBox(10 / RPBeeGame.PPM, 32 / RPBeeGame.PPM);
         //shape.setRadius(6 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.ENEMY_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.BEE_BIT | RPBeeGame.HONEYBALL_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.BEE_BIT | RPBeeGame.HONEYBALL_BIT | RPBeeGame.BEE_STING_BIT;
         fdef.shape = shape;
         fdef.restitution = 1.5f;
 
         b2body.createFixture(fdef).setUserData(this);
-
-        //Create the head
-//        PolygonShape head = new PolygonShape();
-//        Vector2[] vertice = new Vector2[4];
-//        vertice[0] = new Vector2(-3, 8).scl(1 / MarioBros.PPM);
-//        vertice[1] = new Vector2(3, 8).scl(1 / MarioBros.PPM);
-//        vertice[2] = new Vector2(-1, 3).scl(1 / MarioBros.PPM);
-//        vertice[3] = new Vector2(1, 3).scl(1 / MarioBros.PPM);
-//        head.set(vertice);
-
-//        fdef.shape = head;
-//        fdef.restitution = 0.5f;
-//        fdef.filter.categoryBits = MarioBros.ENEMY_HEAD_BIT;
-//        b2body.createFixture(fdef).setUserData(this);
     }
 
     public void draw(Batch batch){
@@ -111,6 +96,22 @@ public class Sunflower extends Enemy {
         poisonballs.add(new PoisonBall(screen, this, directionRight, playerX, playerY));
     }
 
+    public void die() {
+
+//            MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
+//            MarioBros.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
+            setToDestroy = true;
+            Filter filter = new Filter();
+            filter.maskBits = RPBeeGame.NOTHING_BIT;
+
+            for (Fixture fixture : b2body.getFixtureList()) {
+                fixture.setFilterData(filter);
+            }
+
+            b2body.setType(BodyDef.BodyType.DynamicBody);
+
+    }
+
     public void onEnemyHit(Enemy enemy){
 //        if(enemy instanceof  Turtle && ((Turtle) enemy).currentState == Turtle.State.MOVING_SHELL){
 //            setToDestroy = true;
@@ -120,8 +121,12 @@ public class Sunflower extends Enemy {
     }
 
     @Override
-    public void hitOnHead(Anthon anthon) {
+    public void hit(Anthon anthon) {
         setToDestroy = true;
+        health -= anthon.getBeeStingDamage();
+        if(health <= 0){
+            die();
+        }
 //        MarioBros.manager.get("audio/sounds/stomp.wav", Sound.class).play();
     }
 }
