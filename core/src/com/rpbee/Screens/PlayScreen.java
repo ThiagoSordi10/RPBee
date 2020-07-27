@@ -152,6 +152,9 @@ public class PlayScreen implements Screen {
             if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
                 player.sting();
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
+                player.openChest();
+            }
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
                 GameManager ourInstance = new GameManager();
                 GameData gameData = new GameData();
