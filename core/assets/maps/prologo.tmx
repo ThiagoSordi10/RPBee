@@ -55,14 +55,13 @@
  <objectgroup id="14" name="bau">
   <object id="35" x="2548" y="52.6667" width="26.6667" height="24">
    <properties>
-    <property name="fechado" value=""/>
     <property name="itens" value=""/>
    </properties>
   </object>
   <object id="36" x="222.667" y="243.333" width="26.6667" height="24">
    <properties>
-    <property name="fechado" value=""/>
-    <property name="itens" value=""/>
+    <property name="exp" type="int" value="30"/>
+    <property name="mel" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>
