@@ -62,6 +62,9 @@ public class Anthon extends Sprite {
     //watchful reduces damage
     private float watchfulDamageLoss = 2;
     private float flyEnergyLoss = -0.05f;
+    private float rechargeFlyAmount = 0.2f;
+    private float watchfullEnergyLoss = -0.2f;
+    private float rechargeWatchfulAmount = 0.2f;
 
     private Array<HoneyBall> honeyballs;
     private Array<BeeSting> beeStings;
@@ -147,13 +150,13 @@ public class Anthon extends Sprite {
         setRegion(getFrame(delta));
 
         //Recharge fly bar
-        if(getState() == State.STANDING && (flyEnergy+0.2f) <= maxFlyEnergy && stateTimer > 1){
-            setFlyEnergy(0.2f);
-        }else if((getState() == State.RUNNING || getState() != State.JUMPING) && (flyEnergy+0.01f) <= maxFlyEnergy){
-            setFlyEnergy(0.01f);
+        if(getState() == State.STANDING && (flyEnergy+rechargeFlyAmount) <= maxFlyEnergy && stateTimer > 1){
+            setFlyEnergy(rechargeFlyAmount);
+        }else if((getState() == State.RUNNING || getState() != State.JUMPING) && (flyEnergy+(rechargeFlyAmount/4)) <= maxFlyEnergy){
+            setFlyEnergy(rechargeFlyAmount/4);
         }
 
-        if(maxFlyEnergy - flyEnergy < 0.05f){
+        if(maxFlyEnergy - flyEnergy < -flyEnergyLoss){
             setFlyEnergy(maxFlyEnergy - flyEnergy);
         }
 
@@ -163,8 +166,8 @@ public class Anthon extends Sprite {
         }
 
         //If anthon isnt watchful and the energy is low it recharges
-        if(!anthonIsWatchful && watchfulEnergy+30f <= maxWatchfulEnergy){
-            setWatchfulEnergy(30f);
+        if(!anthonIsWatchful && watchfulEnergy+rechargeWatchfulAmount <= maxWatchfulEnergy){
+            setWatchfulEnergy(rechargeWatchfulAmount);
         }else if(!anthonIsWatchful && anthonCanWatchful == false){
             timeCount += delta;
             //After recharges it takes 5 sec yet to enable use watchful again
@@ -274,15 +277,13 @@ public class Anthon extends Sprite {
                 region = anthonAttack;
                 break;
             case DEAD:
-                region = anthonJump;
-                break;
             case JUMPING:
                 region = anthonJump;
                 break;
             case RUNNING:
                 if(anthonIsWatchful){
                     region = anthonWatchfulRun.getKeyFrame(stateTimer, true);
-                    setWatchfulEnergy(-0.1f);
+                    setWatchfulEnergy(watchfullEnergyLoss/2);
                 }else{
                     region = anthonRun.getKeyFrame(stateTimer, true);
                 }
@@ -290,7 +291,7 @@ public class Anthon extends Sprite {
             case FLYING:
                 if(anthonIsWatchful){
                     region = anthonWatchfulFly.getKeyFrame(stateTimer, true);
-                    setWatchfulEnergy(-0.2f);
+                    setWatchfulEnergy(watchfullEnergyLoss);
                 }else{
                     region = anthonFly.getKeyFrame(stateTimer, true);
                 }
@@ -300,7 +301,7 @@ public class Anthon extends Sprite {
             default:
                 if(anthonIsWatchful){
                     region = anthonWatchfulStand.getKeyFrame(stateTimer, true);
-                    setWatchfulEnergy(-0.05f);
+                    setWatchfulEnergy(watchfullEnergyLoss/4);
                 }else{
                     region = anthonStand;
                 }
