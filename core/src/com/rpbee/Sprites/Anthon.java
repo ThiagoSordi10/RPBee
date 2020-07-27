@@ -12,6 +12,7 @@ import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Other.BeeSting;
 import com.rpbee.Sprites.Other.HoneyBall;
+import com.rpbee.Sprites.TileObjects.Chest;
 
 public class Anthon extends Sprite {
     public World world;
@@ -58,6 +59,7 @@ public class Anthon extends Sprite {
 
     private Array<HoneyBall> honeyballs;
     private Array<BeeSting> beeStings;
+    private Chest chestNear;
 
     public Anthon(PlayScreen screen){
         //initialize default values
@@ -212,6 +214,17 @@ public class Anthon extends Sprite {
 
     public float getBeeStingDamage(){
         return beeStingDamage;
+    }
+
+    public void setChestNear(Chest chest){
+        chestNear = chest;
+    }
+
+    public void openChest(){
+        if(chestNear != null){
+            chestNear.open();
+        }
+
     }
 
     public TextureRegion getFrame(float delta){
