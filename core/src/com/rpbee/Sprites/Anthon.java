@@ -54,6 +54,7 @@ public class Anthon extends Sprite {
     private float maxHealth = 20;
     private float maxFlyEnergy = 40;
     private float maxWatchfulEnergy = 30;
+
     private float beeStingDamage = 15;
     //Exp necessary to level up
     private static int expNeeded = 500;
@@ -63,7 +64,7 @@ public class Anthon extends Sprite {
     private float watchfulDamageLoss = 2;
     private float flyEnergyLoss = -0.05f;
     private float rechargeFlyAmount = 0.2f;
-    private float watchfullEnergyLoss = -0.2f;
+    private float watchfulEnergyLoss = -0.2f;
     private float rechargeWatchfulAmount = 0.2f;
 
     private Array<HoneyBall> honeyballs;
@@ -246,7 +247,6 @@ public class Anthon extends Sprite {
         exp += amount;
         if(exp == expNeeded){
             level++;
-            expNeeded += expNeeded * 0.5f;
             exp = 0;
         }
     }
@@ -283,7 +283,7 @@ public class Anthon extends Sprite {
             case RUNNING:
                 if(anthonIsWatchful){
                     region = anthonWatchfulRun.getKeyFrame(stateTimer, true);
-                    setWatchfulEnergy(watchfullEnergyLoss/2);
+                    setWatchfulEnergy(watchfulEnergyLoss /2);
                 }else{
                     region = anthonRun.getKeyFrame(stateTimer, true);
                 }
@@ -291,7 +291,7 @@ public class Anthon extends Sprite {
             case FLYING:
                 if(anthonIsWatchful){
                     region = anthonWatchfulFly.getKeyFrame(stateTimer, true);
-                    setWatchfulEnergy(watchfullEnergyLoss);
+                    setWatchfulEnergy(watchfulEnergyLoss);
                 }else{
                     region = anthonFly.getKeyFrame(stateTimer, true);
                 }
@@ -301,7 +301,7 @@ public class Anthon extends Sprite {
             default:
                 if(anthonIsWatchful){
                     region = anthonWatchfulStand.getKeyFrame(stateTimer, true);
-                    setWatchfulEnergy(watchfullEnergyLoss/4);
+                    setWatchfulEnergy(watchfulEnergyLoss /4);
                 }else{
                     region = anthonStand;
                 }
