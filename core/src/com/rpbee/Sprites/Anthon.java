@@ -39,6 +39,7 @@ public class Anthon extends Sprite {
     private boolean anthonIsAttacking;
     private boolean anthonIsWatchful;
     private boolean anthonCanWatchful;
+    private boolean anthonCanUseHoney;
     private boolean isInHoney;
 
 
@@ -173,6 +174,7 @@ public class Anthon extends Sprite {
             }
         }
 
+        //keep animation of attacking
         if(anthonIsAttacking && stateTimer > 0.25f){
             anthonIsAttacking = false;
         }
@@ -255,6 +257,10 @@ public class Anthon extends Sprite {
             chestNear.open(this);
         }
 
+    }
+
+    public void setAnthonCanUseHoney(boolean can){
+        anthonCanUseHoney = can;
     }
 
     public TextureRegion getFrame(float delta){
@@ -439,7 +445,10 @@ public class Anthon extends Sprite {
     }
 
     public void honey(){
-        honeyballs.add(new HoneyBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
+        if(anthonCanUseHoney) {
+            honeyballs.add(new HoneyBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
+            anthonCanUseHoney = false;
+        }
     }
 
     public void sting(){

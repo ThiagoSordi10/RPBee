@@ -75,9 +75,22 @@ public class Chest extends InteractiveTileObject {
     public void open(Anthon anthon){
         if(!isOpened){
             isOpened = true;
+            catchExp(anthon);
+            catchHoney(anthon);
+        }
+    }
+
+    public void catchExp(Anthon anthon){
+        if(object.getProperties().containsKey("exp")){
             int exp = (int) object.getProperties().get("exp");
             Gdx.app.log("EXP:", ""+exp);
             anthon.setExp(exp);
+        }
+    }
+
+    public void catchHoney(Anthon anthon){
+        if(object.getProperties().containsKey("mel")){
+            anthon.setAnthonCanUseHoney(true);
         }
     }
 
