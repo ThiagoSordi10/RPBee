@@ -64,9 +64,9 @@ public class Hud implements Disposable {
 
         //define our labels using the String, and a Label style consisting of a font and color
         //countDownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        xpLabel = new Label(String.format("%06d", xp), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        xpLabel = new Label(String.format("%d", Anthon.getExp()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         //timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label("1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        levelLabel = new Label(String.format("%d", Anthon.getLevel()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelTextLabel = new Label("Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         healthLabel = new Label(String.format("%.2f", Anthon.getHealth()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         healthTextLabel = new Label("Vida", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -115,6 +115,8 @@ public class Hud implements Disposable {
         healthLabel.setText(String.format("%.2f", Anthon.getHealth()));
         flyBarLabel.setText(String.format("%.2f", Anthon.getFlyEnergy()));
         watchfulLabel.setText(String.format("%.2f", Anthon.getWatchfulEnergy()));
+        xpLabel.setText(String.format("%d", Anthon.getExp()));
+        levelLabel.setText(String.format("%d", Anthon.getLevel()));
     }
 
     public static void addScore(int value){

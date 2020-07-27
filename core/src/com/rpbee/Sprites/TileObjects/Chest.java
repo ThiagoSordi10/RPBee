@@ -31,7 +31,6 @@ public class Chest extends InteractiveTileObject {
 
     @Override
     public void onContact(Anthon anthon) {
-        Gdx.app.log("Chest", "Collision");
         if(!isOpened){
             //MarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
             Gdx.app.log("ABRIR BAU", "Pressione E");
@@ -39,7 +38,6 @@ public class Chest extends InteractiveTileObject {
         }else{
             Gdx.app.log("ABRIR BAU", "Bau ja aberto");
         }
-        //Hud.addScore(100);
     }
 
     @Override
@@ -71,13 +69,14 @@ public class Chest extends InteractiveTileObject {
 
     @Override
     public void afterContact(Anthon anthon) {
-        Gdx.app.log("Chest", " no Collision");
         anthon.setChestNear(null);
     }
 
     public void open(){
         if(!isOpened){
             isOpened = true;
+            int a = (int) object.getProperties().get("exp");
+            Gdx.app.log("EXP:", ""+a);
         }
     }
 

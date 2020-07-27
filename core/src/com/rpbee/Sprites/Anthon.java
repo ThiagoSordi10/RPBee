@@ -17,6 +17,7 @@ import com.rpbee.Sprites.TileObjects.Chest;
 public class Anthon extends Sprite {
     public World world;
     public Body b2body;
+    private PlayScreen screen;
 
     public enum State { FALLING, JUMPING, STANDING, RUNNING, FLYING, ATTACKING, DEAD };
     public State currentState;
@@ -39,7 +40,6 @@ public class Anthon extends Sprite {
     private boolean anthonIsWatchful;
     private boolean anthonCanWatchful;
     private boolean isInHoney;
-    private PlayScreen screen;
 
 
     private float timeCount;
@@ -47,16 +47,20 @@ public class Anthon extends Sprite {
     private static float health;
     private static float flyEnergy;
     private static float watchfulEnergy;
+    private static int exp;
 
     //values maximum
     private float maxHealth = 20;
     private float maxFlyEnergy = 40;
     private float maxWatchfulEnergy = 30;
     private float beeStingDamage = 15;
+    //Exp necessary to level up
+    private static int expNeeded = 500;
+    private static int level = 1;
 
     //watchful reduces damage
-    private float watchfulDamageLoss;
-    private float flyEnergyLoss;
+    private float watchfulDamageLoss = 2;
+    private float flyEnergyLoss = -0.05f;
 
     private Array<HoneyBall> honeyballs;
     private Array<BeeSting> beeStings;
@@ -74,8 +78,6 @@ public class Anthon extends Sprite {
         health = maxHealth;
         flyEnergy = maxFlyEnergy;
         watchfulEnergy = maxWatchfulEnergy;
-        watchfulDamageLoss = 2;
-        flyEnergyLoss = -0.05f;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -225,6 +227,23 @@ public class Anthon extends Sprite {
 
     public float getBeeStingDamage(){
         return beeStingDamage;
+    }
+
+    public static int getLevel(){
+        return level;
+    }
+
+    public static int getExp(){
+        return exp;
+    }
+
+    public void setExp(int amount){
+        exp += amount;
+        if(exp == expNeeded){
+            level++;
+            expNeeded += expNeeded * 0.5f;
+            exp = 0;
+        }
     }
 
     public void setChestNear(Chest chest){
