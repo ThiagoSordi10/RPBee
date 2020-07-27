@@ -25,7 +25,7 @@ public class Hud implements Disposable {
     private boolean timeUp; // true when the world timer reaches 0
     private float timeCount;
     private int level;
-    private static Integer xp;
+    public static Integer xp;
 
     //Scene2D widgets
     Label countDownLabel;

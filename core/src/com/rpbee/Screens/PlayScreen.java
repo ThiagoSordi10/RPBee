@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
+import com.rpbee.Save.GameData;
+import com.rpbee.Save.GameManager;
 import com.rpbee.Scenes.Hud;
 import com.rpbee.Sprites.Anthon;
 import com.rpbee.Sprites.Enemies.Enemy;
@@ -27,6 +29,9 @@ import com.rpbee.Tools.WorldContactListener;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlayScreen implements Screen {
+    
+    //verifica se o jogo foi carregado ou iniciado novo
+    public static boolean loadGame;
 
     //Reference to our game, used to set screens
     private RPBeeGame game;
@@ -83,6 +88,14 @@ public class PlayScreen implements Screen {
         player = new Anthon(this);
 
         world.setContactListener(new WorldContactListener());
+        
+        if(loadGame){
+            GameManager ourInstance = GameManager.getInstance();
+            GameData gameData = ourInstance.loadData();
+            player.setHealth(gameData.getLife());
+            //player.setPosition(gameData.getX(), gameData.getY());
+            Hud.xp = gameData.getXp();
+        }
 
 //        music = MarioBros.manager.get("audio/music/mario_music.ogg", Music.class);
 //        music.setLooping(true);
@@ -139,8 +152,14 @@ public class PlayScreen implements Screen {
             if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
                 player.sting();
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
-                player.openChest();
+            if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
+                GameManager ourInstance = new GameManager();
+                GameData gameData = new GameData();
+                gameData.setLife(player.getHealth());
+                gameData.setX(player.b2body.getPosition().x);
+                gameData.setY(player.b2body.getPosition().y);
+                gameData.setXp(Hud.xp);
+                ourInstance.saveData(gameData);
             }
         }
     }
