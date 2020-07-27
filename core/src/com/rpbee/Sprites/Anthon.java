@@ -18,23 +18,24 @@ public class Anthon extends Sprite {
     public World world;
     public Body b2body;
 
-    public enum State { FALLING, JUMPING, STANDING, RUNNING, FLYING, DEAD };
+    public enum State { FALLING, JUMPING, STANDING, RUNNING, FLYING, ATTACKING, DEAD };
     public State currentState;
     public State previousState;
 
     private TextureRegion anthonStand;
     private Animation<TextureRegion> anthonRun;
     private TextureRegion anthonJump;
+    private TextureRegion anthonAttack;
     private Animation<TextureRegion> anthonFly;
     private Animation<TextureRegion> anthonWatchfulStand;
     private Animation<TextureRegion> anthonWatchfulRun;
-    private Animation<TextureRegion> anthonWatchfulJump;
     private Animation<TextureRegion> anthonWatchfulFly;
     //private TextureRegion anthonDead;
 
     private float stateTimer;
     private boolean runningRight;
     private boolean anthonIsDead;
+    private boolean anthonIsAttacking;
     private boolean anthonIsWatchful;
     private boolean anthonCanWatchful;
     private boolean isInHoney;
@@ -97,6 +98,8 @@ public class Anthon extends Sprite {
         }
         anthonFly = new Animation(0.1f, frames);
         frames.clear();
+
+        anthonAttack = new TextureRegion(screen.getAtlas().findRegion("anthon"), 2560, 256, 256, 256);
 
 
         frames.add(new TextureRegion(screen.getAtlas().findRegion("anthon"), 1792, 0, 256, 256));
@@ -166,6 +169,10 @@ public class Anthon extends Sprite {
                 anthonCanWatchful = true;
                 timeCount = 0;
             }
+        }
+
+        if(anthonIsAttacking && stateTimer > 0.25f){
+            anthonIsAttacking = false;
         }
 
         for(HoneyBall  ball : honeyballs) {
@@ -238,6 +245,9 @@ public class Anthon extends Sprite {
         TextureRegion region;
         //depending on the state, get corresponding animation keyFrame.
         switch (currentState){
+            case ATTACKING:
+                region = anthonAttack;
+                break;
             case DEAD:
                 region = anthonJump;
                 break;
@@ -294,10 +304,13 @@ public class Anthon extends Sprite {
     public State getState() {
         //Test to Box2D for velocity on the X and Y-Axis
         //if anthon is going positive in Y-Axis he is jumping... or if he just jumped and is falling remain in jump state
-        if(anthonIsDead){
+        if(anthonIsAttacking){
+            return State.ATTACKING;
+        }
+        else if(anthonIsDead){
             return State.DEAD;
         }
-        if(b2body.getLinearVelocity().y > 0 && currentState == State.FLYING && flyEnergy > 0){
+        else if(b2body.getLinearVelocity().y > 0 && currentState == State.FLYING && flyEnergy > 0){
             setFlyEnergy(flyEnergyLoss);
             return State.FLYING;
         }
@@ -411,6 +424,7 @@ public class Anthon extends Sprite {
     }
 
     public void sting(){
+        anthonIsAttacking = true;
         beeStings.add(new BeeSting(screen, this, runningRight ? true : false));
     }
 
