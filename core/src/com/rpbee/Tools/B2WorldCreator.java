@@ -11,10 +11,12 @@ import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Enemies.Enemy;
 import com.rpbee.Sprites.Enemies.Sunflower;
 import com.rpbee.Sprites.TileObjects.Chest;
+import com.rpbee.Sprites.TileObjects.InteractiveTileObject;
 
 public class B2WorldCreator {
 
     private Array<Sunflower> sunflowers;
+    private Array<InteractiveTileObject> chests;
 
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
@@ -41,8 +43,11 @@ public class B2WorldCreator {
         }
 
         //Create chest bodies/fixtures
+        chests = new Array<InteractiveTileObject>();
         for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
-            new Chest(screen, object);
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            chests.add(new Chest(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM, object));
         }
 
         //create all sunflowers
@@ -80,6 +85,12 @@ public class B2WorldCreator {
 //
 //            turtles.add(new Turtle(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
 //        }
+    }
+
+    public Array<InteractiveTileObject> getTiles(){
+        Array<InteractiveTileObject> tiles = new Array<InteractiveTileObject>();
+        tiles.addAll(chests);
+        return tiles;
     }
 
     public Array<Enemy> getEnemies(){

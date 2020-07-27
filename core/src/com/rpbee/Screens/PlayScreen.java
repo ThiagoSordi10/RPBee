@@ -20,6 +20,7 @@ import com.rpbee.RPBeeGame;
 import com.rpbee.Scenes.Hud;
 import com.rpbee.Sprites.Anthon;
 import com.rpbee.Sprites.Enemies.Enemy;
+import com.rpbee.Sprites.TileObjects.InteractiveTileObject;
 import com.rpbee.Tools.B2WorldCreator;
 import com.rpbee.Tools.WorldContactListener;
 
@@ -158,6 +159,10 @@ public class PlayScreen implements Screen {
 //                enemy.b2body.setActive(false);
 //            }
         }
+
+        for(InteractiveTileObject tile : creator.getTiles()) {
+            tile.update(delta);
+        }
 //
 //        for(Item item : items){
 //            item.update(delta);
@@ -216,6 +221,10 @@ public class PlayScreen implements Screen {
         player.draw(game.batch);
         for(Enemy enemy : creator.getEnemies()){
             enemy.draw(game.batch);
+        }
+
+        for(InteractiveTileObject tile : creator.getTiles()){
+            tile.draw(game.batch);
         }
 //        for(Item item : items){
 //            item.draw(game.batch);
