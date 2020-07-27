@@ -186,6 +186,10 @@ public class Anthon extends Sprite {
     public static float getHealth(){
         return health;
     }
+
+    public static void setHealth(float health) {
+        Anthon.health = health;
+    }
     public static float getFlyEnergy(){
         return flyEnergy;
     }

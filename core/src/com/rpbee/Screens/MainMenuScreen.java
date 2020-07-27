@@ -93,6 +93,14 @@ public class MainMenuScreen implements Screen{
                 dispose();
             };
         });
+        btnLoadGame.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                PlayScreen.loadGame = true;
+                game.setScreen(new PlayScreen(game));
+                dispose();
+            };
+        });
         btnExit.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
