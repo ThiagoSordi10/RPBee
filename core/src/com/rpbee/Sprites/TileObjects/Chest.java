@@ -72,11 +72,12 @@ public class Chest extends InteractiveTileObject {
         anthon.setChestNear(null);
     }
 
-    public void open(){
+    public void open(Anthon anthon){
         if(!isOpened){
             isOpened = true;
-            int a = (int) object.getProperties().get("exp");
-            Gdx.app.log("EXP:", ""+a);
+            int exp = (int) object.getProperties().get("exp");
+            Gdx.app.log("EXP:", ""+exp);
+            anthon.setExp(exp);
         }
     }
 

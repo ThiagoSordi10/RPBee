@@ -252,7 +252,7 @@ public class Anthon extends Sprite {
 
     public void openChest(){
         if(chestNear != null){
-            chestNear.open();
+            chestNear.open(this);
         }
 
     }
