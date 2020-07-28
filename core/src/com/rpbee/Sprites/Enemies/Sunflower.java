@@ -122,8 +122,8 @@ public class Sunflower extends Enemy {
     }
 
     @Override
-    public void hit(Anthon anthon) {
-        health -= anthon.getBeeStingDamage();
+    public void hit(float damage) {
+        health += damage;
         if(health <= 0){
             die();
         }

@@ -13,6 +13,7 @@ import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Other.BeeSting;
 import com.rpbee.Sprites.Other.HoneyBall;
 import com.rpbee.Sprites.TileObjects.Chest;
+import com.rpbee.Sprites.TileObjects.Pollen;
 
 public class Anthon extends Sprite {
     public World world;
@@ -55,21 +56,25 @@ public class Anthon extends Sprite {
     private float maxFlyEnergy = 40;
     private float maxWatchfulEnergy = 30;
 
-    private float beeStingDamage = 15;
+    private float beeStingDamage = -15;
     //Exp necessary to level up
     private static int expNeeded = 500;
     private static int level = 1;
 
     //watchful reduces damage
     private float watchfulDamageLoss = 2;
+    //Fly loss and fly recharge
     private float flyEnergyLoss = -0.05f;
     private float rechargeFlyAmount = 0.2f;
+    //watchful loss and watchful recharge
     private float watchfulEnergyLoss = -0.2f;
     private float rechargeWatchfulAmount = 0.2f;
 
+    //Itens for anthon
     private Array<HoneyBall> honeyballs;
     private Array<BeeSting> beeStings;
     private Chest chestNear;
+    private Pollen pollenNear;
 
     public Anthon(PlayScreen screen){
         //initialize default values
@@ -83,6 +88,7 @@ public class Anthon extends Sprite {
         health = maxHealth;
         flyEnergy = maxFlyEnergy;
         watchfulEnergy = maxWatchfulEnergy;
+        anthonCanUseHoney = true;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -255,9 +261,16 @@ public class Anthon extends Sprite {
         chestNear = chest;
     }
 
-    public void openChest(){
+    public void setPollenNear(Pollen pollen) {
+        pollenNear = pollen;
+    }
+
+    public void interactTile(){
         if(chestNear != null){
             chestNear.open(this);
+        }
+        else if(pollenNear != null){
+            pollenNear.catchPollen(this);
         }
 
     }
@@ -368,7 +381,7 @@ public class Anthon extends Sprite {
         shape.setRadius(12 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
         fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT |
-                RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT | RPBeeGame.HONEY_SENSOR_BIT;
+                RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT | RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.POLLEN_BIT;
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);

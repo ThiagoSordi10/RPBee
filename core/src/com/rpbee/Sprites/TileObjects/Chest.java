@@ -20,9 +20,11 @@ public class Chest extends InteractiveTileObject {
     private boolean isOpened;
     private TextureRegion closed;
     private TextureRegion opened;
+    protected MapObject object;
 
     public Chest(PlayScreen screen, float x, float y, MapObject object){
-        super(screen, x, y, object);
+        super(screen, x, y);
+        this.object = object;
         closed = new TextureRegion(screen.getAtlas().findRegion("bau"), 0, 0, 256, 256);
         opened = new TextureRegion(screen.getAtlas().findRegion("bau"), 256, 0, 256, 256);
         isOpened = false;

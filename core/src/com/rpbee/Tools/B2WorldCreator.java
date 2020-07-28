@@ -12,11 +12,13 @@ import com.rpbee.Sprites.Enemies.Enemy;
 import com.rpbee.Sprites.Enemies.Sunflower;
 import com.rpbee.Sprites.TileObjects.Chest;
 import com.rpbee.Sprites.TileObjects.InteractiveTileObject;
+import com.rpbee.Sprites.TileObjects.Pollen;
 
 public class B2WorldCreator {
 
     private Array<Sunflower> sunflowers;
     private Array<InteractiveTileObject> chests;
+    private Array<InteractiveTileObject> pollens;
 
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
@@ -48,6 +50,14 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             chests.add(new Chest(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM, object));
+        }
+
+        //Create pollen bodies/fixtures
+        pollens = new Array<InteractiveTileObject>();
+        for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            pollens.add(new Pollen(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM));
         }
 
         //create all sunflowers
@@ -90,6 +100,7 @@ public class B2WorldCreator {
     public Array<InteractiveTileObject> getTiles(){
         Array<InteractiveTileObject> tiles = new Array<InteractiveTileObject>();
         tiles.addAll(chests);
+        tiles.addAll(pollens);
         return tiles;
     }
 

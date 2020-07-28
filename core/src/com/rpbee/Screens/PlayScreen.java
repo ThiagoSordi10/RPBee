@@ -3,7 +3,6 @@ package com.rpbee.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
@@ -25,8 +23,6 @@ import com.rpbee.Sprites.Enemies.Enemy;
 import com.rpbee.Sprites.TileObjects.InteractiveTileObject;
 import com.rpbee.Tools.B2WorldCreator;
 import com.rpbee.Tools.WorldContactListener;
-
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlayScreen implements Screen {
     
@@ -153,7 +149,7 @@ public class PlayScreen implements Screen {
                 player.sting();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
-                player.openChest();
+                player.interactTile();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
                 GameManager ourInstance = new GameManager();

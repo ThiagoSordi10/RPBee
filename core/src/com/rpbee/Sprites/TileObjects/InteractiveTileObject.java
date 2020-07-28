@@ -17,12 +17,11 @@ public abstract class InteractiveTileObject extends Sprite {
     protected World world;
     public Body b2body;
     protected PlayScreen screen;
-    protected MapObject object;
 
-    public InteractiveTileObject(PlayScreen screen, float x, float y, MapObject object){
+
+    public InteractiveTileObject(PlayScreen screen, float x, float y){
         this.world = screen.getWorld();
         this.screen = screen;
-        this.object = object;
         setPosition(x, y);
         defineInteractiveTile();
 //        this.object = object;
