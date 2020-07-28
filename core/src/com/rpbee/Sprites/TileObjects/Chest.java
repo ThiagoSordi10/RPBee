@@ -92,7 +92,7 @@ public class Chest extends InteractiveTileObject {
 
     public void catchHoney(Anthon anthon){
         if(object.getProperties().containsKey("mel")){
-            anthon.setAnthonCanUseHoney(true);
+            anthon.setQntHoney(1);
         }
     }
 

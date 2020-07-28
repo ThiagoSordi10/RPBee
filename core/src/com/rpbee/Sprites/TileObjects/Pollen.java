@@ -14,8 +14,9 @@ import com.rpbee.Sprites.Anthon;
 
 public class Pollen extends InteractiveTileObject {
     //private static TiledMapTileSet tileSet;
-    private boolean isOpened;
     private TextureRegion pollen;
+    private boolean setToDestroy;
+    private boolean destroyed;
 
     public Pollen(PlayScreen screen, float x, float y){
         super(screen, x, y);
@@ -40,7 +41,7 @@ public class Pollen extends InteractiveTileObject {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / RPBeeGame.PPM);
+        shape.setRadius(4 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.POLLEN_BIT;
         fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.BEE_BIT | RPBeeGame.HONEYBALL_BIT | RPBeeGame.BEE_STING_BIT;
         fdef.shape = shape;
@@ -51,6 +52,10 @@ public class Pollen extends InteractiveTileObject {
     @Override
     public void update(float delta) {
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2.4f);
+        if(setToDestroy && !destroyed){
+            world.destroyBody(b2body);
+            destroyed = true;
+        }
     }
 
     @Override
@@ -59,11 +64,15 @@ public class Pollen extends InteractiveTileObject {
     }
 
     public void catchPollen(Anthon anthon){
+        anthon.setQntPollen(1);
+        setToDestroy = true;
         Gdx.app.log("Polen", "Pegou o pollen");
     }
 
     public void draw(Batch batch){
-        super.draw(batch);
+        if(!destroyed) {
+            super.draw(batch);
+        }
     }
 
 

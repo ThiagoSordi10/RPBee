@@ -40,7 +40,6 @@ public class Anthon extends Sprite {
     private boolean anthonIsAttacking;
     private boolean anthonIsWatchful;
     private boolean anthonCanWatchful;
-    private boolean anthonCanUseHoney;
     private boolean isInHoney;
 
 
@@ -50,6 +49,7 @@ public class Anthon extends Sprite {
     private static float flyEnergy;
     private static float watchfulEnergy;
     private static int exp;
+    private int qntHoney;
 
     //values maximum
     private float maxHealth = 20;
@@ -73,6 +73,7 @@ public class Anthon extends Sprite {
     //Itens for anthon
     private Array<HoneyBall> honeyballs;
     private Array<BeeSting> beeStings;
+    private int qntPollen;
     private Chest chestNear;
     private Pollen pollenNear;
 
@@ -88,7 +89,7 @@ public class Anthon extends Sprite {
         health = maxHealth;
         flyEnergy = maxFlyEnergy;
         watchfulEnergy = maxWatchfulEnergy;
-        anthonCanUseHoney = true;
+        qntHoney = 1;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -275,8 +276,14 @@ public class Anthon extends Sprite {
 
     }
 
-    public void setAnthonCanUseHoney(boolean can){
-        anthonCanUseHoney = can;
+    public void setQntHoney(int qnt){
+        qntHoney += qnt;
+
+    }
+
+    public void setQntPollen(int qnt){
+        qntPollen += qnt;
+
     }
 
     public TextureRegion getFrame(float delta){
@@ -459,9 +466,9 @@ public class Anthon extends Sprite {
     }
 
     public void honey(){
-        if(anthonCanUseHoney) {
+        if(qntHoney > 0) {
             honeyballs.add(new HoneyBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
-            anthonCanUseHoney = false;
+            qntHoney--;
         }
     }
 
