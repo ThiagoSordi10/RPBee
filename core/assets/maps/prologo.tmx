@@ -25,7 +25,7 @@
  </layer>
  <layer id="2" name="terreno" width="200" height="20">
   <data encoding="base64" compression="zlib">
-   eJztmtluEzEUho/Spg2ZpW3YRLhhUZvwCu1duSRNoGxSr1jehEVc0KZQNoGEoPAmIIRAXXgDWngR/lFjxYxsj2eSjNPm/NInJ8cez4mPPV4mRCwWi8VisVgs1mjrTI2oWnPtRe/amyfan3ftBYuVvxqTREtgwyd6AV6CV+C137V9XCDaXDiwNVG2Nenaa9ZR0Ns60bu6ay/M8ktEAVgOiK6DG+AmuBWobSHKTpVce81i5aNGGfMHqIREx8EJcBKcCtW2Jsq2yq69ZrHyke9h/gBhwRKUnfJce81i5aOtItE2OIa+Xy4kpzsou1t07TWLlY9WJ4jWwA/0/Z+F5LSNsusTrr1mjbpszpWSbHzW1D+JeHCbDofSnivxWdNgJeLBbTocSnuupLNFe+lp3k9n1iJicLksnWN43KbDIBGPKvr42bCbis9xe1WRt4Prd8EvjmVqReOiiHYrgDGwBba9/rSpWKs916yLdfa0+g0f98A++AP+HqF+IOKh6ve2aRttug6eGdpcZR/l9XU0Lr6j3RfHib4h/QK+9nl8iLXaNc26WGXXrelmV4jmVrppDdTBJfAh+u8D2ASfwGdfXS5uM5WZjZF0ner6eJksWsVvWfPN40M1b8jlmmjXFriqafO0schT71O+g9SN/zeGZ4MqLxoXT5A+Ao/BA/DQ78ZDfuZkud9Tqa4Zzbo4bi+F+ndOvmaPervz/Q64C+6B+1Kerj/knZe1r4n9h+38ocufkbCJRZSK+Kviu2GIfRq7ypaUb7rHIGN6BTTAUvD/MydLnXJd4hmXRHvsYM4y9ZN4XE93vp8D58EFcFHK0/WHvPOy7uXk/YfNeio+RlRjygY5/qr4Lhtin8ausiXlm+4xyJh6wAcBCKOYgumMdcbrshkfzXHD/NHpJ7ZjbZiI2iPr+FDtP2znjl6Q46+Kb8UQ+yz2iqbOtHVZ/z/mkKKbP0Q/ce1fL78ry15OrFFd+39Y+Aeu0Tiz
+   eJztmtluEzEUho/Spg2ZpW3YRLhhUZv0NcolaQJlk3rF8iYs4oI2hUJBICG2NwEhBOrCG7C9CP+IWDEj2+Nxk3HanF/65ObY43H822N7UiIWi8VisVgsFmu8dapBVG/4bgWLxXJVa5poGWyGRE/BM7AFnof9mFASa6NsZ9pfe1mHRy+bRK+avlthVlghisBKRHQFXAXXwPVIHYtRdqbiu9UsVjFqVbF+gFpMdBQcA8fBiVgda6Nsp+q71SxWMQoDrB8gLlmCsjOB71azWMVou0y0A45g7FdL2ekuyu6VfbeaxSpGa1NE6+Arxv63UnbaRdmNKd+tZo27bN4rZcX4XdPgJPzgPh0N5X2vxO+ahivhB/fpaCjveyVdLDlLz/J52llL8OBCVXqPEXCfjoKEH3WM8dNxPxV/p+N1Rd4urt8D39nL3ErmRRn9VgITYBvsBIPpU7FXe6LZF+viefUDbfwJfoHf4M8hGgfCD9W4t0276NMN8NjQ56r4OO+vk3nxBf2+NEn0GelH8GnA80Ps1S5r9sWquG5PN79KtLDaTxugCRbBG3j5FrwD78GHUF0uHTOVmU+RdZ3q+nQZF63hu6yH5vmhWjfkcm30awdc0vR5Xi+K1Oucv0Hq5v8Lw7NBlZfMi4dI74MH4C64F/b9kJ85Lvd7JNU1p9kXp+OVWP+bU6g5o97ofb4JboHb4I6UpxsPRee5jjVx/rBdP3T5cxI2XiSp8F/l76bB+zxxVSwr33SPYXp6EbTAcvT/M8elTrku8YzLojvxb80yjZO0ryd7n8+As+AcOC/l6cZD0XmuZzn5/GGzn0rPEdWcskH2X+XvisH7PHFVLCvfdI9hehqAEEQgTjwFs451puuymR/tScP60RsntnNtlEj6w3V+qM4ftmvHfpD9V/lbM3jvEq9p6sxbl/X/xxxQdOuHGCe+27ef7+VylhN7VN/tPyj8BWz4NMc=
   </data>
  </layer>
  <layer id="6" name="castelo" width="200" height="20">
@@ -55,13 +55,8 @@
  <objectgroup id="14" name="bau">
   <object id="35" x="2548" y="52.6667" width="26.6667" height="24">
    <properties>
-    <property name="itens" value=""/>
-   </properties>
-  </object>
-  <object id="36" x="222.667" y="243.333" width="26.6667" height="24">
-   <properties>
-    <property name="exp" type="int" value="30"/>
-    <property name="mel" type="bool" value="true"/>
+    <property name="exp" type="int" value="100"/>
+    <property name="mel" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>
@@ -75,11 +70,7 @@
  <objectgroup id="9" name="inimigo_girassol">
   <object id="18" x="1528" y="244.667"/>
  </objectgroup>
- <objectgroup id="12" name="polinizar" offsetx="-1.33333" offsety="-1.33333">
-  <object id="29" x="2744.85" y="260.848"/>
-  <object id="30" x="2835.15" y="260.97"/>
-  <object id="31" x="2928" y="260.909"/>
- </objectgroup>
+ <objectgroup id="12" name="polinizar" offsetx="-1.33333" offsety="-1.33333"/>
  <objectgroup id="13" name="checkpoint">
   <object id="32" x="3178.5" y="260"/>
  </objectgroup>
