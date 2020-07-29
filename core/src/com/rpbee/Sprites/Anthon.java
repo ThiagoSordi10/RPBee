@@ -1,6 +1,7 @@
 package com.rpbee.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,6 +25,10 @@ public class Anthon extends Sprite {
     public State currentState;
     public State previousState;
 
+    private float colorTimer;
+    private Color currentColor;
+    private boolean damageColor;
+
     private TextureRegion anthonStand;
     private Animation<TextureRegion> anthonRun;
     private TextureRegion anthonJump;
@@ -32,7 +37,6 @@ public class Anthon extends Sprite {
     private Animation<TextureRegion> anthonWatchfulStand;
     private Animation<TextureRegion> anthonWatchfulRun;
     private Animation<TextureRegion> anthonWatchfulFly;
-    //private TextureRegion anthonDead;
 
     private float stateTimer;
     private boolean runningRight;
@@ -41,6 +45,7 @@ public class Anthon extends Sprite {
     private boolean anthonIsWatchful;
     private boolean anthonCanWatchful;
     private boolean isInHoney;
+
 
 
     private float timeCount;
@@ -69,6 +74,7 @@ public class Anthon extends Sprite {
     //watchful loss and watchful recharge
     private float watchfulEnergyLoss = -0.2f;
     private float rechargeWatchfulAmount = 0.2f;
+    private float stingAutoHit = -5;
 
     //Itens for anthon
     private Array<HoneyBall> honeyballs;
@@ -84,6 +90,8 @@ public class Anthon extends Sprite {
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
+        colorTimer = 0;
+        currentColor = new Color();
         runningRight = true;
 
         health = maxHealth;
@@ -200,6 +208,15 @@ public class Anthon extends Sprite {
             sting.update(delta);
             if(sting.isDestroyed())
                 beeStings.removeValue(sting, true);
+        }
+
+        if(damageColor && colorTimer < 0.5f){
+            colorTimer += delta;
+            currentColor.set(1,0,0,1);
+        }else{
+            damageColor = false;
+            currentColor.set(1,1,1,1);
+            colorTimer = 0;
         }
     }
 
@@ -405,6 +422,7 @@ public class Anthon extends Sprite {
     public void hit(float damage){
 
         health += anthonIsWatchful ? damage/watchfulDamageLoss : damage;
+        damageColor = true;
         if(health <= 0){
             die();
         }
@@ -474,10 +492,12 @@ public class Anthon extends Sprite {
 
     public void sting(){
         anthonIsAttacking = true;
+        hit(stingAutoHit);
         beeStings.add(new BeeSting(screen, this, runningRight ? true : false));
     }
 
     public void draw(Batch batch){
+        this.setColor(currentColor);
         super.draw(batch);
         for(HoneyBall ball : honeyballs)
             ball.draw(batch);

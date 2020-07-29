@@ -1,5 +1,6 @@
 package com.rpbee.Tools;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -31,7 +32,7 @@ public class B2WorldCreator {
         Body body;
 
         //Create ground bodies/fixtures
-        for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get("terrenoObj").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
@@ -46,7 +47,7 @@ public class B2WorldCreator {
 
         //Create chest bodies/fixtures
         chests = new Array<InteractiveTileObject>();
-        for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get("bau").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             chests.add(new Chest(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM, object));
@@ -54,7 +55,7 @@ public class B2WorldCreator {
 
         //Create pollen bodies/fixtures
         pollens = new Array<InteractiveTileObject>();
-        for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get("polen").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             pollens.add(new Pollen(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM));
@@ -62,7 +63,7 @@ public class B2WorldCreator {
 
         //create all sunflowers
         sunflowers = new Array<Sunflower>();
-        for(MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get("inimigo1").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             sunflowers.add(new Sunflower(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM));

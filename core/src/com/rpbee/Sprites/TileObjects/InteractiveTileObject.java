@@ -24,20 +24,6 @@ public abstract class InteractiveTileObject extends Sprite {
         this.screen = screen;
         setPosition(x, y);
         defineInteractiveTile();
-//        this.object = object;
-//        this.map = screen.getMap();
-//        this.bounds = ((RectangleMapObject) object).getRectangle();
-//        BodyDef bdef = new BodyDef();
-//        FixtureDef fdef = new FixtureDef();
-//        PolygonShape shape = new PolygonShape();
-//        bdef.type = BodyDef.BodyType.StaticBody;
-//        bdef.position.set((bounds.getX() + bounds.getWidth()/2) / RPBeeGame.PPM, (bounds.getY() + bounds.getHeight()/2) / RPBeeGame.PPM);
-//
-//        body = world.createBody(bdef);
-//
-//        shape.setAsBox(bounds.getWidth()/2 / RPBeeGame.PPM, bounds.getHeight()/2 / RPBeeGame.PPM);
-//        fdef.shape = shape;
-//        fixture = body.createFixture(fdef);
     }
 
     public abstract void onContact(Anthon anthon);
