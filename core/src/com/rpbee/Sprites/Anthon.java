@@ -13,6 +13,7 @@ import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Other.BeeSting;
 import com.rpbee.Sprites.Other.HoneyBall;
 import com.rpbee.Sprites.TileObjects.Chest;
+import com.rpbee.Sprites.TileObjects.Pollen;
 
 public class Anthon extends Sprite {
     public World world;
@@ -39,7 +40,6 @@ public class Anthon extends Sprite {
     private boolean anthonIsAttacking;
     private boolean anthonIsWatchful;
     private boolean anthonCanWatchful;
-    private boolean anthonCanUseHoney;
     private boolean isInHoney;
 
 
@@ -49,27 +49,33 @@ public class Anthon extends Sprite {
     private static float flyEnergy;
     private static float watchfulEnergy;
     private static int exp;
+    private int qntHoney;
 
     //values maximum
     private float maxHealth = 20;
     private float maxFlyEnergy = 40;
     private float maxWatchfulEnergy = 30;
 
-    private float beeStingDamage = 15;
+    private float beeStingDamage = -15;
     //Exp necessary to level up
     private static int expNeeded = 500;
     private static int level = 1;
 
     //watchful reduces damage
     private float watchfulDamageLoss = 2;
+    //Fly loss and fly recharge
     private float flyEnergyLoss = -0.05f;
     private float rechargeFlyAmount = 0.2f;
+    //watchful loss and watchful recharge
     private float watchfulEnergyLoss = -0.2f;
     private float rechargeWatchfulAmount = 0.2f;
 
+    //Itens for anthon
     private Array<HoneyBall> honeyballs;
     private Array<BeeSting> beeStings;
+    private int qntPollen;
     private Chest chestNear;
+    private Pollen pollenNear;
 
     public Anthon(PlayScreen screen){
         //initialize default values
@@ -83,6 +89,7 @@ public class Anthon extends Sprite {
         health = maxHealth;
         flyEnergy = maxFlyEnergy;
         watchfulEnergy = maxWatchfulEnergy;
+        qntHoney = 1;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -255,15 +262,28 @@ public class Anthon extends Sprite {
         chestNear = chest;
     }
 
-    public void openChest(){
+    public void setPollenNear(Pollen pollen) {
+        pollenNear = pollen;
+    }
+
+    public void interactTile(){
         if(chestNear != null){
             chestNear.open(this);
+        }
+        else if(pollenNear != null){
+            pollenNear.catchPollen(this);
         }
 
     }
 
-    public void setAnthonCanUseHoney(boolean can){
-        anthonCanUseHoney = can;
+    public void setQntHoney(int qnt){
+        qntHoney += qnt;
+
+    }
+
+    public void setQntPollen(int qnt){
+        qntPollen += qnt;
+
     }
 
     public TextureRegion getFrame(float delta){
@@ -368,7 +388,7 @@ public class Anthon extends Sprite {
         shape.setRadius(12 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
         fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT |
-                RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT | RPBeeGame.HONEY_SENSOR_BIT;
+                RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT | RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.POLLEN_BIT;
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);
@@ -446,9 +466,9 @@ public class Anthon extends Sprite {
     }
 
     public void honey(){
-        if(anthonCanUseHoney) {
+        if(qntHoney > 0) {
             honeyballs.add(new HoneyBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
-            anthonCanUseHoney = false;
+            qntHoney--;
         }
     }
 

@@ -9,6 +9,7 @@ import com.rpbee.Sprites.Other.BeeSting;
 import com.rpbee.Sprites.Other.HoneyBall;
 import com.rpbee.Sprites.Other.PoisonBall;
 import com.rpbee.Sprites.TileObjects.Chest;
+import com.rpbee.Sprites.TileObjects.Pollen;
 
 public class WorldContactListener implements ContactListener {
     @Override
@@ -43,6 +44,13 @@ public class WorldContactListener implements ContactListener {
                     ((Chest) fixA.getUserData()).onContact((Anthon) fixB.getUserData());
                 }
                 break;
+            case RPBeeGame.BEE_BIT | RPBeeGame.POLLEN_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
+                    ((Pollen) fixB.getUserData()).onContact((Anthon) fixA.getUserData());
+                }else{
+                    ((Pollen) fixA.getUserData()).onContact((Anthon) fixB.getUserData());
+                }
+                break;
             case RPBeeGame.BEE_BIT | RPBeeGame.ENEMY_BIT:
                 if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
                     ((Anthon) fixA.getUserData()).hit(-10);
@@ -67,12 +75,6 @@ public class WorldContactListener implements ContactListener {
                     ((PoisonBall) fixA.getUserData()).setToDestroy();
                 }
                 break;
-            case RPBeeGame.HONEYBALL_BIT | RPBeeGame.GROUND_BIT:
-                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEYBALL_BIT)
-                    ((HoneyBall)fixA.getUserData()).setToDestroy();
-                else
-                    ((HoneyBall)fixB.getUserData()).setToDestroy();
-                break;
             case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_BIT:
                 if(fixA.getFilterData().categoryBits == RPBeeGame.HONEY_SENSOR_BIT){
                     anthon = ((Anthon)fixB.getUserData());
@@ -82,8 +84,11 @@ public class WorldContactListener implements ContactListener {
                 }
                 anthon.setIsInHoney(true);
                 break;
+            case RPBeeGame.HONEYBALL_BIT | RPBeeGame.GROUND_BIT:
             case RPBeeGame.HONEYBALL_BIT | RPBeeGame.ENEMY_BIT:
-                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEY_SENSOR_BIT){
+            case RPBeeGame.HONEYBALL_BIT | RPBeeGame.POLLEN_BIT:
+            case RPBeeGame.HONEYBALL_BIT | RPBeeGame.CHEST_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEYBALL_BIT){
                     ((HoneyBall)fixA.getUserData()).setToDestroy();
                 }
                 else{
@@ -106,6 +111,8 @@ public class WorldContactListener implements ContactListener {
                     ((BeeSting)fixA.getUserData()).setIsInHoney(true);
                 }
                 break;
+            case RPBeeGame.CHEST_BIT | RPBeeGame.BEE_STING_BIT:
+            case RPBeeGame.POLLEN_BIT | RPBeeGame.BEE_STING_BIT:
             case RPBeeGame.GROUND_BIT | RPBeeGame.BEE_STING_BIT:
                 if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_STING_BIT){
                     ((BeeSting)fixA.getUserData()).setToDestroy();
@@ -117,11 +124,11 @@ public class WorldContactListener implements ContactListener {
             case RPBeeGame.ENEMY_BIT | RPBeeGame.BEE_STING_BIT:
                 if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_STING_BIT){
                     ((BeeSting)fixA.getUserData()).setToDestroy();
-                    ((Enemy)fixB.getUserData()).hit(((BeeSting)fixA.getUserData()).getAnthon());
+                    ((Enemy)fixB.getUserData()).hit(((BeeSting)fixA.getUserData()).getAnthon().getBeeStingDamage());
                 }
                 else{
                     ((BeeSting)fixB.getUserData()).setToDestroy();
-                    ((Enemy)fixA.getUserData()).hit(((BeeSting)fixB.getUserData()).getAnthon());
+                    ((Enemy)fixA.getUserData()).hit(((BeeSting)fixB.getUserData()).getAnthon().getBeeStingDamage());
                 }
                 break;
                 

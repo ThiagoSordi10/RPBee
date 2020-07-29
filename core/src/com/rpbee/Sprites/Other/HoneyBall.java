@@ -68,7 +68,7 @@ public class HoneyBall extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(3 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.HONEYBALL_BIT;
-        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.ENEMY_BIT;
+        fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.CHEST_BIT | RPBeeGame.POLLEN_BIT;
 
         fdef.shape = shape;
         fdef.friction = 0;
