@@ -55,7 +55,7 @@
  <objectgroup id="14" name="bau">
   <object id="35" x="2548" y="52.6667" width="26.6667" height="24">
    <properties>
-    <property name="exp" type="int" value="100"/>
+    <property name="exp" type="int" value="200"/>
     <property name="mel" type="int" value="1"/>
    </properties>
   </object>
