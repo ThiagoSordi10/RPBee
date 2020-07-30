@@ -57,23 +57,33 @@ public class Anthon extends Sprite {
     private int qntHoney;
 
     //values maximum
+    //Pode aumentar o máximo de vida (HABILIDADE)
     private float maxHealth = 20;
+    //Pode aumentar o maximo de energia de voo (HABILIDADE)
     private float maxFlyEnergy = 40;
+    //Pode aumentar o maximo de energia de atenção (HABILIDADE)
     private float maxWatchfulEnergy = 30;
 
+    //Diminuir esse numero, aumenta dano do ferrão da abelha (HABILIDADE)
     private float beeStingDamage = -15;
     //Exp necessary to level up
     private static int expNeeded = 500;
     private static int level = 1;
 
     //watchful reduces damage
+    //Aumentar esse numero reduz o dano no modo atento (HABILIDADE)
     private float watchfulDamageLoss = 2;
     //Fly loss and fly recharge
+    //Aumentar esse numero um pouco para energia de voo diminuir lentamente (HABILIDADE)
     private float flyEnergyLoss = -0.05f;
+    //Aumentar esse numero recarrega rapidamento voo (HABILIDADE)
     private float rechargeFlyAmount = 0.2f;
     //watchful loss and watchful recharge
+    //Aumentar esse numero um pouco para energia de atenção diminuir lentamente (HABILIDADE)
     private float watchfulEnergyLoss = -0.2f;
+    //Aumentar esse numero recarrega rapidamento atenção (HABILIDADE)
     private float rechargeWatchfulAmount = 0.2f;
+    //Aumentar esse numero para diminuir dano do uso do ferrão (HABILIDADE)
     private float stingAutoHit = -5;
 
     //Itens for anthon
