@@ -235,6 +235,78 @@ public class Anthon extends Sprite {
         }
     }
 
+    public float getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public float getMaxFlyEnergy() {
+        return maxFlyEnergy;
+    }
+
+    public void setMaxFlyEnergy(float maxFlyEnergy) {
+        this.maxFlyEnergy = maxFlyEnergy;
+    }
+
+    public float getMaxWatchfulEnergy() {
+        return maxWatchfulEnergy;
+    }
+
+    public void setMaxWatchfulEnergy(float maxWatchfulEnergy) {
+        this.maxWatchfulEnergy = maxWatchfulEnergy;
+    }
+
+    public float getWatchfulDamageLoss() {
+        return watchfulDamageLoss;
+    }
+
+    public void setWatchfulDamageLoss(float watchfulDamageLoss) {
+        this.watchfulDamageLoss = watchfulDamageLoss;
+    }
+
+    public float getFlyEnergyLoss() {
+        return flyEnergyLoss;
+    }
+
+    public void setFlyEnergyLoss(float flyEnergyLoss) {
+        this.flyEnergyLoss = flyEnergyLoss;
+    }
+
+    public float getRechargeFlyAmount() {
+        return rechargeFlyAmount;
+    }
+
+    public void setRechargeFlyAmount(float rechargeFlyAmount) {
+        this.rechargeFlyAmount = rechargeFlyAmount;
+    }
+
+    public float getWatchfulEnergyLoss() {
+        return watchfulEnergyLoss;
+    }
+
+    public void setWatchfulEnergyLoss(float watchfulEnergyLoss) {
+        this.watchfulEnergyLoss = watchfulEnergyLoss;
+    }
+
+    public float getRechargeWatchfulAmount() {
+        return rechargeWatchfulAmount;
+    }
+
+    public void setRechargeWatchfulAmount(float rechargeWatchfulAmount) {
+        this.rechargeWatchfulAmount = rechargeWatchfulAmount;
+    }
+
+    public float getStingAutoHit() {
+        return stingAutoHit;
+    }
+
+    public void setStingAutoHit(float stingAutoHit) {
+        this.stingAutoHit = stingAutoHit;
+    }
+
     public boolean anthonCanWatchful(){
         return anthonCanWatchful;
     }
@@ -272,6 +344,10 @@ public class Anthon extends Sprite {
 
     public float getBeeStingDamage(){
         return beeStingDamage;
+    }
+
+    public void setBeeStingDamage(float beeStingDamage) {
+        this.beeStingDamage = beeStingDamage;
     }
 
     public static int getLevel(){

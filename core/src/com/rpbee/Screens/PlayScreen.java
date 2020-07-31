@@ -5,7 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -13,6 +15,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -56,6 +61,11 @@ public class PlayScreen implements Screen {
 
     private Array<String> mapsNames = new Array<String>();
     private int indexMap = 0;
+    
+    //Janela de habilidades
+    private boolean isPause = false;
+    private Group pauseGroup;
+    private Image semiTransparentBG;
 
     //private Music music;
 
@@ -131,6 +141,33 @@ public class PlayScreen implements Screen {
     public void show() {
 
     }
+    
+    public void pauseGame(){
+        
+        isPause = true;
+        pauseGroup = new Group();
+        
+        Texture gameTitleTex = new Texture(Gdx.files.internal("janelaHabilidades.png"));
+        semiTransparentBG = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
+        semiTransparentBG.setSize(game.V_WIDTH, game.V_HEIGHT);
+        semiTransparentBG.getColor().a=.9f;
+          
+        // setSize(Size of screen) and make it semi transparent.
+        
+        pauseGroup.addActor(semiTransparentBG);
+        //pauseGroup.setPosition(135, 0);
+
+        //crate all other pause UI buttons with listener and add to pauseGroup
+
+        hud.stage.addActor(pauseGroup);
+    }
+    
+    public void resumeGame(){
+        if(isPause){
+            isPause=false;
+            pauseGroup.remove();
+        }  
+    }
 
     public void changeMap(){
         indexMap ++;
@@ -178,6 +215,9 @@ public class PlayScreen implements Screen {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.E) && player.getCheckpointNear()){
                 changeMap();
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.H)){
+                pauseGame();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
                 GameManager ourInstance = new GameManager();
@@ -253,7 +293,35 @@ public class PlayScreen implements Screen {
     @Override
     public void render(float delta) {
         //separate our update logic from render
-        update(delta);
+        if(!isPause){
+            update(delta);
+        }
+        
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F1)){
+            player.setMaxHealth(player.getMaxHealth()+5);
+            System.out.println("Old recharge fly amount: "+player.getRechargeFlyAmount());
+            player.setRechargeFlyAmount(player.getRechargeFlyAmount()+0.05f);
+            System.out.println("New recharge fly amount: "+player.getRechargeFlyAmount());
+            resumeGame();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F2)){
+            player.setMaxFlyEnergy(player.getMaxFlyEnergy()+5);
+            player.setFlyEnergyLoss(player.getFlyEnergyLoss()+0.01f);
+            resumeGame();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F3)){
+            player.setMaxWatchfulEnergy(player.getMaxWatchfulEnergy()+5);
+            player.setWatchfulDamageLoss(player.getWatchfulDamageLoss()+0.05f);
+            resumeGame();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F4)){
+            resumeGame();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F5)){
+            player.setWatchfulEnergyLoss(player.getWatchfulEnergyLoss()+0.05f);
+            player.setRechargeWatchfulAmount(player.getRechargeWatchfulAmount()+0.05f);
+            resumeGame();
+        }
 
         //clear game screen (black)
         Gdx.gl.glClearColor(0,0,0,1);
