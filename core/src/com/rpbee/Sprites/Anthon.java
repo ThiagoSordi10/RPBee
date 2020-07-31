@@ -67,7 +67,7 @@ public class Anthon extends Sprite {
     //Diminuir esse numero, aumenta dano do ferrão da abelha (HABILIDADE)
     private float beeStingDamage = -15;
     //Exp necessary to level up
-    private static int expNeeded = 500;
+    private static int expNeeded = 100;
     private static int level = 1;
 
     //watchful reduces damage
@@ -363,7 +363,7 @@ public class Anthon extends Sprite {
 
     public void setExp(int amount){
         exp += amount;
-        if(exp == expNeeded){
+        if(exp >= expNeeded){
             level++;
             exp = 0;
         }
