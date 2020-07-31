@@ -63,6 +63,7 @@ public class PlayScreen implements Screen {
     private int indexMap = 0;
     
     //Janela de habilidades
+    private boolean newHability = false;
     private boolean isPause = false;
     private Group pauseGroup;
     private Image semiTransparentBG;
@@ -191,7 +192,11 @@ public class PlayScreen implements Screen {
                 changeMap();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.H)){
+                newHability = true;
                 this.pause();
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+                    this.pause();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
                 GameManager ourInstance = new GameManager();
@@ -289,11 +294,16 @@ public class PlayScreen implements Screen {
             this.resume();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F4)){
+            player.setBeeStingDamage(player.getBeeStingDamage()-5);
+            player.setStingAutoHit(player.getStingAutoHit()+1);
             this.resume();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F5)){
             player.setWatchfulEnergyLoss(player.getWatchfulEnergyLoss()+0.05f);
             player.setRechargeWatchfulAmount(player.getRechargeWatchfulAmount()+0.05f);
+            this.resume();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
             this.resume();
         }
 
@@ -354,30 +364,30 @@ public class PlayScreen implements Screen {
 
     @Override
     public void pause() {
+        System.out.println("Entrei no pause");
         isPause = true;
-        pauseGroup = new Group();
+        
+        if(newHability){
+            pauseGroup = new Group();
 
-        Texture gameTitleTex = new Texture(Gdx.files.internal("janelaHabilidades.png"));
-        semiTransparentBG = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
-        semiTransparentBG.setSize(game.V_WIDTH, game.V_HEIGHT);
-        semiTransparentBG.getColor().a=.9f;
+            Texture gameTitleTex = new Texture(Gdx.files.internal("janelaHabilidades.png"));
+            semiTransparentBG = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
+            semiTransparentBG.setSize(game.V_WIDTH, game.V_HEIGHT);
+            semiTransparentBG.getColor().a=.9f;
 
-        // setSize(Size of screen) and make it semi transparent.
-
-        pauseGroup.addActor(semiTransparentBG);
-        //pauseGroup.setPosition(135, 0);
-
-        //crate all other pause UI buttons with listener and add to pauseGroup
-
-        hud.stage.addActor(pauseGroup);
+            pauseGroup.addActor(semiTransparentBG);
+            hud.stage.addActor(pauseGroup);
+        }
     }
 
     @Override
     public void resume() {
-        if(isPause){
-            isPause=false;
+        System.out.println("Entrei no resume");
+        if(newHability){
             pauseGroup.remove();
+            newHability = false;
         }
+        isPause = false;
     }
 
     @Override
