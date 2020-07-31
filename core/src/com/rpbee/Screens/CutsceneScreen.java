@@ -3,7 +3,10 @@ package com.rpbee.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,6 +24,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 public class CutsceneScreen implements Screen {
     private Viewport gamePort;
     private Stage stage;
+    OrthographicCamera camera;
+    Texture img;
 
     private RPBeeGame game;
 
@@ -29,17 +34,14 @@ public class CutsceneScreen implements Screen {
         gamePort = new FitViewport(RPBeeGame.V_WIDTH, RPBeeGame.V_HEIGHT);
         stage = new Stage(gamePort, game.batch);
 
-        Texture gameTitleTex = new Texture(Gdx.files.internal("cutscenes/cutscene1.png"));
-        Image image = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
-        image.setSize(game.V_WIDTH, game.V_HEIGHT);
+        img = new Texture(Gdx.files.internal("cutscenes/cutscene1.png"));
+//        Image image = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
+//        image.setSize(game.V_WIDTH, game.V_HEIGHT);
 
-        stage.addActor(image);
+        camera = new OrthographicCamera();
+        //initially set our gamcam to be centered correctly at the start of of map
+        camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2,0);
 
-        gameTitleTex = new Texture(Gdx.files.internal("cutscenes/cutscene2.png"));
-        image = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
-        image.setSize(game.V_WIDTH, game.V_HEIGHT);
-
-        stage.addActor(image);
     }
 
     @Override
@@ -49,12 +51,20 @@ public class CutsceneScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        stage.draw();
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        game.batch.setProjectionMatrix(camera.combined); // pass camera's matrices to batch
+        game.batch.begin();
+
+            game.batch.draw(img, 0, 0);
+
+        game.batch.end();
+
     }
 
     @Override
     public void resize(int width, int height) {
-
+        gamePort.update(width, height);
     }
 
     @Override
