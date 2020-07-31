@@ -63,6 +63,7 @@ public class PlayScreen implements Screen {
     private int indexMap = 0;
     
     //Janela de habilidades
+    private int levelHability = 1;
     private boolean newHability = false;
     private boolean isPause = false;
     private Group pauseGroup;
@@ -211,9 +212,13 @@ public class PlayScreen implements Screen {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.E) && player.getCheckpointNear()){
                     changeMap();
                 }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.H)){
-                    newHability = true;
-                    this.pause();
+                if(levelHability<player.getLevel()){
+                    System.out.println("posso fazer upgrade");
+                    if (Gdx.input.isKeyJustPressed(Input.Keys.H)){
+                        System.out.println("Apertei H");
+                        newHability = true;
+                        this.pause();
+                    }
                 }
                 if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     this.pause();
@@ -370,6 +375,7 @@ public class PlayScreen implements Screen {
         if(newHability){
             pauseGroup.remove();
             newHability = false;
+            levelHability++;
         }
         isPause = false;
     }
