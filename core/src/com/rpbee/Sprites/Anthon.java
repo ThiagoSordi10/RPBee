@@ -58,9 +58,9 @@ public class Anthon extends Sprite {
 
     //values maximum
     //Pode aumentar o máximo de vida (HABILIDADE)
-    private float maxHealth = 20;
+    private static float maxHealth = 20;
     //Pode aumentar o maximo de energia de voo (HABILIDADE)
-    private float maxFlyEnergy = 40;
+    private static float maxFlyEnergy = 40;
     //Pode aumentar o maximo de energia de atenção (HABILIDADE)
     private float maxWatchfulEnergy = 30;
 
@@ -235,20 +235,22 @@ public class Anthon extends Sprite {
         }
     }
 
-    public float getMaxHealth() {
+    public static float getMaxHealth() {
         return maxHealth;
     }
 
     public void setMaxHealth(float maxHealth) {
         this.maxHealth = maxHealth;
+        health = maxHealth;
     }
 
-    public float getMaxFlyEnergy() {
+    public static float getMaxFlyEnergy() {
         return maxFlyEnergy;
     }
 
     public void setMaxFlyEnergy(float maxFlyEnergy) {
         this.maxFlyEnergy = maxFlyEnergy;
+        flyEnergy = maxFlyEnergy;
     }
 
     public float getMaxWatchfulEnergy() {
@@ -257,6 +259,7 @@ public class Anthon extends Sprite {
 
     public void setMaxWatchfulEnergy(float maxWatchfulEnergy) {
         this.maxWatchfulEnergy = maxWatchfulEnergy;
+        watchfulEnergy = maxWatchfulEnergy;
     }
 
     public float getWatchfulDamageLoss() {
