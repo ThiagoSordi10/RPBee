@@ -34,11 +34,17 @@ public class CutsceneScreen implements Screen {
         image.setSize(game.V_WIDTH, game.V_HEIGHT);
 
         stage.addActor(image);
+
+        gameTitleTex = new Texture(Gdx.files.internal("cutscenes/cutscene2.png"));
+        image = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
+        image.setSize(game.V_WIDTH, game.V_HEIGHT);
+
+        stage.addActor(image);
     }
 
     @Override
     public void show() {
-
+        //stage.addAction();
     }
 
     @Override

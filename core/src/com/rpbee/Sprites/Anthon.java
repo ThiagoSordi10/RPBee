@@ -362,10 +362,13 @@ public class Anthon extends Sprite {
     }
 
     public void setExp(int amount){
-        exp += amount;
-        if(exp >= expNeeded){
-            level++;
-            exp = 0;
+        while(amount > 0){
+            exp += amount;
+            if(exp >= expNeeded){
+                level++;
+                exp = 0;
+                amount -= expNeeded;
+            }
         }
     }
 
