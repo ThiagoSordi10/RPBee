@@ -141,33 +141,7 @@ public class PlayScreen implements Screen {
     public void show() {
 
     }
-    
-    public void pauseGame(){
-        
-        isPause = true;
-        pauseGroup = new Group();
-        
-        Texture gameTitleTex = new Texture(Gdx.files.internal("janelaHabilidades.png"));
-        semiTransparentBG = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
-        semiTransparentBG.setSize(game.V_WIDTH, game.V_HEIGHT);
-        semiTransparentBG.getColor().a=.9f;
-          
-        // setSize(Size of screen) and make it semi transparent.
-        
-        pauseGroup.addActor(semiTransparentBG);
-        //pauseGroup.setPosition(135, 0);
 
-        //crate all other pause UI buttons with listener and add to pauseGroup
-
-        hud.stage.addActor(pauseGroup);
-    }
-    
-    public void resumeGame(){
-        if(isPause){
-            isPause=false;
-            pauseGroup.remove();
-        }  
-    }
 
     public void changeMap(){
         indexMap ++;
@@ -217,7 +191,7 @@ public class PlayScreen implements Screen {
                 changeMap();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.H)){
-                pauseGame();
+                this.pause();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
                 GameManager ourInstance = new GameManager();
@@ -302,25 +276,25 @@ public class PlayScreen implements Screen {
             System.out.println("Old recharge fly amount: "+player.getRechargeFlyAmount());
             player.setRechargeFlyAmount(player.getRechargeFlyAmount()+0.05f);
             System.out.println("New recharge fly amount: "+player.getRechargeFlyAmount());
-            resumeGame();
+            this.resume();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F2)){
             player.setMaxFlyEnergy(player.getMaxFlyEnergy()+5);
             player.setFlyEnergyLoss(player.getFlyEnergyLoss()+0.01f);
-            resumeGame();
+            this.resume();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F3)){
             player.setMaxWatchfulEnergy(player.getMaxWatchfulEnergy()+5);
             player.setWatchfulDamageLoss(player.getWatchfulDamageLoss()+0.05f);
-            resumeGame();
+            this.resume();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F4)){
-            resumeGame();
+            this.resume();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.F5)){
             player.setWatchfulEnergyLoss(player.getWatchfulEnergyLoss()+0.05f);
             player.setRechargeWatchfulAmount(player.getRechargeWatchfulAmount()+0.05f);
-            resumeGame();
+            this.resume();
         }
 
         //clear game screen (black)
@@ -380,12 +354,30 @@ public class PlayScreen implements Screen {
 
     @Override
     public void pause() {
+        isPause = true;
+        pauseGroup = new Group();
 
+        Texture gameTitleTex = new Texture(Gdx.files.internal("janelaHabilidades.png"));
+        semiTransparentBG = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
+        semiTransparentBG.setSize(game.V_WIDTH, game.V_HEIGHT);
+        semiTransparentBG.getColor().a=.9f;
+
+        // setSize(Size of screen) and make it semi transparent.
+
+        pauseGroup.addActor(semiTransparentBG);
+        //pauseGroup.setPosition(135, 0);
+
+        //crate all other pause UI buttons with listener and add to pauseGroup
+
+        hud.stage.addActor(pauseGroup);
     }
 
     @Override
     public void resume() {
-
+        if(isPause){
+            isPause=false;
+            pauseGroup.remove();
+        }
     }
 
     @Override
