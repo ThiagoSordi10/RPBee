@@ -10,8 +10,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
@@ -52,6 +54,9 @@ public class PlayScreen implements Screen {
     //Sprites
     private Anthon player;
 
+    private Array<String> mapsNames = new Array<String>();
+    private int indexMap = 0;
+
     //private Music music;
 
 //    private Array<Item> items;
@@ -59,6 +64,9 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(RPBeeGame game){
         atlas = new TextureAtlas("rpbee.atlas");
+        mapsNames.add("maps/prologo.tmx");
+        mapsNames.add("maps/ato1.tmx");
+
         this.game = game;
         //cam that follow mario
         gameCam = new OrthographicCamera();
@@ -69,7 +77,7 @@ public class PlayScreen implements Screen {
 
         //Load map and setup map renderer
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("maps/prologo.tmx");
+        map = mapLoader.load(mapsNames.get(indexMap));
         renderer = new OrthogonalTiledMapRenderer(map, 1 / RPBeeGame.PPM);
         //initially set our gamcam to be centered correctly at the start of of map
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2,0);
@@ -124,6 +132,23 @@ public class PlayScreen implements Screen {
 
     }
 
+    public void changeMap(){
+        indexMap ++;
+        map = mapLoader.load(mapsNames.get(indexMap));
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / RPBeeGame.PPM);
+
+        Array<Body> bodies=new Array<Body>();
+
+        world.getBodies(bodies);
+
+        for (Body body: bodies){
+            world.destroyBody(body);
+        }
+        creator = new B2WorldCreator(this);
+        player.resetPosition();
+        player.defineAnthon();
+    }
+
     public void handleInput(float delta){
         //control our player using immediate impulses
         if(player.currentState != Anthon.State.DEAD){
@@ -150,6 +175,9 @@ public class PlayScreen implements Screen {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
                 player.interactTile();
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.E) && player.getCheckpointNear()){
+                changeMap();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
                 GameManager ourInstance = new GameManager();

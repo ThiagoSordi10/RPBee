@@ -11,6 +11,7 @@ import com.rpbee.RPBeeGame;
 import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Enemies.Enemy;
 import com.rpbee.Sprites.Enemies.Sunflower;
+import com.rpbee.Sprites.TileObjects.Checkpoint;
 import com.rpbee.Sprites.TileObjects.Chest;
 import com.rpbee.Sprites.TileObjects.InteractiveTileObject;
 import com.rpbee.Sprites.TileObjects.Pollen;
@@ -68,12 +69,14 @@ public class B2WorldCreator {
 
             sunflowers.add(new Sunflower(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM));
         }
-//
-//        //Create brick bodies/fixtures
-//        for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
-//
-//            new Brick(screen, object);
-//        }
+
+        //Create brick bodies/fixtures
+        for(MapObject object : map.getLayers().get("checkpoint").getObjects().getByType(RectangleMapObject.class)){
+
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            new Checkpoint(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM);
+        }
 //
 //        //Create coins bodies/fixtures
 //        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){

@@ -8,6 +8,7 @@ import com.rpbee.Sprites.Enemies.Enemy;
 import com.rpbee.Sprites.Other.BeeSting;
 import com.rpbee.Sprites.Other.HoneyBall;
 import com.rpbee.Sprites.Other.PoisonBall;
+import com.rpbee.Sprites.TileObjects.Checkpoint;
 import com.rpbee.Sprites.TileObjects.Chest;
 import com.rpbee.Sprites.TileObjects.Pollen;
 
@@ -42,6 +43,13 @@ public class WorldContactListener implements ContactListener {
                     ((Chest) fixB.getUserData()).onContact((Anthon) fixA.getUserData());
                 }else{
                     ((Chest) fixA.getUserData()).onContact((Anthon) fixB.getUserData());
+                }
+                break;
+            case RPBeeGame.BEE_BIT | RPBeeGame.CHECKPOINT_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
+                    ((Checkpoint) fixB.getUserData()).onContact((Anthon) fixA.getUserData());
+                }else{
+                    ((Checkpoint) fixA.getUserData()).onContact((Anthon) fixB.getUserData());
                 }
                 break;
             case RPBeeGame.BEE_BIT | RPBeeGame.POLLEN_BIT:
@@ -203,6 +211,13 @@ public class WorldContactListener implements ContactListener {
                     ((Chest) fixB.getUserData()).afterContact((Anthon) fixA.getUserData());
                 }else{
                     ((Chest) fixA.getUserData()).afterContact((Anthon) fixB.getUserData());
+                }
+                break;
+            case RPBeeGame.BEE_BIT | RPBeeGame.CHECKPOINT_BIT:
+                if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
+                    ((Checkpoint) fixB.getUserData()).afterContact((Anthon) fixA.getUserData());
+                }else{
+                    ((Checkpoint) fixA.getUserData()).afterContact((Anthon) fixB.getUserData());
                 }
                 break;
             case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_BIT:

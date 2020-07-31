@@ -33,7 +33,7 @@ public class RPBeeGame extends Game {
 	public static final short BEE_BIT = 2;
 	public static final short BEE_STING_BIT = 4;
 	public static final short CHEST_BIT = 8;
-	//public static final short DESTROYED_BIT = 16;
+	public static final short CHECKPOINT_BIT = 16;
 	public static final short OBJECT_BIT = 32;
 	public static final short ENEMY_BIT = 64;
 	public static final short HONEYBALL_BIT = 128;

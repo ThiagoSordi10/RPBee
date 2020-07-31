@@ -72,6 +72,6 @@
  </objectgroup>
  <objectgroup id="12" name="polinizar" offsetx="-1.33333" offsety="-1.33333"/>
  <objectgroup id="13" name="checkpoint">
-  <object id="32" x="3178.5" y="260"/>
+  <object id="32" x="519.833" y="244"/>
  </objectgroup>
 </map>

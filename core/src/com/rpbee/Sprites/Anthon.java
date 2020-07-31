@@ -92,6 +92,7 @@ public class Anthon extends Sprite {
     private int qntPollen;
     private Chest chestNear;
     private Pollen pollenNear;
+    private boolean checkpointNear;
 
     public Anthon(PlayScreen screen){
         //initialize default values
@@ -159,11 +160,15 @@ public class Anthon extends Sprite {
         defineAnthon();
 
         //set initial values for anthon's location, width and height. And initial frame as anthonStand.
-        setBounds(0,0,256 / RPBeeGame.PPM * 0.2f ,256 / RPBeeGame.PPM * 0.2f);
+        resetPosition();
         setRegion(anthonStand);
 
         honeyballs = new Array<HoneyBall>();
         beeStings = new Array<BeeSting>();
+    }
+
+    public void resetPosition(){
+        setBounds(0,0,256 / RPBeeGame.PPM * 0.2f ,256 / RPBeeGame.PPM * 0.2f);
     }
 
     public void update(float delta){
@@ -293,6 +298,14 @@ public class Anthon extends Sprite {
         pollenNear = pollen;
     }
 
+    public void setCheckpointNear(boolean is) {
+        checkpointNear = is;
+    }
+
+    public boolean getCheckpointNear(){
+        return checkpointNear;
+    }
+
     public void interactTile(){
         if(chestNear != null){
             chestNear.open(this);
@@ -300,7 +313,6 @@ public class Anthon extends Sprite {
         else if(pollenNear != null){
             pollenNear.catchPollen(this);
         }
-
     }
 
     public void setQntHoney(int qnt){
@@ -415,7 +427,8 @@ public class Anthon extends Sprite {
         shape.setRadius(12 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.BEE_BIT;
         fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.OBJECT_BIT |
-                RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT | RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.POLLEN_BIT;
+                RPBeeGame.CHEST_BIT | RPBeeGame.ENEMY_BIT | RPBeeGame.POISONBALL_BIT | RPBeeGame.HONEY_SENSOR_BIT |
+                RPBeeGame.POLLEN_BIT | RPBeeGame.CHECKPOINT_BIT;
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);
