@@ -212,7 +212,7 @@ public class PlayScreen implements Screen {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.E) && player.getCheckpointNear()){
                     changeMap();
                 }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.H) && levelHability<player.getLevel()){
+                if (Gdx.input.isKeyJustPressed(Input.Keys.H) && levelHability < player.getLevel()){
                     newHability = true;
                     this.pause();
                 }
