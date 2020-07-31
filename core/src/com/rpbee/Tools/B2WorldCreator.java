@@ -70,35 +70,14 @@ public class B2WorldCreator {
             sunflowers.add(new Sunflower(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM));
         }
 
-        //Create brick bodies/fixtures
+        //Create checkpoint bodies/fixtures
         for(MapObject object : map.getLayers().get("checkpoint").getObjects().getByType(RectangleMapObject.class)){
 
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             new Checkpoint(screen, rect.getX() / RPBeeGame.PPM, rect.getY() / RPBeeGame.PPM);
         }
-//
-//        //Create coins bodies/fixtures
-//        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
-//
-//            new Coin(screen, object);
-//        }
-//
-//        //create all goombas
-//        goombas = new Array<Goomba>();
-//        for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            goombas.add(new Goomba(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
-//        }
-//
-//        //create all turtles
-//        turtles = new Array<Turtle>();
-//        for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            turtles.add(new Turtle(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
-//        }
+
     }
 
     public Array<InteractiveTileObject> getTiles(){
