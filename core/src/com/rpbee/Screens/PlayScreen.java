@@ -234,60 +234,58 @@ public class PlayScreen implements Screen {
     public void update(float delta){
         //handle user input first
         handleInput(delta);
-        //handleSpawningItems();
-        //takes 1 step in the physics simulation(60 times per second)
-        world.step(1/60f, 6, 2);
+        if(!isPause) {
+            //takes 1 step in the physics simulation(60 times per second)
+            world.step(1 / 60f, 6, 2);
 
-        player.update(delta);
-        for(Enemy enemy : creator.getEnemies()){
-            enemy.update(delta, player.getX(), player.getY());
+            player.update(delta);
+            for (Enemy enemy : creator.getEnemies()) {
+                enemy.update(delta, player.getX(), player.getY());
 //            if(enemy.getX() < player.getX() + 224 / RPBeeGame.PPM){
 //                enemy.b2body.setActive(true);
 //            }
 //            if(enemy.getX() < player.getX() - 224 / RPBeeGame.PPM){
 //                enemy.b2body.setActive(false);
 //            }
-        }
+            }
 
-        for(InteractiveTileObject tile : creator.getTiles()) {
-            tile.update(delta);
-        }
-//
-//        for(Item item : items){
-//            item.update(delta);
-//        }
-        if(!player.isWatchful()){
-            hud.removeWatchfulBar();
-        }else{
-            hud.addWatchfulBar();
-        }
-        hud.update(delta);
+            for (InteractiveTileObject tile : creator.getTiles()) {
+                tile.update(delta);
+            }
 
-        //attach gamecam to player x coord
-        if(player.currentState != Anthon.State.DEAD && player.currentState != Anthon.State.STANDING){
-            gameCam.position.x = player.b2body.getPosition().x;
-        }
+            if (!player.isWatchful()) {
+                hud.removeWatchfulBar();
+            } else {
+                hud.addWatchfulBar();
+            }
+            hud.update(delta);
+
+            //attach gamecam to player x coord
+            if (player.currentState != Anthon.State.DEAD && player.currentState != Anthon.State.STANDING) {
+                gameCam.position.x = player.b2body.getPosition().x;
+            }
 
 
-        //Player cant go up out of screen
-        if(player.b2body.getPosition().y * 1.05f > gamePort.getWorldHeight()){
-            player.setVelocity(player.b2body.getLinearVelocity().x, -0.5f);
+            //Player cant go up out of screen
+            if (player.b2body.getPosition().y * 1.05f > gamePort.getWorldHeight()) {
+                player.setVelocity(player.b2body.getLinearVelocity().x, -0.5f);
+            }
+            //Player cant go right out of screen
+            if (player.b2body.getPosition().x * 1.05f < 0) {
+                player.setVelocity(0.5f, player.b2body.getLinearVelocity().y);
+            }
+            //Die when fall into hole
+            if (player.b2body.getPosition().y < 0) {
+                player.die();
+            }
+            if (player.getIsInHoney()) {
+                player.setVelocity(player.b2body.getLinearVelocity().x / 5, player.b2body.getLinearVelocity().y / 5);
+            }
+            //update camera coordinates after changes
+            gameCam.update();
+            //renderer draw only what our camera can see
+            renderer.setView(gameCam);
         }
-        //Player cant go right out of screen
-        if(player.b2body.getPosition().x * 1.05f < 0){
-            player.setVelocity(0.5f,player.b2body.getLinearVelocity().y);
-        }
-        //Die when fall into hole
-        if(player.b2body.getPosition().y < 0){
-            player.die();
-        }
-        if(player.getIsInHoney()){
-            player.setVelocity(player.b2body.getLinearVelocity().x/5, player.b2body.getLinearVelocity().y/5);
-        }
-        //update camera coordinates after changes
-        gameCam.update();
-        //renderer draw only what our camera can see
-        renderer.setView(gameCam);
     }
 
     @Override
@@ -296,7 +294,7 @@ public class PlayScreen implements Screen {
         update(delta);
 
         //clear game screen (black)
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //render game map
@@ -308,23 +306,21 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        for(Enemy enemy : creator.getEnemies()){
+        for (Enemy enemy : creator.getEnemies()) {
             enemy.draw(game.batch);
         }
 
-        for(InteractiveTileObject tile : creator.getTiles()){
+        for (InteractiveTileObject tile : creator.getTiles()) {
             tile.draw(game.batch);
         }
-//        for(Item item : items){
-//            item.draw(game.batch);
-//        }
+
         game.batch.end();
 
         //Draw HUD
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
 
-        if(gameOver()){
+        if (gameOver()) {
             game.setScreen(new GameOverScreen(game));
             dispose();
         }
