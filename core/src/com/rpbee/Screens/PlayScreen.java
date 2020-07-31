@@ -121,18 +121,6 @@ public class PlayScreen implements Screen {
 //        itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
     }
 
-//    public void spawnItem(ItemDef iDef){
-//        itemsToSpawn.add(iDef);
-//    }
-
-//    public void handleSpawningItems(){
-//        if(!itemsToSpawn.isEmpty()){
-//            ItemDef iDef = itemsToSpawn.poll();
-//            if(iDef.type == Mushroom.class){
-//                items.add(new Mushroom(this, iDef.position.x, iDef.position.y));
-//            }
-//        }
-//    }
 
     public TextureAtlas getAtlas(){
         return atlas;
@@ -162,50 +150,83 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float delta){
-        //control our player using immediate impulses
-        if(player.currentState != Anthon.State.DEAD){
-            if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-                player.jump();
+        if(isPause){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.F1)){
+                player.setMaxHealth(player.getMaxHealth()+5);
+                System.out.println("Old recharge fly amount: "+player.getRechargeFlyAmount());
+                player.setRechargeFlyAmount(player.getRechargeFlyAmount()+0.05f);
+                System.out.println("New recharge fly amount: "+player.getRechargeFlyAmount());
+                this.resume();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && Anthon.getFlyEnergy() > 4){
-                player.fly();
+            if(Gdx.input.isKeyJustPressed(Input.Keys.F2)){
+                player.setMaxFlyEnergy(player.getMaxFlyEnergy()+5);
+                player.setFlyEnergyLoss(player.getFlyEnergyLoss()+0.01f);
+                this.resume();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.F) && player.anthonCanWatchful()){
-                player.watchful();
+            if(Gdx.input.isKeyJustPressed(Input.Keys.F3)){
+                player.setMaxWatchfulEnergy(player.getMaxWatchfulEnergy()+5);
+                player.setWatchfulDamageLoss(player.getWatchfulDamageLoss()+0.05f);
+                this.resume();
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){
-                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            if(Gdx.input.isKeyJustPressed(Input.Keys.F4)){
+                player.setBeeStingDamage(player.getBeeStingDamage()-5);
+                player.setStingAutoHit(player.getStingAutoHit()+1);
+                this.resume();
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
-                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            if(Gdx.input.isKeyJustPressed(Input.Keys.F5)){
+                player.setWatchfulEnergyLoss(player.getWatchfulEnergyLoss()+0.05f);
+                player.setRechargeWatchfulAmount(player.getRechargeWatchfulAmount()+0.05f);
+                this.resume();
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.M)){
-                player.honey();
+            if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+                this.resume();
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
-                player.sting();
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
-                player.interactTile();
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.E) && player.getCheckpointNear()){
-                changeMap();
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.H)){
-                newHability = true;
-                this.pause();
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+        }else{
+            //control our player using immediate impulses
+            if(player.currentState != Anthon.State.DEAD){
+                if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
+                    player.jump();
+                }
+                if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && Anthon.getFlyEnergy() > 4){
+                    player.fly();
+                }
+                if(Gdx.input.isKeyJustPressed(Input.Keys.F) && player.anthonCanWatchful()){
+                    player.watchful();
+                }
+                if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){
+                    player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+                }
+                if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
+                    player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.M)){
+                    player.honey();
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
+                    player.sting();
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
+                    player.interactTile();
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.E) && player.getCheckpointNear()){
+                    changeMap();
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.H)){
+                    newHability = true;
                     this.pause();
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
-                GameManager ourInstance = new GameManager();
-                GameData gameData = new GameData();
-                gameData.setLife(player.getHealth());
-                gameData.setX(player.b2body.getPosition().x);
-                gameData.setY(player.b2body.getPosition().y);
-                gameData.setXp(Hud.xp);
-                ourInstance.saveData(gameData);
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+                    this.pause();
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
+                    GameManager ourInstance = new GameManager();
+                    GameData gameData = new GameData();
+                    gameData.setLife(player.getHealth());
+                    gameData.setX(player.b2body.getPosition().x);
+                    gameData.setY(player.b2body.getPosition().y);
+                    gameData.setXp(Hud.xp);
+                    ourInstance.saveData(gameData);
+                }
             }
         }
     }
@@ -272,40 +293,7 @@ public class PlayScreen implements Screen {
     @Override
     public void render(float delta) {
         //separate our update logic from render
-        if(!isPause){
-            update(delta);
-        }
-        
-        if(Gdx.input.isKeyJustPressed(Input.Keys.F1)){
-            player.setMaxHealth(player.getMaxHealth()+5);
-            System.out.println("Old recharge fly amount: "+player.getRechargeFlyAmount());
-            player.setRechargeFlyAmount(player.getRechargeFlyAmount()+0.05f);
-            System.out.println("New recharge fly amount: "+player.getRechargeFlyAmount());
-            this.resume();
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.F2)){
-            player.setMaxFlyEnergy(player.getMaxFlyEnergy()+5);
-            player.setFlyEnergyLoss(player.getFlyEnergyLoss()+0.01f);
-            this.resume();
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.F3)){
-            player.setMaxWatchfulEnergy(player.getMaxWatchfulEnergy()+5);
-            player.setWatchfulDamageLoss(player.getWatchfulDamageLoss()+0.05f);
-            this.resume();
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.F4)){
-            player.setBeeStingDamage(player.getBeeStingDamage()-5);
-            player.setStingAutoHit(player.getStingAutoHit()+1);
-            this.resume();
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.F5)){
-            player.setWatchfulEnergyLoss(player.getWatchfulEnergyLoss()+0.05f);
-            player.setRechargeWatchfulAmount(player.getRechargeWatchfulAmount()+0.05f);
-            this.resume();
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
-            this.resume();
-        }
+        update(delta);
 
         //clear game screen (black)
         Gdx.gl.glClearColor(0,0,0,1);
