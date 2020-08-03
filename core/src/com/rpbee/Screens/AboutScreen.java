@@ -37,8 +37,8 @@ public class AboutScreen implements Screen {
         BitmapFont font = new BitmapFont(Gdx.files.internal("data/font.fnt"));
         
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.WHITE);
-        Label aboutLabel = new Label("ABOUT", labelStyle);
-        Label returnLabel = new Label("Click to return to Main Menu", labelStyle);
+        Label aboutLabel = new Label("SOBRE", labelStyle);
+        Label returnLabel = new Label("Clique na tela para voltar ao menu inicial", labelStyle);
         returnLabel.setFontScale(0.5f);
         
         Texture imgAboutTex = new Texture(Gdx.files.internal("janelaHabilidades.png"));
