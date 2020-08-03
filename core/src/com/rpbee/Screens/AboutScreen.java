@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -26,7 +27,7 @@ public class AboutScreen implements Screen {
 
     private RPBeeGame game;
     
-    private TextButton btnPlayAgain, btnMainMenu;
+    private Image imgAbout;
 
     public AboutScreen(RPBeeGame game){
         this.game = game;
@@ -36,30 +37,24 @@ public class AboutScreen implements Screen {
         BitmapFont font = new BitmapFont(Gdx.files.internal("data/font.fnt"));
         
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.WHITE);
-        Label gameOverLabel = new Label("ABOUT", labelStyle);
-      
-        //Button style
-        Texture buttonUpTex = new Texture(Gdx.files.internal("data/button/myactor.png"));
-        Texture buttonOverTex = new Texture(Gdx.files.internal("data/button/myactorOver.png"));
-        Texture buttonDownTex = new Texture(Gdx.files.internal("data/button/myactorDown.png"));
+        Label aboutLabel = new Label("ABOUT", labelStyle);
+        Label returnLabel = new Label("Click to return to Main Menu", labelStyle);
+        returnLabel.setFontScale(0.5f);
         
-        TextButton.TextButtonStyle tbs = new TextButton.TextButtonStyle();
-        tbs.font = font;
-        tbs.up = new TextureRegionDrawable(new TextureRegion(buttonUpTex));
-        tbs.over = new TextureRegionDrawable(new TextureRegion(buttonOverTex));
-        tbs.down = new TextureRegionDrawable(new TextureRegion(buttonDownTex));
-        
-        //Button instancing
-        btnMainMenu = new TextButton("MAIN MENU", tbs);
+        Texture imgAboutTex = new Texture(Gdx.files.internal("janelaHabilidades.png"));
+        imgAbout = new Image(new TextureRegionDrawable(new TextureRegion(imgAboutTex)));
+        //imgAbout.setSize(300, 200);
         
         Table table = new Table();
         table.center();
 
         table.row();
-        table.add(gameOverLabel).padTop(30f).colspan(2).expand();
+        table.add(aboutLabel).padTop(10f).colspan(2).expand();
         table.row();
-        table.add(btnMainMenu).padTop(10f).colspan(2);
-        table.padBottom(30f);
+        table.add(imgAbout).padTop(10f).colspan(2).expand();
+        table.row();
+        table.add(returnLabel).padTop(10f).colspan(2).expand();
+        table.padBottom(10f);
     
         table.setFillParent(true);
         table.pack();
@@ -76,19 +71,10 @@ public class AboutScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.input.setInputProcessor(stage);
-        
-        btnMainMenu.addListener( new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MainMenuScreen(game));
-                dispose();
-            };
-        });
-        /*if(Gdx.input.justTouched()){
-            game.setScreen(new PlayScreen(game));
+        if(Gdx.input.justTouched()){
+            game.setScreen(new MainMenuScreen(game));
             dispose();
-        }*/
+        }
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
