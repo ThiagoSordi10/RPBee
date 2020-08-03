@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
 
 public class MainMenuScreen implements Screen{
-    private TextButton btnPlay, btnLoadGame, btnExit;
+    private TextButton btnPlay, btnLoadGame, btnAbout, btnExit;
     private Viewport viewport;
     private Stage stage;
     
@@ -55,6 +55,7 @@ public class MainMenuScreen implements Screen{
         //Button instancing
         btnPlay = new TextButton("PLAY", tbs);
         btnLoadGame = new TextButton("LOAD GAME", tbs);
+        btnAbout = new TextButton("ABOUT", tbs);
         btnExit = new TextButton("EXIT", tbs);
         
         Table table = new Table();
@@ -64,6 +65,8 @@ public class MainMenuScreen implements Screen{
         table.add(btnPlay).padTop(10f).colspan(2);
         table.row();
         table.add(btnLoadGame).padTop(10f).colspan(2);
+        table.row();
+        table.add(btnAbout).padTop(10f).colspan(2);
         table.row();
         table.add(btnExit).padTop(10f).colspan(2);
         table.padBottom(30f);
@@ -98,6 +101,13 @@ public class MainMenuScreen implements Screen{
             public void clicked(InputEvent event, float x, float y) {
                 PlayScreen.loadGame = true;
                 game.setScreen(new PlayScreen(game));
+                dispose();
+            };
+        });
+        btnAbout.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //game.setScreen(new PlayScreen(game));
                 dispose();
             };
         });
