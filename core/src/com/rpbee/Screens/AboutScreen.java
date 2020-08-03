@@ -1,10 +1,10 @@
-
 package com.rpbee.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,27 +20,24 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
 
-public class MainMenuScreen implements Screen{
-    private TextButton btnPlay, btnLoadGame, btnAbout, btnExit;
+public class AboutScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
-    
-    private RPBeeGame game;
 
-    public MainMenuScreen(RPBeeGame game) {
+    private RPBeeGame game;
+    
+    private TextButton btnPlayAgain, btnMainMenu;
+
+    public AboutScreen(RPBeeGame game){
         this.game = game;
-        viewport = new FitViewport(RPBeeGame.V_WIDTH, RPBeeGame.V_HEIGHT);
+        viewport = new FitViewport(RPBeeGame.V_WIDTH, RPBeeGame.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, game.batch);
-        
 
         BitmapFont font = new BitmapFont(Gdx.files.internal("data/font.fnt"));
         
-        
-        //Label titulo
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.WHITE);
-        Label label = new Label("MAIN MENU", labelStyle);
-        //label.setPosition(x,y);
-        
+        Label gameOverLabel = new Label("ABOUT", labelStyle);
+      
         //Button style
         Texture buttonUpTex = new Texture(Gdx.files.internal("data/button/myactor.png"));
         Texture buttonOverTex = new Texture(Gdx.files.internal("data/button/myactorOver.png"));
@@ -53,24 +50,17 @@ public class MainMenuScreen implements Screen{
         tbs.down = new TextureRegionDrawable(new TextureRegion(buttonDownTex));
         
         //Button instancing
-        btnPlay = new TextButton("PLAY", tbs);
-        btnLoadGame = new TextButton("LOAD GAME", tbs);
-        btnAbout = new TextButton("ABOUT", tbs);
-        btnExit = new TextButton("EXIT", tbs);
+        btnMainMenu = new TextButton("MAIN MENU", tbs);
         
         Table table = new Table();
+        table.center();
+
         table.row();
-        table.add(label).padTop(30f).colspan(2).expand();
+        table.add(gameOverLabel).padTop(30f).colspan(2).expand();
         table.row();
-        table.add(btnPlay).padTop(10f).colspan(2);
-        table.row();
-        table.add(btnLoadGame).padTop(10f).colspan(2);
-        table.row();
-        table.add(btnAbout).padTop(10f).colspan(2);
-        table.row();
-        table.add(btnExit).padTop(10f).colspan(2);
+        table.add(btnMainMenu).padTop(10f).colspan(2);
         table.padBottom(30f);
-        
+    
         table.setFillParent(true);
         table.pack();
         table.getColor().a = 0f;
@@ -78,46 +68,27 @@ public class MainMenuScreen implements Screen{
         
         stage.addActor(table);
     }
-    
 
     @Override
     public void show() {
-       
+
     }
 
     @Override
-    public void render(float f) {
+    public void render(float delta) {
         Gdx.input.setInputProcessor(stage);
-        // Play button listener
-        btnPlay.addListener( new ClickListener() {
+        
+        btnMainMenu.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new PlayScreen(game));
+                game.setScreen(new MainMenuScreen(game));
                 dispose();
             };
         });
-        btnLoadGame.addListener( new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                PlayScreen.loadGame = true;
-                game.setScreen(new PlayScreen(game));
-                dispose();
-            };
-        });
-        btnAbout.addListener( new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new AboutScreen(game));
-                dispose();
-            };
-        });
-        btnExit.addListener( new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-                System.exit(0);
-            };
-        });
+        /*if(Gdx.input.justTouched()){
+            game.setScreen(new PlayScreen(game));
+            dispose();
+        }*/
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
@@ -125,28 +96,27 @@ public class MainMenuScreen implements Screen{
     }
 
     @Override
-    public void resize(int i, int i1) {
-        
+    public void resize(int width, int height) {
+
     }
 
     @Override
     public void pause() {
-       
+
     }
 
     @Override
     public void resume() {
-        
+
     }
 
     @Override
     public void hide() {
-        
+
     }
 
     @Override
     public void dispose() {
         stage.dispose();
     }
-    
 }
