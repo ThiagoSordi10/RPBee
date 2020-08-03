@@ -235,6 +235,8 @@ public class Anthon extends Sprite {
             currentColor.set(1,1,1,1);
             colorTimer = 0;
         }
+
+        RPBeeGame.manager.get("audio/sounds/correndo.wav", Sound.class).play(0.1f);
     }
 
     public static float getMaxHealth() {
