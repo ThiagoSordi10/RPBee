@@ -3,6 +3,7 @@ package com.rpbee.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -69,7 +70,7 @@ public class PlayScreen implements Screen {
     private Group pauseGroup;
     private Image semiTransparentBG;
 
-    //private Music music;
+    private Music music;
 
 //    private Array<Item> items;
 //    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
@@ -113,10 +114,10 @@ public class PlayScreen implements Screen {
             Hud.xp = gameData.getXp();
         }
 
-//        music = MarioBros.manager.get("audio/music/mario_music.ogg", Music.class);
-//        music.setLooping(true);
-//        music.setVolume(0.3f);
-//        music.play();
+        music = RPBeeGame.manager.get("audio/ambienteFlorestas.ogg", Music.class);
+        music.setLooping(true);
+        music.setVolume(0.3f);
+        music.play();
 
 //        items = new Array<Item>();
 //        itemsToSpawn = new LinkedBlockingQueue<ItemDef>();

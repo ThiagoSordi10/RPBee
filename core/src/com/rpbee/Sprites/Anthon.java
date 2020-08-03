@@ -1,6 +1,8 @@
 package com.rpbee.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -514,14 +516,6 @@ public class Anthon extends Sprite {
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);
-
-//        EdgeShape head = new EdgeShape();G
-//        head.set(new Vector2(-2 / MarioBros.PPM, 6 / MarioBros.PPM), new Vector2(2 / MarioBros.PPM, 6 / MarioBros.PPM));
-//        fdef.filter.categoryBits = MarioBros.MARIO_HEAD_BIT;
-//        fdef.shape = head;
-//        fdef.isSensor = true;
-//
-//        b2body.createFixture(fdef).setUserData(this);
     }
 
     public void hit(float damage){
@@ -537,8 +531,8 @@ public class Anthon extends Sprite {
 
         if (!isDead()) {
 
-//            MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
-//            MarioBros.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
+            RPBeeGame.manager.get("audio/ambienteFlorestas.ogg", Music.class).stop();
+            RPBeeGame.manager.get("audio/sounds/gameOver.wav", Sound.class).play();
             anthonIsDead = true;
             Filter filter = new Filter();
             filter.maskBits = RPBeeGame.NOTHING_BIT;
@@ -580,12 +574,14 @@ public class Anthon extends Sprite {
         if ( currentState != State.JUMPING ) {
             b2body.applyLinearImpulse(new Vector2(0,3f), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
+            RPBeeGame.manager.get("audio/sounds/pulo.wav", Sound.class).play(0.1f);
         }
     }
 
     public void fly(){
             b2body.applyLinearImpulse(new Vector2(0, 3f), b2body.getWorldCenter(), true);
             currentState = State.FLYING;
+            RPBeeGame.manager.get("audio/sounds/abelhaVoando.wav", Sound.class).play(0.1f);
     }
 
     public void honey(){

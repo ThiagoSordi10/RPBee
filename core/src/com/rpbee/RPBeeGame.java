@@ -43,22 +43,21 @@ public class RPBeeGame extends Game {
 
 	public SpriteBatch batch; //All screen have access
 
-	//public static AssetManager manager;
+	public static AssetManager manager;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-//		manager = new AssetManager();
-//		manager.load("audio/music/mario_music.ogg", Music.class);
-//		manager.load("audio/sounds/coin.wav", Sound.class);
-//		manager.load("audio/sounds/bump.wav", Sound.class);
-//		manager.load("audio/sounds/breakblock.wav", Sound.class);
-//		manager.load("audio/sounds/powerup_spawn.wav", Sound.class);
-//		manager.load("audio/sounds/powerup.wav", Sound.class);
-//		manager.load("audio/sounds/stomp.wav", Sound.class);
-//		manager.load("audio/sounds/powerdown.wav", Sound.class);
-//		manager.load("audio/sounds/mariodie.wav", Sound.class);
-//		manager.finishLoading();
+		manager = new AssetManager();
+		manager.load("audio/ambienteFlorestas.ogg", Music.class);
+		manager.load("audio/suspense.ogg", Music.class);
+		manager.load("audio/sounds/abelhaVoando.wav", Sound.class);
+		manager.load("audio/sounds/abrirBau.wav", Sound.class);
+		manager.load("audio/sounds/caminhar.wav", Sound.class);
+		manager.load("audio/sounds/gameOver.wav", Sound.class);
+		manager.load("audio/sounds/pulo.wav", Sound.class);
+		manager.load("audio/sounds/grama.wav", Sound.class);
+		manager.finishLoading();
 		setScreen(new MainMenuScreen(this));
 	}
 
@@ -70,7 +69,7 @@ public class RPBeeGame extends Game {
 	@Override
 	public void dispose () {
 		super.dispose();
-		//manager.dispose();
+		manager.dispose();
 		batch.dispose();
 	}
 
