@@ -100,7 +100,7 @@ public class PlayScreen implements Screen {
         }
         chapters = new HashMap<Integer, Integer>();
         chapterIndex = 0;
-        cutscenesTime = true;
+        //cutscenesTime = true;
 
         chapters.put(0, 2);
         chapters.put(1, 3);

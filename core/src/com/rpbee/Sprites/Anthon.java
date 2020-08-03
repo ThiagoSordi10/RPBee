@@ -96,6 +96,8 @@ public class Anthon extends Sprite {
     private Pollen pollenNear;
     private boolean checkpointNear;
 
+    private float runTimerSound;
+
     public Anthon(PlayScreen screen){
         //initialize default values
         this.screen = screen;
@@ -236,7 +238,11 @@ public class Anthon extends Sprite {
             colorTimer = 0;
         }
 
-        RPBeeGame.manager.get("audio/sounds/correndo.wav", Sound.class).play(0.1f);
+        runTimerSound += delta;
+        if(currentState == State.RUNNING && runTimerSound > 0.7f) {
+            RPBeeGame.manager.get("audio/sounds/correndo.wav", Sound.class).play(0.5f);
+            runTimerSound = 0;
+        }
     }
 
     public static float getMaxHealth() {
