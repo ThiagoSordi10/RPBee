@@ -36,7 +36,7 @@ public class GameOverScreen implements Screen {
         BitmapFont font = new BitmapFont(Gdx.files.internal("data/font.fnt"));
         
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.WHITE);
-        Label gameOverLabel = new Label("GAME OVER", labelStyle);
+        Label gameOverLabel = new Label("FIM DE JOGO", labelStyle);
       
         //Button style
         Texture buttonUpTex = new Texture(Gdx.files.internal("data/button/myactor.png"));
@@ -50,8 +50,8 @@ public class GameOverScreen implements Screen {
         tbs.down = new TextureRegionDrawable(new TextureRegion(buttonDownTex));
         
         //Button instancing
-        btnPlayAgain = new TextButton("PLAY AGAIN", tbs);
-        btnMainMenu = new TextButton("MAIN MENU", tbs);
+        btnPlayAgain = new TextButton("JOGAR NOVAMENTE", tbs);
+        btnMainMenu = new TextButton("MENU INICIAL", tbs);
         
         Table table = new Table();
         table.center();

@@ -38,7 +38,7 @@ public class MainMenuScreen implements Screen{
         
         //Label titulo
         Label.LabelStyle labelStyle = new Label.LabelStyle(font,Color.WHITE);
-        Label label = new Label("MAIN MENU", labelStyle);
+        Label label = new Label("MENU INICIAL", labelStyle);
         //label.setPosition(x,y);
         
         //Button style
@@ -53,10 +53,10 @@ public class MainMenuScreen implements Screen{
         tbs.down = new TextureRegionDrawable(new TextureRegion(buttonDownTex));
         
         //Button instancing
-        btnPlay = new TextButton("PLAY", tbs);
-        btnLoadGame = new TextButton("LOAD GAME", tbs);
-        btnAbout = new TextButton("ABOUT", tbs);
-        btnExit = new TextButton("EXIT", tbs);
+        btnPlay = new TextButton("JOGAR", tbs);
+        btnLoadGame = new TextButton("CARREGAR JOGO", tbs);
+        btnAbout = new TextButton("SOBRE", tbs);
+        btnExit = new TextButton("SAIR", tbs);
         
         Table table = new Table();
         table.row();

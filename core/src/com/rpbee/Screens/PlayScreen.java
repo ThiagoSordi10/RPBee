@@ -414,7 +414,7 @@ public class PlayScreen implements Screen {
         if(newHability){
             pauseGroup = new Group();
 
-            Texture gameTitleTex = new Texture(Gdx.files.internal("janelaHabilidades.png"));
+            Texture gameTitleTex = new Texture(Gdx.files.internal("janelaHabilidadesPT-BR.png"));
             semiTransparentBG = new Image(new TextureRegionDrawable(new TextureRegion(gameTitleTex)));
             semiTransparentBG.setSize(game.V_WIDTH, game.V_HEIGHT);
             semiTransparentBG.getColor().a=.9f;
