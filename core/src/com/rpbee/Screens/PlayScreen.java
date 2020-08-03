@@ -17,7 +17,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -31,6 +36,9 @@ import com.rpbee.Sprites.Enemies.Enemy;
 import com.rpbee.Sprites.TileObjects.InteractiveTileObject;
 import com.rpbee.Tools.B2WorldCreator;
 import com.rpbee.Tools.WorldContactListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayScreen implements Screen {
     
@@ -72,10 +80,31 @@ public class PlayScreen implements Screen {
 
     private Music music;
 
+    //Cutscenes
+    TextureRegionDrawable[] cutscenes = new TextureRegionDrawable[8];
+    //private int[] cutscenesTimer = {13,22,3,4,4,4,4,4};
+    private float cutsceneTimer;
+    private Image cutscene;
+    private int cutsceneIndex = 0;
+    private Stage stage;
+    private Map<Integer, Integer> chapters;
+    private int chapterIndex;
+    private boolean cutscenesTime;
+
 //    private Array<Item> items;
 //    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     public PlayScreen(RPBeeGame game){
+        for (int i = 1; i<9; i++) {
+            cutscenes[i-1] = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cutscenes/cutscene"+i+".png"))));
+        }
+        chapters = new HashMap<Integer, Integer>();
+        chapterIndex = 0;
+        cutscenesTime = true;
+        //chapters.put(0, 0);
+        //chapters.put(0, 1);
+        chapters.put(0, 2);
+
         atlas = new TextureAtlas("rpbee.atlas");
         mapsNames.add("maps/prologo.tmx");
         mapsNames.add("maps/ato1.tmx");
@@ -87,6 +116,8 @@ public class PlayScreen implements Screen {
         gamePort = new FitViewport(RPBeeGame.V_WIDTH / RPBeeGame.PPM, RPBeeGame.V_HEIGHT / RPBeeGame.PPM, gameCam);
         //create our game HUD for scores/timers/level info
         hud = new Hud(game.batch);
+
+        stage = new Stage(gamePort, game.batch);
 
         //Load map and setup map renderer
         mapLoader = new TmxMapLoader();
@@ -119,8 +150,6 @@ public class PlayScreen implements Screen {
         music.setVolume(0.3f);
         music.play();
 
-//        items = new Array<Item>();
-//        itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
     }
 
 
@@ -130,11 +159,28 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        makeStage();
+    }
 
+    private void makeStage() {
+        Table BackGroundLayer = new Table();
+        cutscene = new Image(cutscenes[0]);
+        BackGroundLayer.add(cutscene);
+
+        Stack layers = new Stack();
+        layers.setSize(RPBeeGame.V_WIDTH*1.8f, RPBeeGame.V_HEIGHT*2f);
+        layers.setY(layers.getY()+70);
+        layers.add(BackGroundLayer);
+
+        stage.clear();
+        stage.addActor(layers);
     }
 
 
     public void changeMap(){
+        cutscenesTime = true;
         indexMap ++;
         map = mapLoader.load(mapsNames.get(indexMap));
         renderer = new OrthogonalTiledMapRenderer(map, 1 / RPBeeGame.PPM);
@@ -243,12 +289,6 @@ public class PlayScreen implements Screen {
             player.update(delta);
             for (Enemy enemy : creator.getEnemies()) {
                 enemy.update(delta, player.getX(), player.getY());
-//            if(enemy.getX() < player.getX() + 224 / RPBeeGame.PPM){
-//                enemy.b2body.setActive(true);
-//            }
-//            if(enemy.getX() < player.getX() - 224 / RPBeeGame.PPM){
-//                enemy.b2body.setActive(false);
-//            }
             }
 
             for (InteractiveTileObject tile : creator.getTiles()) {
@@ -292,6 +332,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         //separate our update logic from render
         update(delta);
 
@@ -299,32 +340,49 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //render game map
-        renderer.render();
+        if(!cutscenesTime){
+            //render game map
+            renderer.render();
 
-        //renderer our Box2DDebugLines
-        b2dr.render(world, gameCam.combined);
+            //renderer our Box2DDebugLines
+            b2dr.render(world, gameCam.combined);
 
-        game.batch.setProjectionMatrix(gameCam.combined);
-        game.batch.begin();
-        player.draw(game.batch);
-        for (Enemy enemy : creator.getEnemies()) {
-            enemy.draw(game.batch);
-        }
+            game.batch.setProjectionMatrix(gameCam.combined);
+            game.batch.begin();
+            player.draw(game.batch);
+            for (Enemy enemy : creator.getEnemies()) {
+                enemy.draw(game.batch);
+            }
 
-        for (InteractiveTileObject tile : creator.getTiles()) {
-            tile.draw(game.batch);
-        }
+            for (InteractiveTileObject tile : creator.getTiles()) {
+                tile.draw(game.batch);
+            }
 
-        game.batch.end();
+            game.batch.end();
 
-        //Draw HUD
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+            //Draw HUD
+            game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+            hud.stage.draw();
 
-        if (gameOver()) {
-            game.setScreen(new GameOverScreen(game));
-            dispose();
+            if (gameOver()) {
+                game.setScreen(new GameOverScreen(game));
+                dispose();
+            }
+        }else {
+            cutsceneTimer += delta;
+            stage.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    if (x >= gamePort.getScreenWidth() / 2 && cutsceneIndex <= chapters.get(chapterIndex)) {
+                        cutscene.setDrawable(cutscenes[cutsceneIndex]);
+                        cutsceneIndex++;
+                    }else{
+                        cutsceneIndex --;
+                    }
+                };
+            });
+            stage.act(delta);
+            stage.draw();
         }
     }
 
