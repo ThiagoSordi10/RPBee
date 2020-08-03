@@ -77,7 +77,6 @@ public class CutsceneScreen implements Screen {
     private void makeStage() {
         Table BackGroundLayer = new Table();
         background = new Image(images[0]);
-        //background.setSize(game.V_WIDTH, game.V_HEIGHT);
         BackGroundLayer.add(background);
 
         Stack layers = new Stack();
