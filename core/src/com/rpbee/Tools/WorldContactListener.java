@@ -1,6 +1,7 @@
 package com.rpbee.Tools;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.*;
 import com.rpbee.RPBeeGame;
 import com.rpbee.Sprites.Anthon;
@@ -25,15 +26,14 @@ public class WorldContactListener implements ContactListener {
             case RPBeeGame.BEE_BIT | RPBeeGame.GROUND_BIT:
                 float height;
                 if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_BIT){
-                    Gdx.app.log("colisao", ""+((Anthon) fixA.getUserData()).b2body.getLinearVelocity().y);
                     height = ((Anthon) fixA.getUserData()).b2body.getLinearVelocity().y;
                     anthon = (Anthon) fixA.getUserData();
                 }else{
-                    Gdx.app.log("colisao", ""+((Anthon) fixB.getUserData()).b2body.getLinearVelocity().y);
                     height = ((Anthon) fixB.getUserData()).b2body.getLinearVelocity().y;
                     anthon = (Anthon) fixB.getUserData();
                     //altas quedas matam
                 }
+                RPBeeGame.manager.get("audio/sounds/grama.wav", Sound.class).play(height*(-0.05f));
                 if(height < -6){
                     anthon.hit(height);
                 }
