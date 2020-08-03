@@ -89,7 +89,7 @@ public class MainMenuScreen implements Screen{
         btnPlay.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new CutsceneScreen(game));
+                game.setScreen(new PlayScreen(game));
                 dispose();
             };
         });
