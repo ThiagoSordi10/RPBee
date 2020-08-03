@@ -100,14 +100,17 @@ public class PlayScreen implements Screen {
         }
         chapters = new HashMap<Integer, Integer>();
         chapterIndex = 0;
-        cutscenesTime = true;
-        //chapters.put(0, 0);
-        //chapters.put(0, 1);
+        //cutscenesTime = true;
+
         chapters.put(0, 2);
+        chapters.put(1, 3);
+        chapters.put(2, 5);
+        chapters.put(3, 7);
 
         atlas = new TextureAtlas("rpbee.atlas");
         mapsNames.add("maps/prologo.tmx");
         mapsNames.add("maps/ato1.tmx");
+        mapsNames.add("maps/ato2.tmx");
 
         this.game = game;
         //cam that follow mario
@@ -182,6 +185,7 @@ public class PlayScreen implements Screen {
     public void changeMap(){
         cutscenesTime = true;
         indexMap ++;
+        chapterIndex ++;
         map = mapLoader.load(mapsNames.get(indexMap));
         renderer = new OrthogonalTiledMapRenderer(map, 1 / RPBeeGame.PPM);
 
