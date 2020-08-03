@@ -41,7 +41,7 @@ public class AboutScreen implements Screen {
         Label returnLabel = new Label("Clique na tela para voltar ao menu inicial", labelStyle);
         returnLabel.setFontScale(0.5f);
         
-        Texture imgAboutTex = new Texture(Gdx.files.internal("janelaHabilidades.png"));
+        Texture imgAboutTex = new Texture(Gdx.files.internal("imgSobre.png"));
         imgAbout = new Image(new TextureRegionDrawable(new TextureRegion(imgAboutTex)));
         //imgAbout.setSize(300, 200);
         
