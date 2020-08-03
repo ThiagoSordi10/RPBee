@@ -82,7 +82,7 @@ public class PlayScreen implements Screen {
 
     //Cutscenes
     TextureRegionDrawable[] cutscenes = new TextureRegionDrawable[8];
-    //private int[] cutscenesTimer = {13,22,3,4,4,4,4,4};
+    private int[] cutscenesTimer = {2,2,3,4,4,4,4,4};
     private float cutsceneTimer;
     private Image cutscene;
     private int cutsceneIndex = 0;
@@ -370,17 +370,15 @@ public class PlayScreen implements Screen {
             }
         }else {
             cutsceneTimer += delta;
-            stage.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    if (x >= gamePort.getScreenWidth() / 2 && cutsceneIndex <= chapters.get(chapterIndex)) {
-                        cutscene.setDrawable(cutscenes[cutsceneIndex]);
-                        cutsceneIndex++;
-                    }else{
-                        cutsceneIndex --;
-                    }
-                };
-            });
+
+            if (cutsceneTimer > cutscenesTimer[cutsceneIndex]  && cutsceneIndex <= chapters.get(chapterIndex)) {
+                cutscene.setDrawable(cutscenes[cutsceneIndex]);
+                cutsceneIndex++;
+                cutsceneTimer = 0;
+            }else if((cutsceneIndex > chapters.get(chapterIndex) || cutsceneIndex > cutscenes.length) && cutsceneTimer > cutscenesTimer[cutsceneIndex]){
+                cutscenesTime = false;
+            }
+
             stage.act(delta);
             stage.draw();
         }
