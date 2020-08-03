@@ -53,7 +53,7 @@ public class RPBeeGame extends Game {
 		manager.load("audio/suspense.ogg", Music.class);
 		manager.load("audio/sounds/abelhaVoando.wav", Sound.class);
 		manager.load("audio/sounds/abrirBau.wav", Sound.class);
-		manager.load("audio/sounds/caminhar.wav", Sound.class);
+		manager.load("audio/sounds/correndo.wav", Sound.class);
 		manager.load("audio/sounds/gameOver.wav", Sound.class);
 		manager.load("audio/sounds/pulo.wav", Sound.class);
 		manager.load("audio/sounds/grama.wav", Sound.class);

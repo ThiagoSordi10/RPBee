@@ -76,6 +76,7 @@ public class Chest extends InteractiveTileObject {
 
     public void open(Anthon anthon){
         if(!isOpened){
+            RPBeeGame.manager.get("audio/sounds/abrirBau.wav", Sound.class).play(0.1f);
             isOpened = true;
             catchExp(anthon);
             catchHoney(anthon);
