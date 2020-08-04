@@ -157,8 +157,8 @@ public class PlayScreen implements Screen {
         BackGroundLayer.add(cutscene);
 
         Stack layers = new Stack();
-        layers.setSize(RPBeeGame.V_WIDTH*1.8f, RPBeeGame.V_HEIGHT*2f);
-        layers.setY(layers.getY()+70);
+        layers.setSize(RPBeeGame.V_WIDTH*1.8f, RPBeeGame.V_HEIGHT*3f);
+        layers.setY(layers.getY()-70);
         layers.add(BackGroundLayer);
 
         stage.clear();
