@@ -131,11 +131,11 @@ public class WorldContactListener implements ContactListener {
             case RPBeeGame.ENEMY_BIT | RPBeeGame.BEE_STING_BIT:
                 if(fixA.getFilterData().categoryBits == RPBeeGame.BEE_STING_BIT){
                     ((BeeSting)fixA.getUserData()).setToDestroy();
-                    ((Enemy)fixB.getUserData()).hit(((BeeSting)fixA.getUserData()).getAnthon().getBeeStingDamage());
+                    ((Enemy)fixB.getUserData()).hit(((BeeSting)fixA.getUserData()).getAnthon());
                 }
                 else{
                     ((BeeSting)fixB.getUserData()).setToDestroy();
-                    ((Enemy)fixA.getUserData()).hit(((BeeSting)fixB.getUserData()).getAnthon().getBeeStingDamage());
+                    ((Enemy)fixA.getUserData()).hit(((BeeSting)fixB.getUserData()).getAnthon());
                 }
                 break;
                 

@@ -21,13 +21,8 @@ public class Checkpoint extends InteractiveTileObject {
 
     @Override
     public void onContact(Anthon anthon) {
-        if(anthon.getHasPollen()){
-            Hud.addMessage("Para passar de fase aperte E");
-            anthon.setCheckpointNear(true);
-        }else{
-            Hud.addMessage("Para passar de fase pegue o polén");
-        }
-
+        Hud.addMessage("Para passar de fase aperte E");
+        anthon.setCheckpointNear(true);
     }
 
     @Override

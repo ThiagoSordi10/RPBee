@@ -213,6 +213,9 @@ public class PlayScreen implements Screen {
 
         creator = new B2WorldCreator(this);
         player.defineAnthon();
+        if(player.getHasPollen()){
+            player.setExp(200);
+        }
         player.setHasPollen(false);
     }
 

@@ -2,6 +2,7 @@ package com.rpbee.Sprites.Enemies;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -22,6 +23,10 @@ public class Sunflower extends Enemy {
     private Array<PoisonBall> poisonballs;
     private float health;
 
+    private float colorTimer;
+    private Color currentColor;
+    private boolean damageColor;
+
     public Sunflower(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         stand = new TextureRegion(screen.getAtlas().findRegion("inimigo1"), 0, 0, 256, 256);
@@ -33,6 +38,9 @@ public class Sunflower extends Enemy {
         angle = 0;
         poisonballs = new Array<PoisonBall>();
         health = 20;
+
+        colorTimer = 0;
+        currentColor = new Color();
 
     }
 
@@ -57,12 +65,22 @@ public class Sunflower extends Enemy {
                 poison(true, playerX, playerY);
                 stateTimer = 0;
             }
+
+            if(damageColor && colorTimer < 0.5f){
+                colorTimer += delta;
+                currentColor.set(1,0,0,1);
+            }else{
+                damageColor = false;
+                currentColor.set(1,1,1,1);
+                colorTimer = 0;
+            }
         }
         for(PoisonBall  ball : poisonballs) {
             ball.update(delta);
             if(ball.isDestroyed())
                 poisonballs.removeValue(ball, true);
         }
+
 
     }
 
@@ -76,7 +94,6 @@ public class Sunflower extends Enemy {
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(10 / RPBeeGame.PPM, 32 / RPBeeGame.PPM);
-        //shape.setRadius(6 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.ENEMY_BIT;
         fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.BEE_BIT | RPBeeGame.HONEYBALL_BIT | RPBeeGame.BEE_STING_BIT;
         fdef.shape = shape;
@@ -87,6 +104,7 @@ public class Sunflower extends Enemy {
 
     public void draw(Batch batch){
         if(!destroyed || stateTimer < 1){
+            this.setColor(currentColor);
             super.draw(batch);
             for(PoisonBall ball : poisonballs)
                 ball.draw(batch);
@@ -94,13 +112,14 @@ public class Sunflower extends Enemy {
     }
 
     public void poison(boolean directionRight, float playerX, float playerY){
-        poisonballs.add(new PoisonBall(screen, this, directionRight, playerX, playerY));
+        if(!setToDestroy) {
+            RPBeeGame.manager.get("audio/sounds/acido.wav", Sound.class).play(0.3f);
+            poisonballs.add(new PoisonBall(screen, this, directionRight, playerX, playerY));
+        }
+
     }
 
     public void die() {
-
-//            MarioBros.manager.get("audio/music/mario_music.ogg", Music.class).stop();
-//            MarioBros.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
         if(!setToDestroy){
             setToDestroy = true;
             Filter filter = new Filter();
@@ -113,20 +132,14 @@ public class Sunflower extends Enemy {
         }
     }
 
-    public void onEnemyHit(Enemy enemy){
-//        if(enemy instanceof  Turtle && ((Turtle) enemy).currentState == Turtle.State.MOVING_SHELL){
-//            setToDestroy = true;
-//        }else{
-//            reverseVelocity(true, false);
-//        }
-    }
-
     @Override
-    public void hit(float damage) {
-        health += damage;
+    public void hit(Anthon anthon) {
+        health += anthon.getBeeStingDamage();
+        damageColor = true;
         if(health <= 0){
+            anthon.setExp(300);
             die();
         }
-//        MarioBros.manager.get("audio/sounds/stomp.wav", Sound.class).play();
+        RPBeeGame.manager.get("audio/sounds/plantaAtacada.wav", Sound.class).play();
     }
 }

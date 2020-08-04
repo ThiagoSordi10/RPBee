@@ -56,6 +56,11 @@ public class RPBeeGame extends Game {
 		manager.load("audio/sounds/correndo.wav", Sound.class);
 		manager.load("audio/sounds/gameOver.wav", Sound.class);
 		manager.load("audio/sounds/pulo.wav", Sound.class);
+		manager.load("audio/sounds/acido.wav", Sound.class);
+		manager.load("audio/sounds/plantaAtacada.wav", Sound.class);
+		manager.load("audio/sounds/ferroada.wav", Sound.class);
+		manager.load("audio/sounds/levelup.wav", Sound.class);
+		manager.load("audio/sounds/danoAbelha.wav", Sound.class);
 		manager.load("audio/sounds/grama.wav", Sound.class);
 		manager.finishLoading();
 		setScreen(new MainMenuScreen(this));

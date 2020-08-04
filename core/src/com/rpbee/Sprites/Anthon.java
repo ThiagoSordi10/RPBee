@@ -373,8 +373,11 @@ public class Anthon extends Sprite {
             if(exp >= expNeeded){
                 level++;
                 Hud.addMessage("Subiu de nível - Escolha sua habilidade");
+                RPBeeGame.manager.get("audio/sounds/levelup.wav", Sound.class).play(0.5f);
                 exp = 0;
                 amount -= expNeeded;
+            }else{
+                amount = 0;
             }
         }
     }
@@ -530,6 +533,7 @@ public class Anthon extends Sprite {
     public void hit(float damage){
 
         health += anthonIsWatchful ? damage/watchfulDamageLoss : damage;
+        RPBeeGame.manager.get("audio/sounds/danoAbelha.wav", Sound.class).play(0.5f);
         damageColor = true;
         if(health <= 0){
             die();
@@ -602,6 +606,7 @@ public class Anthon extends Sprite {
     public void sting(){
         anthonIsAttacking = true;
         hit(stingAutoHit);
+        RPBeeGame.manager.get("audio/sounds/ferroada.wav", Sound.class).play(0.3f);
         beeStings.add(new BeeSting(screen, this, runningRight ? true : false));
     }
 
