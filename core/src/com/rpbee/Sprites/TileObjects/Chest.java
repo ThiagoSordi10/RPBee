@@ -102,8 +102,8 @@ public class Chest extends InteractiveTileObject {
 
     public void catchLife(Anthon anthon){
         if(object.getProperties().containsKey("vida")){
-            float life = (float) object.getProperties().get("vida");
-            anthon.setHealth(life);
+            int life = (int) object.getProperties().get("vida");
+            anthon.addHealth((float) life);
         }
     }
 

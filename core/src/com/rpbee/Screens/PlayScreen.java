@@ -99,7 +99,7 @@ public class PlayScreen implements Screen {
         }
         chapters = new HashMap<Integer, Integer>();
         chapterIndex = 0;
-        cutscenesTime = true;
+        //cutscenesTime = true;
 
         //cutscenes per chapter
         chapters.put(0, 2);
@@ -197,7 +197,7 @@ public class PlayScreen implements Screen {
 
 
     public void changeMap(){
-        cutscenesTime = true;
+        //cutscenesTime = true;
         indexMap ++;
         chapterIndex ++;
 
@@ -260,7 +260,7 @@ public class PlayScreen implements Screen {
             }
         }else{
             //control our player using immediate impulses
-            if(player.currentState != Anthon.State.DEAD){
+            if(player.currentState != Anthon.State.DEAD && !cutscenesTime){
                 if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
                     player.jump();
                 }

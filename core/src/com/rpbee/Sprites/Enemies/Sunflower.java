@@ -58,10 +58,10 @@ public class Sunflower extends Enemy {
         }else if(!destroyed) {
             setRegion(stand);
             //Throw poison in player direction
-            if(getX() < playerX + 224 / RPBeeGame.PPM && stateTimer > 1 && getX() > playerX){
+            if(getX() < playerX + 224 / RPBeeGame.PPM && stateTimer > 1.5f && getX() > playerX){
                 poison(false, playerX, playerY);
                 stateTimer = 0;
-            }else if(getX() + 224 / RPBeeGame.PPM > playerX   && stateTimer > 1 && playerX > getX()) {
+            }else if(getX() + 224 / RPBeeGame.PPM > playerX   && stateTimer > 1.5f && playerX > getX()) {
                 poison(true, playerX, playerY);
                 stateTimer = 0;
             }
