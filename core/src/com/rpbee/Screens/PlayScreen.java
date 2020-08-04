@@ -375,9 +375,7 @@ public class PlayScreen implements Screen {
         stage.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(button == Input.Buttons.LEFT){
-                    Gdx.app.log("iNDEZ", ""+cutsceneIndex);
-
+                if(button == Input.Buttons.LEFT && cutscenesTime){
                     if (cutsceneIndex <= chapters.get(chapterIndex)) {
                         cutscene.setDrawable(cutscenes[cutsceneIndex]);
                         cutsceneIndex++;
