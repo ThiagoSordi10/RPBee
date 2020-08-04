@@ -82,6 +82,7 @@ public class Chest extends InteractiveTileObject {
             isOpened = true;
             catchExp(anthon);
             catchHoney(anthon);
+            catchLife(anthon);
         }
     }
 
@@ -96,6 +97,13 @@ public class Chest extends InteractiveTileObject {
     public void catchHoney(Anthon anthon){
         if(object.getProperties().containsKey("mel")){
             anthon.setQntHoney(1);
+        }
+    }
+
+    public void catchLife(Anthon anthon){
+        if(object.getProperties().containsKey("vida")){
+            float life = (float) object.getProperties().get("vida");
+            anthon.setHealth(life);
         }
     }
 

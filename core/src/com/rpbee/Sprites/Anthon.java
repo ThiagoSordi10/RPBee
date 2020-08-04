@@ -545,6 +545,7 @@ public class Anthon extends Sprite {
         if (!isDead()) {
 
             RPBeeGame.manager.get("audio/ambienteFlorestas.ogg", Music.class).stop();
+            RPBeeGame.manager.get("audio/suspense.ogg", Music.class).stop();
             RPBeeGame.manager.get("audio/sounds/gameOver.wav", Sound.class).play();
             anthonIsDead = true;
             Filter filter = new Filter();
