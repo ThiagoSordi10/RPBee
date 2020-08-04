@@ -235,8 +235,8 @@ public class Anthon extends Sprite {
         }
 
         runTimerSound += delta;
-        if(currentState == State.RUNNING && runTimerSound > 0.7f) {
-            RPBeeGame.manager.get("audio/sounds/correndo.wav", Sound.class).play(0.5f);
+        if(currentState == State.RUNNING && runTimerSound > 0.6f) {
+            RPBeeGame.manager.get("audio/sounds/correndo.wav", Sound.class).play(0.3f);
             runTimerSound = 0;
         }
     }
