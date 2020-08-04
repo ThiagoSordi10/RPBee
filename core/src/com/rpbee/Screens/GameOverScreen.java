@@ -25,11 +25,13 @@ public class GameOverScreen implements Screen {
     private Stage stage;
 
     private RPBeeGame game;
+    private PlayScreen playScreen;
     
     private TextButton btnPlayAgain, btnMainMenu;
 
-    public GameOverScreen(RPBeeGame game){
+    public GameOverScreen(RPBeeGame game, PlayScreen playScreen){
         this.game = game;
+        this.playScreen = playScreen;
         viewport = new FitViewport(RPBeeGame.V_WIDTH, RPBeeGame.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, game.batch);
 
@@ -84,7 +86,8 @@ public class GameOverScreen implements Screen {
         btnPlayAgain.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new PlayScreen(game));
+                playScreen.getPlayer().defineAnthon();
+                game.setScreen(playScreen);
                 dispose();
             };
         });

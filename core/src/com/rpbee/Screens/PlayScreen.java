@@ -174,6 +174,10 @@ public class PlayScreen implements Screen {
         music.play();
     }
 
+    public Anthon getPlayer(){
+        return player;
+    }
+
 
     public void changeMap(){
         cutscenesTime = true;
@@ -363,8 +367,7 @@ public class PlayScreen implements Screen {
             hud.stage.draw();
 
             if (gameOver()) {
-                game.setScreen(new GameOverScreen(game));
-                dispose();
+                game.setScreen(new GameOverScreen(game, this));
             }
         }else {
             cutsceneManager(delta);

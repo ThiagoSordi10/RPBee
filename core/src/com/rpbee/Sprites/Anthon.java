@@ -102,18 +102,10 @@ public class Anthon extends Sprite {
         //initialize default values
         this.screen = screen;
         this.world = screen.getWorld();
-        currentState = State.STANDING;
-        previousState = State.STANDING;
         stateTimer = 0;
         colorTimer = 0;
         currentColor = new Color();
         runningRight = true;
-
-        health = maxHealth;
-        flyEnergy = maxFlyEnergy;
-        watchfulEnergy = maxWatchfulEnergy;
-        qntHoney = 1;
-        anthonCanWatchful = true;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -536,6 +528,16 @@ public class Anthon extends Sprite {
         fdef.shape = shape;
 
         b2body.createFixture(fdef).setUserData(this);
+
+        currentState = State.STANDING;
+        previousState = State.STANDING;
+        anthonIsDead = false;
+        health = maxHealth;
+        flyEnergy = maxFlyEnergy;
+        watchfulEnergy = maxWatchfulEnergy;
+        qntHoney = 1;
+        anthonCanWatchful = true;
+        runningRight = true;
     }
 
     public void hit(float damage){
