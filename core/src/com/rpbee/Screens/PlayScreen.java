@@ -95,6 +95,7 @@ public class PlayScreen implements Screen {
 //    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     public PlayScreen(RPBeeGame game){
+        //Cutscenes load
         for (int i = 1; i<9; i++) {
             cutscenes[i-1] = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cutscenes/cutscene"+i+".png"))));
         }
@@ -102,6 +103,7 @@ public class PlayScreen implements Screen {
         chapterIndex = 0;
         //cutscenesTime = true;
 
+        //cutscenes per chapter
         chapters.put(0, 2);
         chapters.put(1, 3);
         chapters.put(2, 5);
@@ -145,13 +147,9 @@ public class PlayScreen implements Screen {
             GameData gameData = ourInstance.loadData();
             player.setHealth(gameData.getLife());
             //player.setPosition(gameData.getX(), gameData.getY());
-            Hud.xp = gameData.getXp();
         }
 
-        music = RPBeeGame.manager.get("audio/ambienteFlorestas.ogg", Music.class);
-        music.setLooping(true);
-        music.setVolume(0.3f);
-        music.play();
+        setMusic();
 
     }
 
@@ -181,24 +179,41 @@ public class PlayScreen implements Screen {
         stage.addActor(layers);
     }
 
+    private void setMusic(){
+        if(chapterIndex == 2){
+            music = RPBeeGame.manager.get("audio/suspense.ogg", Music.class);
+            music.play();
+        }else if(music == null){
+            music = RPBeeGame.manager.get("audio/ambienteFlorestas.ogg", Music.class);
+            music.setLooping(true);
+            music.setVolume(0.3f);
+            music.play();
+        }
+
+    }
+
 
     public void changeMap(){
         cutscenesTime = true;
         indexMap ++;
         chapterIndex ++;
+
+        setMusic();
+
         map = mapLoader.load(mapsNames.get(indexMap));
         renderer = new OrthogonalTiledMapRenderer(map, 1 / RPBeeGame.PPM);
 
+        //Destroy bodies and load new ones
         Array<Body> bodies=new Array<Body>();
-
         world.getBodies(bodies);
 
         for (Body body: bodies){
             world.destroyBody(body);
         }
+
         creator = new B2WorldCreator(this);
-        player.resetPosition();
         player.defineAnthon();
+        player.setHasPollen(false);
     }
 
     public void handleInput(float delta){
@@ -276,7 +291,6 @@ public class PlayScreen implements Screen {
                     gameData.setLife(player.getHealth());
                     gameData.setX(player.b2body.getPosition().x);
                     gameData.setY(player.b2body.getPosition().y);
-                    gameData.setXp(Hud.xp);
                     ourInstance.saveData(gameData);
                 }
             }
@@ -349,7 +363,7 @@ public class PlayScreen implements Screen {
             renderer.render();
 
             //renderer our Box2DDebugLines
-            b2dr.render(world, gameCam.combined);
+            //b2dr.render(world, gameCam.combined);
 
             game.batch.setProjectionMatrix(gameCam.combined);
             game.batch.begin();

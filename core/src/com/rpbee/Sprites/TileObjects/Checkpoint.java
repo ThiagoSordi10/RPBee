@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.rpbee.RPBeeGame;
+import com.rpbee.Scenes.Hud;
 import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Anthon;
 
@@ -20,9 +21,13 @@ public class Checkpoint extends InteractiveTileObject {
 
     @Override
     public void onContact(Anthon anthon) {
-        //MarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
-        Gdx.app.log("Passar de fase", "Pressione E");
-        anthon.setCheckpointNear(true);
+        if(anthon.getHasPollen()){
+            Hud.addMessage("Para passar de fase aperte E");
+            anthon.setCheckpointNear(true);
+        }else{
+            Hud.addMessage("Para passar de fase pegue o polén");
+        }
+
     }
 
     @Override
@@ -51,6 +56,7 @@ public class Checkpoint extends InteractiveTileObject {
     @Override
     public void afterContact(Anthon anthon) {
         anthon.setCheckpointNear(false);
+        Hud.removeMessage();
     }
 
     public void draw(Batch batch){

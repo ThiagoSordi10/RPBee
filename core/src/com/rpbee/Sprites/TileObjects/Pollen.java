@@ -3,12 +3,11 @@ package com.rpbee.Sprites.TileObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.rpbee.RPBeeGame;
+import com.rpbee.Scenes.Hud;
 import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Anthon;
 
@@ -28,7 +27,7 @@ public class Pollen extends InteractiveTileObject {
     @Override
     public void onContact(Anthon anthon) {
         //MarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
-        Gdx.app.log("Pegar polen", "Pressione E");
+        Hud.addMessage("Aperte E para pegar o polén");
         anthon.setPollenNear(this);
     }
 
@@ -61,12 +60,12 @@ public class Pollen extends InteractiveTileObject {
     @Override
     public void afterContact(Anthon anthon) {
         anthon.setPollenNear(null);
+        Hud.removeMessage();
     }
 
     public void catchPollen(Anthon anthon){
-        anthon.setQntPollen(1);
+        anthon.setHasPollen(true);
         setToDestroy = true;
-        Gdx.app.log("Polen", "Pegou o pollen");
     }
 
     public void draw(Batch batch){

@@ -1,6 +1,5 @@
 package com.rpbee.Sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -12,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.rpbee.RPBeeGame;
+import com.rpbee.Scenes.Hud;
 import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Other.BeeSting;
 import com.rpbee.Sprites.Other.HoneyBall;
@@ -50,7 +50,7 @@ public class Anthon extends Sprite {
 
 
 
-    private float timeCount;
+    private float watchfulTimer;
     //current values
     private static float health;
     private static float flyEnergy;
@@ -77,7 +77,7 @@ public class Anthon extends Sprite {
     private float watchfulDamageLoss = 2;
     //Fly loss and fly recharge
     //Aumentar esse numero um pouco para energia de voo diminuir lentamente (HABILIDADE)
-    private float flyEnergyLoss = -0.05f;
+    private float flyEnergyLoss = -0.1f;
     //Aumentar esse numero recarrega rapidamento voo (HABILIDADE)
     private float rechargeFlyAmount = 0.2f;
     //watchful loss and watchful recharge
@@ -91,7 +91,7 @@ public class Anthon extends Sprite {
     //Itens for anthon
     private Array<HoneyBall> honeyballs;
     private Array<BeeSting> beeStings;
-    private int qntPollen;
+    private boolean hasPollen;
     private Chest chestNear;
     private Pollen pollenNear;
     private boolean checkpointNear;
@@ -113,6 +113,7 @@ public class Anthon extends Sprite {
         flyEnergy = maxFlyEnergy;
         watchfulEnergy = maxWatchfulEnergy;
         qntHoney = 1;
+        anthonCanWatchful = true;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -157,22 +158,16 @@ public class Anthon extends Sprite {
         anthonWatchfulStand = new Animation(0.1f, frames);
         frames.clear();
 
-        //create dead anthon texture region
-        //anthonDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);
 
         //define anthon in Box2d
         defineAnthon();
 
         //set initial values for anthon's location, width and height. And initial frame as anthonStand.
-        resetPosition();
+        setBounds(0,0,256 / RPBeeGame.PPM * 0.2f ,256 / RPBeeGame.PPM * 0.2f);
         setRegion(anthonStand);
 
         honeyballs = new Array<HoneyBall>();
         beeStings = new Array<BeeSting>();
-    }
-
-    public void resetPosition(){
-        setBounds(0,0,256 / RPBeeGame.PPM * 0.2f ,256 / RPBeeGame.PPM * 0.2f);
     }
 
     public void update(float delta){
@@ -198,17 +193,18 @@ public class Anthon extends Sprite {
         //if anthon is watchful but the energy ends, it ends watchful
         if(anthonIsWatchful && watchfulEnergy <= 0){
             anthonIsWatchful = false;
+            Hud.addMessage("Modo atento: desativado");
         }
 
         //If anthon isnt watchful and the energy is low it recharges
         if(!anthonIsWatchful && watchfulEnergy+rechargeWatchfulAmount <= maxWatchfulEnergy){
             setWatchfulEnergy(rechargeWatchfulAmount);
         }else if(!anthonIsWatchful && anthonCanWatchful == false){
-            timeCount += delta;
+            watchfulTimer += delta;
             //After recharges it takes 5 sec yet to enable use watchful again
-            if(timeCount > 5){
+            if(watchfulTimer > 5){
                 anthonCanWatchful = true;
-                timeCount = 0;
+                watchfulTimer = 0;
             }
         }
 
@@ -376,6 +372,7 @@ public class Anthon extends Sprite {
             exp += amount;
             if(exp >= expNeeded){
                 level++;
+                Hud.addMessage("Subiu de nível - Escolha sua habilidade");
                 exp = 0;
                 amount -= expNeeded;
             }
@@ -412,9 +409,12 @@ public class Anthon extends Sprite {
 
     }
 
-    public void setQntPollen(int qnt){
-        qntPollen += qnt;
+    public void setHasPollen(boolean has){
+        hasPollen = has;
+    }
 
+    public boolean getHasPollen(){
+        return hasPollen;
     }
 
     public TextureRegion getFrame(float delta){
@@ -510,9 +510,10 @@ public class Anthon extends Sprite {
 
     public void defineAnthon(){
         BodyDef bdef = new BodyDef();
-        bdef.position.set(512 / RPBeeGame.PPM * 0.2f,512 / RPBeeGame.PPM * 0.2f);
+        bdef.position.set(2048 / RPBeeGame.PPM * 0.2f,512 / RPBeeGame.PPM * 0.2f);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
+        runningRight = true;
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
@@ -559,10 +560,9 @@ public class Anthon extends Sprite {
 
     public void watchful(){
         if(!isWatchful()){
-            Gdx.app.log("Watchful", "ativado");
+            Hud.addMessage("Modo atento: ativado");
             anthonIsWatchful = true;
             anthonCanWatchful = false;
-            //timeToDefineWatchfulAnthon = true;
         }
     }
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
@@ -17,15 +18,8 @@ import com.rpbee.Sprites.Anthon;
 
 public class Hud implements Disposable {
     //Scene2D.ui Stage and its own Viewport for HUD
-    public Stage stage;
+    public static Stage stage;
     private Viewport viewport;
-
-    //Anthon score/time Tracking Variables
-    private Integer worldTimer;
-    private boolean timeUp; // true when the world timer reaches 0
-    private float timeCount;
-    private int level;
-    public static Integer xp;
 
     //Scene2D widgets
     Label countDownLabel;
@@ -41,22 +35,23 @@ public class Hud implements Disposable {
     Label watchfulTextLabel;
     Label watchfulLabel;
 
+    static Label messageTextLabel;
+    static Label messageLabel;
+
     Table tableWatchful;
+    Table table;
+    static Table tableMessage;
+
+    static float messageTimer;
 
     public Hud(SpriteBatch sb){
-        //define our tracking variables
-        worldTimer = 300;
-        timeCount = 0;
-        xp = 0;
-
-
         //setup the HUD viewport using a new camera separate from our gamecam
         //define our stage using that viewport and our games spritebatch
         viewport = new FitViewport(RPBeeGame.V_WIDTH, RPBeeGame.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
         //define a table used to organize our hud's labels
-        Table table = new Table();
+        table = new Table();
         //Top-Align table
         table.top();
         //make the table fill the entire stage
@@ -76,6 +71,9 @@ public class Hud implements Disposable {
 
         watchfulTextLabel = new Label("Modo Atento", new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
         watchfulLabel = new Label(String.format("%.2f", Anthon.getWatchfulEnergy()), new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
+
+        messageTextLabel = new Label("Mensagem:", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+        messageLabel = new Label("Info", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
 
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(anthonLabel).expandX().padTop(10);
@@ -99,37 +97,46 @@ public class Hud implements Disposable {
         //make the table fill the entire stage
         tableWatchful.setFillParent(true);
 
+        tableMessage = new Table();
+        tableMessage.setFillParent(true);
+        tableMessage.center();
+
     }
 
     public void update(float delta){
-//        timeCount += delta;
-//        if(timeCount >= 1){
-//            if (worldTimer > 0) {
-//                worldTimer--;
-//            } else {
-//                timeUp = true;
-//            }
-//            countDownLabel.setText(String.format("%03d", worldTimer));
-//            timeCount = 0;
-//        }
         healthLabel.setText(String.format("%.2f/%.2f", Anthon.getHealth(), Anthon.getMaxHealth()));
         flyBarLabel.setText(String.format("%.2f/%.2f", Anthon.getFlyEnergy(), Anthon.getMaxFlyEnergy()));
         watchfulLabel.setText(String.format("%.2f", Anthon.getWatchfulEnergy()));
         xpLabel.setText(String.format("%d", Anthon.getExp()));
         levelLabel.setText(String.format("%d", Anthon.getLevel()));
+
+        messageTimer += delta;
+        if(messageTimer > 2){
+            removeMessage();
+        }
+
     }
 
-    public static void addScore(int value){
-        xp += value;
-        xpLabel.setText(String.format("%06d", xp));
-    }
 
     public void addWatchfulBar(){
         tableWatchful.add(watchfulTextLabel).expandX();
         tableWatchful.row();
         tableWatchful.add(watchfulLabel).expandX();
-
         stage.addActor(tableWatchful);
+    }
+
+    public static void addMessage(String message){
+        tableMessage.reset();
+        messageLabel.setText(message);
+        tableMessage.add(messageTextLabel).expandX();
+        tableMessage.row();
+        tableMessage.add(messageLabel).expandX();
+        stage.addActor(tableMessage);
+        messageTimer = 0;
+    }
+
+    public static void removeMessage(){
+        tableMessage.reset();
     }
 
     public void removeWatchfulBar(){
@@ -144,5 +151,4 @@ public class Hud implements Disposable {
         stage.dispose();
     }
 
-    public boolean isTimeUp() { return timeUp; }
 }

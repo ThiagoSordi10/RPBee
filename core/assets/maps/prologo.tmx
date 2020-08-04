@@ -70,7 +70,6 @@
  <objectgroup id="9" name="inimigo1">
   <object id="18" x="1816" y="244.667"/>
  </objectgroup>
- <objectgroup id="12" name="polinizar" offsetx="-1.33333" offsety="-1.33333"/>
  <objectgroup id="13" name="checkpoint">
   <object id="32" x="807.833" y="244"/>
  </objectgroup>

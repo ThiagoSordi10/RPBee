@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.rpbee.RPBeeGame;
+import com.rpbee.Scenes.Hud;
 import com.rpbee.Screens.PlayScreen;
 import com.rpbee.Sprites.Anthon;
 import com.rpbee.Sprites.Other.PoisonBall;
@@ -35,10 +36,10 @@ public class Chest extends InteractiveTileObject {
     public void onContact(Anthon anthon) {
         if(!isOpened){
             //MarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
-            Gdx.app.log("ABRIR BAU", "Pressione E");
+            Hud.addMessage("Abrir baú: Aperte E");
             anthon.setChestNear(this);
         }else{
-            Gdx.app.log("ABRIR BAU", "Bau ja aberto");
+            Hud.addMessage("Baú já aberto");
         }
     }
 
@@ -72,6 +73,7 @@ public class Chest extends InteractiveTileObject {
     @Override
     public void afterContact(Anthon anthon) {
         anthon.setChestNear(null);
+        Hud.removeMessage();
     }
 
     public void open(Anthon anthon){

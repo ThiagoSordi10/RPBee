@@ -80,6 +80,6 @@
   <object id="26" x="4764" y="232" width="28" height="35.3333"/>
  </objectgroup>
  <objectgroup id="18" name="checkpoint">
-  <object id="37" x="4716" y="212" width="29.3333" height="56"/>
+  <object id="37" x="4410" y="190" width="64.3333" height="77"/>
  </objectgroup>
 </map>
