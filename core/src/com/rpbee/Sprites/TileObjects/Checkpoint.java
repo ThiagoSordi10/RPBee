@@ -34,7 +34,7 @@ public class Checkpoint extends InteractiveTileObject {
 
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(12 / RPBeeGame.PPM, 50 / RPBeeGame.PPM, b2body.getLocalCenter(), 0);
+        shape.setAsBox(16 / RPBeeGame.PPM, 50 / RPBeeGame.PPM, b2body.getLocalCenter(), 0);
         fdef.filter.categoryBits = RPBeeGame.CHECKPOINT_BIT;
         fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.BEE_BIT;
         fdef.isSensor = true;

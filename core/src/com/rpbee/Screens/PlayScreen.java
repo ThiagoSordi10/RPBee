@@ -82,7 +82,7 @@ public class PlayScreen implements Screen {
 
     //Cutscenes
     TextureRegionDrawable[] cutscenes = new TextureRegionDrawable[8];
-    private int[] cutscenesTimer = {2,2,3,4,4,4,4,4};
+    private int[] cutscenesTimer = {0,13,22,13,4,4,4,4};
     private float cutsceneTimer;
     private Image cutscene;
     private int cutsceneIndex = 0;
@@ -91,8 +91,6 @@ public class PlayScreen implements Screen {
     private int chapterIndex;
     private boolean cutscenesTime;
 
-//    private Array<Item> items;
-//    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     public PlayScreen(RPBeeGame game){
         //Cutscenes load
@@ -101,7 +99,7 @@ public class PlayScreen implements Screen {
         }
         chapters = new HashMap<Integer, Integer>();
         chapterIndex = 0;
-        //cutscenesTime = true;
+        cutscenesTime = true;
 
         //cutscenes per chapter
         chapters.put(0, 2);
@@ -180,8 +178,11 @@ public class PlayScreen implements Screen {
     }
 
     private void setMusic(){
-        if(chapterIndex == 2){
+        if(indexMap == 2){
+            music.stop();
             music = RPBeeGame.manager.get("audio/suspense.ogg", Music.class);
+            music.setLooping(true);
+            music.setVolume(0.3f);
             music.play();
         }else if(music == null){
             music = RPBeeGame.manager.get("audio/ambienteFlorestas.ogg", Music.class);
