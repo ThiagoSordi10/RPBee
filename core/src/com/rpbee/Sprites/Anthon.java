@@ -328,7 +328,12 @@ public class Anthon extends Sprite {
         Anthon.health = health;
     }
     public static void addHealth(float health) {
-        Anthon.health += health;
+
+        if (health + Anthon.health > maxHealth){
+            Anthon.health = maxHealth;
+        }else{
+            Anthon.health += health;
+        }
     }
     public static float getFlyEnergy(){
         return flyEnergy;
