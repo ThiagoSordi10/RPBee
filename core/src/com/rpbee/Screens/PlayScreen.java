@@ -77,8 +77,7 @@ public class PlayScreen implements Screen {
 
     //Cutscenes
     TextureRegionDrawable[] cutscenes = new TextureRegionDrawable[8];
-    private int[] cutscenesTimer = {0,13,22,13,4,4,4,4};
-    private float cutsceneTimer;
+
     private Image cutscene;
     private int cutsceneIndex = 0;
     private Stage stage;
@@ -94,7 +93,7 @@ public class PlayScreen implements Screen {
         }
         chapters = new HashMap<Integer, Integer>();
         chapterIndex = 0;
-        //cutscenesTime = true;
+        cutscenesTime = true;
 
         //cutscenes per chapter
         chapters.put(0, 2);
@@ -154,6 +153,7 @@ public class PlayScreen implements Screen {
     private void makeStage() {
         Table BackGroundLayer = new Table();
         cutscene = new Image(cutscenes[0]);
+        cutsceneIndex++;
         BackGroundLayer.add(cutscene);
 
         Stack layers = new Stack();
@@ -176,9 +176,10 @@ public class PlayScreen implements Screen {
 
 
     public void changeMap(){
-        //cutscenesTime = true;
+        cutscenesTime = true;
         indexMap ++;
         chapterIndex ++;
+
 
         if(indexMap == 2) { setMusic("audio/suspense.ogg"); }else{ setMusic("audio/ambienteFlorestas.ogg");}
 
@@ -371,18 +372,30 @@ public class PlayScreen implements Screen {
     }
 
     public void cutsceneManager(float delta){
-        cutsceneTimer += delta;
+        stage.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(button == Input.Buttons.LEFT){
+                    Gdx.app.log("iNDEZ", ""+cutsceneIndex);
 
-        if (cutsceneTimer > cutscenesTimer[cutsceneIndex]  && cutsceneIndex <= chapters.get(chapterIndex)) {
-            cutscene.setDrawable(cutscenes[cutsceneIndex]);
-            cutsceneIndex++;
-            cutsceneTimer = 0;
-        }else if((cutsceneIndex > chapters.get(chapterIndex) || cutsceneIndex > cutscenes.length) && cutsceneTimer > cutscenesTimer[cutsceneIndex]){
-            cutscenesTime = false;
-        }else if(cutsceneIndex == cutscenes.length){
-            game.setScreen(new MainMenuScreen(game));
-            dispose();
-        }
+                    if (cutsceneIndex <= chapters.get(chapterIndex)) {
+                        cutscene.setDrawable(cutscenes[cutsceneIndex]);
+                        cutsceneIndex++;
+                    }else if(cutsceneIndex == cutscenes.length){
+                        game.setScreen(new MainMenuScreen(game));
+                        dispose();
+                    }else if(cutsceneIndex > chapters.get(chapterIndex)){
+                        cutscene.setDrawable(cutscenes[cutsceneIndex]);
+                        cutsceneIndex++;
+                        cutscenesTime = false;
+                    }
+
+                    event.setButton(Input.Buttons.RIGHT);
+                    return true;
+                }
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
 
         stage.act(delta);
         stage.draw();
