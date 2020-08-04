@@ -134,8 +134,8 @@ public class PlayScreen implements Screen {
         player = new Anthon(this);
 
         world.setContactListener(new WorldContactListener());
-        
-        setMusic();
+
+        setMusic("audio/ambienteFlorestas.ogg");
 
     }
 
@@ -165,20 +165,13 @@ public class PlayScreen implements Screen {
         stage.addActor(layers);
     }
 
-    private void setMusic(){
-        if(indexMap == 2){
+    private void setMusic(String filename) {
+        if (music != null)
             music.stop();
-            music = RPBeeGame.manager.get("audio/suspense.ogg", Music.class);
-            music.setLooping(true);
-            music.setVolume(0.3f);
-            music.play();
-        }else if(music == null){
-            music = RPBeeGame.manager.get("audio/ambienteFlorestas.ogg", Music.class);
-            music.setLooping(true);
-            music.setVolume(0.3f);
-            music.play();
-        }
-
+        music = RPBeeGame.manager.get(filename, Music.class);
+        music.setLooping(true);
+        music.setVolume(0.3f);
+        music.play();
     }
 
 
@@ -187,25 +180,27 @@ public class PlayScreen implements Screen {
         indexMap ++;
         chapterIndex ++;
 
-        setMusic();
+        if(indexMap == 2) { setMusic("audio/suspense.ogg"); }else{ setMusic("audio/ambienteFlorestas.ogg");}
 
-        map = mapLoader.load(mapsNames.get(indexMap));
-        renderer = new OrthogonalTiledMapRenderer(map, 1 / RPBeeGame.PPM);
+        if(indexMap < mapsNames.size) {
+            map = mapLoader.load(mapsNames.get(indexMap));
+            renderer = new OrthogonalTiledMapRenderer(map, 1 / RPBeeGame.PPM);
 
-        //Destroy bodies and load new ones
-        Array<Body> bodies=new Array<Body>();
-        world.getBodies(bodies);
+            //Destroy bodies and load new ones
+            Array<Body> bodies = new Array<Body>();
+            world.getBodies(bodies);
 
-        for (Body body: bodies){
-            world.destroyBody(body);
+            for (Body body : bodies) {
+                world.destroyBody(body);
+            }
+
+            creator = new B2WorldCreator(this);
+            player.defineAnthon();
+            if (player.getHasPollen()) {
+                player.setExp(200);
+            }
+            player.setHasPollen(false);
         }
-
-        creator = new B2WorldCreator(this);
-        player.defineAnthon();
-        if(player.getHasPollen()){
-            player.setExp(200);
-        }
-        player.setHasPollen(false);
     }
 
     public void handleInput(float delta){
@@ -371,19 +366,26 @@ public class PlayScreen implements Screen {
                 dispose();
             }
         }else {
-            cutsceneTimer += delta;
-
-            if (cutsceneTimer > cutscenesTimer[cutsceneIndex]  && cutsceneIndex <= chapters.get(chapterIndex)) {
-                cutscene.setDrawable(cutscenes[cutsceneIndex]);
-                cutsceneIndex++;
-                cutsceneTimer = 0;
-            }else if((cutsceneIndex > chapters.get(chapterIndex) || cutsceneIndex > cutscenes.length) && cutsceneTimer > cutscenesTimer[cutsceneIndex]){
-                cutscenesTime = false;
-            }
-
-            stage.act(delta);
-            stage.draw();
+            cutsceneManager(delta);
         }
+    }
+
+    public void cutsceneManager(float delta){
+        cutsceneTimer += delta;
+
+        if (cutsceneTimer > cutscenesTimer[cutsceneIndex]  && cutsceneIndex <= chapters.get(chapterIndex)) {
+            cutscene.setDrawable(cutscenes[cutsceneIndex]);
+            cutsceneIndex++;
+            cutsceneTimer = 0;
+        }else if((cutsceneIndex > chapters.get(chapterIndex) || cutsceneIndex > cutscenes.length) && cutsceneTimer > cutscenesTimer[cutsceneIndex]){
+            cutscenesTime = false;
+        }else if(cutsceneIndex == cutscenes.length){
+            game.setScreen(new MainMenuScreen(game));
+            dispose();
+        }
+
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override
