@@ -28,8 +28,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.rpbee.RPBeeGame;
-import com.rpbee.Save.GameData;
-import com.rpbee.Save.GameManager;
 import com.rpbee.Scenes.Hud;
 import com.rpbee.Sprites.Anthon;
 import com.rpbee.Sprites.Enemies.Enemy;
@@ -41,9 +39,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayScreen implements Screen {
-    
-    //verifica se o jogo foi carregado ou iniciado novo
-    public static boolean loadGame;
 
     //Reference to our game, used to set screens
     private RPBeeGame game;
@@ -140,13 +135,6 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
         
-        if(loadGame){
-            GameManager ourInstance = GameManager.getInstance();
-            GameData gameData = ourInstance.loadData();
-            player.setHealth(gameData.getLife());
-            //player.setPosition(gameData.getX(), gameData.getY());
-        }
-
         setMusic();
 
     }
@@ -288,14 +276,6 @@ public class PlayScreen implements Screen {
                 }
                 if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     this.pause();
-                }
-                if (Gdx.input.isKeyJustPressed(Input.Keys.S)){
-                    GameManager ourInstance = new GameManager();
-                    GameData gameData = new GameData();
-                    gameData.setLife(player.getHealth());
-                    gameData.setX(player.b2body.getPosition().x);
-                    gameData.setY(player.b2body.getPosition().y);
-                    ourInstance.saveData(gameData);
                 }
             }
         }
