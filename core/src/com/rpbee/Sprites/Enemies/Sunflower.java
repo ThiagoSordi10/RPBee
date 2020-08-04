@@ -94,7 +94,6 @@ public class Sunflower extends Enemy {
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(10 / RPBeeGame.PPM, 32 / RPBeeGame.PPM);
-        //shape.setRadius(6 / RPBeeGame.PPM);
         fdef.filter.categoryBits = RPBeeGame.ENEMY_BIT;
         fdef.filter.maskBits = RPBeeGame.GROUND_BIT | RPBeeGame.BEE_BIT | RPBeeGame.HONEYBALL_BIT | RPBeeGame.BEE_STING_BIT;
         fdef.shape = shape;
@@ -134,10 +133,11 @@ public class Sunflower extends Enemy {
     }
 
     @Override
-    public void hit(float damage) {
-        health += damage;
+    public void hit(Anthon anthon) {
+        health += anthon.getBeeStingDamage();
         damageColor = true;
         if(health <= 0){
+            anthon.setExp(300);
             die();
         }
         RPBeeGame.manager.get("audio/sounds/plantaAtacada.wav", Sound.class).play();

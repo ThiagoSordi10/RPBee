@@ -376,6 +376,8 @@ public class Anthon extends Sprite {
                 RPBeeGame.manager.get("audio/sounds/levelup.wav", Sound.class).play(0.5f);
                 exp = 0;
                 amount -= expNeeded;
+            }else{
+                amount = 0;
             }
         }
     }
