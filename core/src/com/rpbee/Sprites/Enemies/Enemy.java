@@ -25,6 +25,5 @@ public abstract class Enemy extends Sprite {
     public abstract void die();
     public abstract void update(float delta, float playerX, float playerY);
     public abstract void hit(float damage);
-    public abstract void onEnemyHit(Enemy enemy);
 
 }
