@@ -98,6 +98,5 @@
  </objectgroup>
  <objectgroup id="18" name="checkpoint">
   <object id="37" x="4410" y="190.667" width="64.3333" height="77"/>
-  <object id="41" x="411" y="190" width="113" height="74"/>
  </objectgroup>
 </map>

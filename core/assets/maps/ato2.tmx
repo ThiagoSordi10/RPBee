@@ -66,11 +66,6 @@
     <property name="exp" type="int" value="300"/>
    </properties>
   </object>
-  <object id="18" x="1531" y="240" width="22" height="24">
-   <properties>
-    <property name="exp" type="int" value="300"/>
-   </properties>
-  </object>
   <object id="19" x="1661" y="237.667" width="22.5" height="25.5">
    <properties>
     <property name="exp" type="int" value="300"/>
@@ -91,22 +86,7 @@
     <property name="exp" type="int" value="300"/>
    </properties>
   </object>
-  <object id="23" x="2995" y="236" width="23.5" height="26.5">
-   <properties>
-    <property name="exp" type="int" value="300"/>
-   </properties>
-  </object>
-  <object id="24" x="3379.33" y="133.833" width="19.5" height="18.5">
-   <properties>
-    <property name="exp" type="int" value="300"/>
-   </properties>
-  </object>
-  <object id="25" x="3434.33" y="133" width="19.5" height="19">
-   <properties>
-    <property name="exp" type="int" value="300"/>
-   </properties>
-  </object>
-  <object id="26" x="3929.17" y="245.833" width="20.5" height="18">
+  <object id="24" x="3398.66" y="133.833" width="19.5" height="18.5">
    <properties>
     <property name="exp" type="int" value="300"/>
    </properties>
@@ -116,27 +96,17 @@
     <property name="exp" type="int" value="300"/>
    </properties>
   </object>
-  <object id="28" x="4311" y="242.667" width="22" height="20.5">
+  <object id="28" x="4356.33" y="242.667" width="22" height="20.5">
    <properties>
     <property name="exp" type="int" value="300"/>
    </properties>
   </object>
-  <object id="29" x="4528.67" y="243.167" width="23" height="21">
-   <properties>
-    <property name="exp" type="int" value="300"/>
-   </properties>
-  </object>
-  <object id="30" x="4744.67" y="241.667" width="21.5" height="22">
+  <object id="30" x="4640.67" y="243" width="21.5" height="22">
    <properties>
     <property name="exp" type="int" value="300"/>
    </properties>
   </object>
   <object id="31" x="4905.5" y="173.5" width="24.5" height="25.5">
-   <properties>
-    <property name="exp" type="int" value="300"/>
-   </properties>
-  </object>
-  <object id="32" x="4988" y="174" width="22" height="25.5">
    <properties>
     <property name="exp" type="int" value="300"/>
    </properties>
@@ -147,11 +117,6 @@
    </properties>
   </object>
   <object id="34" x="5338" y="112.167" width="23" height="25">
-   <properties>
-    <property name="exp" type="int" value="300"/>
-   </properties>
-  </object>
-  <object id="35" x="5198.5" y="237.333" width="22.5" height="26">
    <properties>
     <property name="exp" type="int" value="300"/>
    </properties>
@@ -197,6 +162,6 @@
  </objectgroup>
  <objectgroup id="13" name="polen"/>
  <objectgroup id="10" name="checkpoint">
-  <object id="37" x="6368.5" y="239.5" width="26.5" height="30.5"/>
+  <object id="37" x="6324.5" y="196.833" width="70.5" height="73.1667"/>
  </objectgroup>
 </map>
