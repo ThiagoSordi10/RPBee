@@ -2,6 +2,7 @@ package com.rpbee.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -94,6 +95,7 @@ public class GameOverScreen implements Screen {
         btnMainMenu.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                RPBeeGame.manager.get("audio/ambienteFlorestas.ogg", Music.class).stop();
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
             };

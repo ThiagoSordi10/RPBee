@@ -136,7 +136,7 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
 
-        setMusic("audio/ambienteFlorestas.ogg");
+        setMusic();
 
     }
 
@@ -154,9 +154,7 @@ public class PlayScreen implements Screen {
 
     private void makeStage() {
         Table BackGroundLayer = new Table();
-        Gdx.app.log("INDEX", ""+cutsceneIndex);
         cutscene = new Image(cutscenes[cutsceneIndex]);
-        cutsceneIndex++;
         BackGroundLayer.add(cutscene);
 
         Stack layers = new Stack();
@@ -168,12 +166,8 @@ public class PlayScreen implements Screen {
         stage.addActor(layers);
     }
 
-    private void setMusic(String filename) {
-        if (music != null) {
-            music.stop();
-            music.dispose();
-        }
-        music = RPBeeGame.manager.get(filename, Music.class);
+    private void setMusic() {
+        music = RPBeeGame.manager.get("audio/ambienteFlorestas.ogg", Music.class);
         music.setLooping(true);
         music.setVolume(0.3f);
         music.play();
@@ -189,8 +183,7 @@ public class PlayScreen implements Screen {
         indexMap ++;
         chapterIndex ++;
 
-
-        if(indexMap == 2) { setMusic("audio/suspense.ogg"); }else{ setMusic("audio/ambienteFlorestas.ogg");}
+        setMusic();
 
         if(indexMap < mapsNames.size) {
             map = mapLoader.load(mapsNames.get(indexMap));

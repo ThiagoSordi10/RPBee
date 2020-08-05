@@ -50,7 +50,6 @@ public class RPBeeGame extends Game {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 		manager.load("audio/ambienteFlorestas.ogg", Music.class);
-		manager.load("audio/suspense.ogg", Music.class);
 		manager.load("audio/sounds/abelhaVoando.wav", Sound.class);
 		manager.load("audio/sounds/abrirBau.wav", Sound.class);
 		manager.load("audio/sounds/correndo.wav", Sound.class);

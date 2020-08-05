@@ -64,7 +64,7 @@ public class Hud implements Disposable {
         //timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label(Integer.toString(Anthon.getLevel()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelTextLabel = new Label("Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        healthLabel = new Label(String.format((myFormat(Float.toString(Anthon.getHealth()))+"/"+myFormat(Float.toString(Anthon.getMaxHealth())))), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        healthLabel = new Label(myFormat(Float.toString(Anthon.getHealth()))+"/"+myFormat(Float.toString(Anthon.getMaxHealth())), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         healthTextLabel = new Label("Vida", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         flyBarLabel = new Label((myFormat(Float.toString(Anthon.getFlyEnergy()))+"/"+myFormat(Float.toString(Anthon.getMaxFlyEnergy()))), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         flyBarTextLabel = new Label("Voo", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
