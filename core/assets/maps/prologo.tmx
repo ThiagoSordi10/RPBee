@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="218" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="37">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="218" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="38">
  <tileset firstgid="1" name="spritesheet" tilewidth="16" tileheight="16" tilecount="24192" columns="192">
   <image source="spritesheet.png" width="3076" height="2022"/>
  </tileset>
@@ -72,6 +72,6 @@
   <object id="18" x="1816" y="244.667"/>
  </objectgroup>
  <objectgroup id="13" name="checkpoint">
-  <object id="32" x="807.833" y="244"/>
+  <object id="37" x="3463.17" y="259.333"/>
  </objectgroup>
 </map>
