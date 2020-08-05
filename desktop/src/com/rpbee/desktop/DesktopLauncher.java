@@ -12,3 +12,4 @@ public class DesktopLauncher {
 		new LwjglApplication(new RPBeeGame(), config);
 	}
 }
+  

@@ -60,19 +60,17 @@ public class Hud implements Disposable {
 
         //define our labels using the String, and a Label style consisting of a font and color
         //countDownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        xpLabel = new Label(String.format("%d", Anthon.getExp()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        xpLabel = new Label(Integer.toString(Anthon.getExp()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         //timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label(String.format("%d", Anthon.getLevel()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        levelLabel = new Label(Integer.toString(Anthon.getLevel()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelTextLabel = new Label("Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        healthLabel = new Label(String.format("%.2f/%.2f", Anthon.getHealth(), Anthon.getMaxHealth()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        healthLabel = new Label(String.format((myFormat(Float.toString(Anthon.getHealth()))+"/"+myFormat(Float.toString(Anthon.getMaxHealth())))), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         healthTextLabel = new Label("Vida", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        flyBarLabel = new Label(String.format("%.2f/%.2f", Anthon.getFlyEnergy(), Anthon.getMaxFlyEnergy()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        flyBarLabel = new Label((myFormat(Float.toString(Anthon.getFlyEnergy()))+"/"+myFormat(Float.toString(Anthon.getMaxFlyEnergy()))), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         flyBarTextLabel = new Label("Voo", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         anthonLabel = new Label("Anthon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-
         watchfulTextLabel = new Label("Modo Atento", new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
-        watchfulLabel = new Label(String.format("%.2f", Anthon.getWatchfulEnergy()), new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
-
+        watchfulLabel = new Label(myFormat(Float.toString(Anthon.getWatchfulEnergy())), new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
         messageTextLabel = new Label("Mensagem:", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
         messageLabel = new Label("Info", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
 
@@ -103,13 +101,24 @@ public class Hud implements Disposable {
         tableMessage.center();
 
     }
+    
+    public static String myFormat(String string){
+        String aux;
+        if(string.charAt(1)=='.'){
+            aux = string.substring(0, 3);
+        }else{
+            aux = string.substring(0, 4);
+        }
+        aux = aux.replace(".", ",");
+        return aux;
+    }
 
     public void update(float delta){
-        healthLabel.setText(String.format("%.2f/%.2f", Anthon.getHealth(), Anthon.getMaxHealth()));
-        flyBarLabel.setText(String.format("%.2f/%.2f", Anthon.getFlyEnergy(), Anthon.getMaxFlyEnergy()));
-        watchfulLabel.setText(String.format("%.2f", Anthon.getWatchfulEnergy()));
-        xpLabel.setText(String.format("%d", Anthon.getExp()));
-        levelLabel.setText(String.format("%d", Anthon.getLevel()));
+        healthLabel.setText((myFormat(Float.toString(Anthon.getHealth()))+"/"+myFormat(Float.toString(Anthon.getMaxHealth()))));
+        flyBarLabel.setText((myFormat(Float.toString(Anthon.getFlyEnergy()))+"/"+myFormat(Float.toString(Anthon.getMaxFlyEnergy()))));
+        watchfulLabel.setText(myFormat(Float.toString(Anthon.getWatchfulEnergy())));
+        xpLabel.setText(Integer.toString(Anthon.getExp()));
+        levelLabel.setText(Integer.toString(Anthon.getLevel()));
 
         messageTimer += delta;
         if(messageTimer > 2){
