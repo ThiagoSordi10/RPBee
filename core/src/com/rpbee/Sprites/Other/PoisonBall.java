@@ -74,7 +74,8 @@ public class PoisonBall extends Sprite {
         fdef.restitution = 1;
         fdef.friction = 0;
         b2body.createFixture(fdef).setUserData(this);
-        b2body.setLinearVelocity(new Vector2(originalXVelocity, originalYVelocity));
+        //b2body.setLinearVelocity(new Vector2(originalXVelocity, originalYVelocity));
+        b2body.applyLinearImpulse(new Vector2(originalXVelocity/1.2f, originalYVelocity/1.2f), b2body.getWorldCenter(), true);
     }
 
     public void update(float delta){
@@ -92,6 +93,10 @@ public class PoisonBall extends Sprite {
             }
             b2body.setLinearVelocity(new Vector2(0, 0));
         }
+//        if(b2body.getLinearVelocity().x > 1f)
+//            b2body.setLinearVelocity(1f, b2body.getLinearVelocity().y);
+//        else if(b2body.getLinearVelocity().x < -1f)
+//            b2body.setLinearVelocity(-1f, b2body.getLinearVelocity().y);
         if(isInHoney){
             b2body.setLinearVelocity(new Vector2(b2body.getLinearVelocity().x/5, b2body.getLinearVelocity().y/5));
         }
