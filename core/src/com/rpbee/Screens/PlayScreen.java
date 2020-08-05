@@ -119,6 +119,7 @@ public class PlayScreen implements Screen {
         //Load map and setup map renderer
         mapLoader = new TmxMapLoader();
         map = mapLoader.load(mapsNames.get(indexMap));
+
         renderer = new OrthogonalTiledMapRenderer(map, 1 / RPBeeGame.PPM);
         //initially set our gamcam to be centered correctly at the start of of map
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2,0);
@@ -314,9 +315,13 @@ public class PlayScreen implements Screen {
             if (player.b2body.getPosition().y * 1.05f > gamePort.getWorldHeight()) {
                 player.setVelocity(player.b2body.getLinearVelocity().x, -0.5f);
             }
-            //Player cant go right out of screen
+            //Player cant go left out of screen
             if (player.b2body.getPosition().x * 1.05f < 0) {
                 player.setVelocity(0.5f, player.b2body.getLinearVelocity().y);
+            }
+            //Player cant go right out of screen
+            if (player.b2body.getPosition().x * 6.28f > map.getProperties().get("width", Integer.class)) {
+                player.setVelocity(-0.5f, player.b2body.getLinearVelocity().y);
             }
             //Die when fall into hole
             if (player.b2body.getPosition().y < 0) {

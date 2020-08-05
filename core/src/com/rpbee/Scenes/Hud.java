@@ -44,6 +44,7 @@ public class Hud implements Disposable {
 
     static float messageTimer;
 
+
     public Hud(SpriteBatch sb){
         //setup the HUD viewport using a new camera separate from our gamecam
         //define our stage using that viewport and our games spritebatch
