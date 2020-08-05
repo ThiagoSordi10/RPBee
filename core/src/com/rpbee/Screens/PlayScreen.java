@@ -154,6 +154,7 @@ public class PlayScreen implements Screen {
 
     private void makeStage() {
         Table BackGroundLayer = new Table();
+        Gdx.app.log("INDEX", ""+cutsceneIndex);
         cutscene = new Image(cutscenes[cutsceneIndex]);
         cutsceneIndex++;
         BackGroundLayer.add(cutscene);
@@ -168,8 +169,10 @@ public class PlayScreen implements Screen {
     }
 
     private void setMusic(String filename) {
-        if (music != null)
+        if (music != null) {
             music.stop();
+            music.dispose();
+        }
         music = RPBeeGame.manager.get(filename, Music.class);
         music.setLooping(true);
         music.setVolume(0.3f);
@@ -393,7 +396,7 @@ public class PlayScreen implements Screen {
                         dispose();
                     }else if(cutsceneIndex > chapters.get(chapterIndex)){
                         cutscene.setDrawable(cutscenes[cutsceneIndex]);
-                        cutsceneIndex++;
+                        //cutsceneIndex++;
                         cutscenesTime = false;
                     }
 
