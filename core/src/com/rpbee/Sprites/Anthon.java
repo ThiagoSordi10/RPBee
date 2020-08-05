@@ -611,6 +611,8 @@ public class Anthon extends Sprite {
         if(qntHoney > 0) {
             honeyballs.add(new HoneyBall(screen, b2body.getPosition().x, b2body.getPosition().y, runningRight ? true : false));
             qntHoney--;
+        }else{
+            Hud.addMessage("Sem mel");
         }
     }
 

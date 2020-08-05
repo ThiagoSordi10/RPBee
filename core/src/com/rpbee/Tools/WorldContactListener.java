@@ -173,7 +173,7 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
             case RPBeeGame.HONEY_SENSOR_BIT | RPBeeGame.BEE_BIT:
-                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEYBALL_BIT){
+                if(fixA.getFilterData().categoryBits == RPBeeGame.HONEY_SENSOR_BIT){
                     anthon = ((Anthon)fixB.getUserData());
                 }
                 else{

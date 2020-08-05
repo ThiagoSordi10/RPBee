@@ -79,7 +79,7 @@ public class PlayScreen implements Screen {
     TextureRegionDrawable[] cutscenes = new TextureRegionDrawable[8];
 
     private Image cutscene;
-    private int cutsceneIndex = 0;
+    private int cutsceneIndex;
     private Stage stage;
     private Map<Integer, Integer> chapters;
     private int chapterIndex;
@@ -93,6 +93,7 @@ public class PlayScreen implements Screen {
         }
         chapters = new HashMap<Integer, Integer>();
         chapterIndex = 0;
+        cutsceneIndex = 0;
         cutscenesTime = true;
 
         //cutscenes per chapter
@@ -153,7 +154,7 @@ public class PlayScreen implements Screen {
 
     private void makeStage() {
         Table BackGroundLayer = new Table();
-        cutscene = new Image(cutscenes[0]);
+        cutscene = new Image(cutscenes[cutsceneIndex]);
         cutsceneIndex++;
         BackGroundLayer.add(cutscene);
 
