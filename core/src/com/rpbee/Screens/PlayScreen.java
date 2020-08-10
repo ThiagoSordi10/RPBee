@@ -87,10 +87,19 @@ public class PlayScreen implements Screen {
 
 
     public PlayScreen(RPBeeGame game){
+        this.game = game;
+        //cam that follow mario
+        gameCam = new OrthographicCamera();
+        //create a FitViewport to maintain virtual aspect ratio despite screen size
+        gamePort = new FitViewport(RPBeeGame.V_WIDTH / RPBeeGame.PPM, RPBeeGame.V_HEIGHT / RPBeeGame.PPM, gameCam);
+    /*
         //Cutscenes load
         for (int i = 1; i<9; i++) {
             cutscenes[i-1] = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cutscenes/cutscene"+i+".png"))));
         }
+        
+        
+        
         chapters = new HashMap<Integer, Integer>();
         chapterIndex = 0;
         cutsceneIndex = 0;
@@ -135,7 +144,7 @@ public class PlayScreen implements Screen {
         player = new Anthon(this);
 
         world.setContactListener(new WorldContactListener());
-
+*/
         setMusic();
 
     }
@@ -336,6 +345,11 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
+    }
+    
+    /*
+    @Override
+    public void render(float delta) {
 
         //separate our update logic from render
         update(delta);
@@ -375,6 +389,7 @@ public class PlayScreen implements Screen {
             cutsceneManager(delta);
         }
     }
+*/
 
     public void cutsceneManager(float delta){
         stage.addListener(new ClickListener(){
