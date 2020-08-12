@@ -92,7 +92,7 @@ public class PlayScreen implements Screen {
         gameCam = new OrthographicCamera();
         //create a FitViewport to maintain virtual aspect ratio despite screen size
         gamePort = new FitViewport(RPBeeGame.V_WIDTH / RPBeeGame.PPM, RPBeeGame.V_HEIGHT / RPBeeGame.PPM, gameCam);
-    /*
+
         //Cutscenes load
         for (int i = 1; i<9; i++) {
             cutscenes[i-1] = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cutscenes/cutscene"+i+".png"))));
@@ -103,7 +103,7 @@ public class PlayScreen implements Screen {
         chapters = new HashMap<Integer, Integer>();
         chapterIndex = 0;
         cutsceneIndex = 0;
-        cutscenesTime = true;
+        //cutscenesTime = true;
 
         //cutscenes per chapter
         chapters.put(0, 2);
@@ -144,7 +144,7 @@ public class PlayScreen implements Screen {
         player = new Anthon(this);
 
         world.setContactListener(new WorldContactListener());
-*/
+
         setMusic();
 
     }
@@ -156,9 +156,9 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-        makeStage();
+//        stage = new Stage();
+//        Gdx.input.setInputProcessor(stage);
+//        makeStage();
     }
 
     private void makeStage() {
@@ -345,11 +345,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-    }
-    
-    /*
-    @Override
-    public void render(float delta) {
 
         //separate our update logic from render
         update(delta);
@@ -386,10 +381,10 @@ public class PlayScreen implements Screen {
                 game.setScreen(new GameOverScreen(game, this));
             }
         }else {
-            cutsceneManager(delta);
+            //cutsceneManager(delta);
         }
     }
-*/
+
 
     public void cutsceneManager(float delta){
         stage.addListener(new ClickListener(){

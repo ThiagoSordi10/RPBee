@@ -145,9 +145,9 @@ public class Hud implements Disposable {
         messageTimer = 0;
     }
 
-    public static void removeMessage(){
+   public static void removeMessage(){
         tableMessage.reset();
-    }
+   }
 
     public void removeWatchfulBar(){
         tableWatchful.removeActor(watchfulTextLabel);
