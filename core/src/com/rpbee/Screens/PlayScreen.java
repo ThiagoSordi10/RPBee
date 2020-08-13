@@ -103,7 +103,7 @@ public class PlayScreen implements Screen {
         chapters = new HashMap<Integer, Integer>();
         chapterIndex = 0;
         cutsceneIndex = 0;
-        //cutscenesTime = true;
+        cutscenesTime = true;
 
         //cutscenes per chapter
         chapters.put(0, 2);
@@ -156,9 +156,9 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-//        stage = new Stage();
-//        Gdx.input.setInputProcessor(stage);
-//        makeStage();
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        makeStage();
     }
 
     private void makeStage() {
@@ -381,7 +381,7 @@ public class PlayScreen implements Screen {
                 game.setScreen(new GameOverScreen(game, this));
             }
         }else {
-            //cutsceneManager(delta);
+            cutsceneManager(delta);
         }
     }
 
