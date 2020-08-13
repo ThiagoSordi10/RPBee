@@ -217,29 +217,29 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float delta){
         if(isPause){
-            if(Gdx.input.isKeyJustPressed(Input.Keys.F1)){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
                 player.setMaxHealth(player.getMaxHealth()+5);
                 System.out.println("Old recharge fly amount: "+player.getRechargeFlyAmount());
                 player.setRechargeFlyAmount(player.getRechargeFlyAmount()+0.05f);
                 System.out.println("New recharge fly amount: "+player.getRechargeFlyAmount());
                 this.resume();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.F2)){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)){
                 player.setMaxFlyEnergy(player.getMaxFlyEnergy()+5);
                 player.setFlyEnergyLoss(player.getFlyEnergyLoss()+0.01f);
                 this.resume();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.F3)){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)){
                 player.setMaxWatchfulEnergy(player.getMaxWatchfulEnergy()+5);
                 player.setWatchfulDamageLoss(player.getWatchfulDamageLoss()+0.05f);
                 this.resume();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.F4)){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)){
                 player.setBeeStingDamage(player.getBeeStingDamage()-5);
                 player.setStingAutoHit(player.getStingAutoHit()+1);
                 this.resume();
             }
-            if(Gdx.input.isKeyJustPressed(Input.Keys.F5)){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)){
                 player.setWatchfulEnergyLoss(player.getWatchfulEnergyLoss()+0.05f);
                 player.setRechargeWatchfulAmount(player.getRechargeWatchfulAmount()+0.05f);
                 this.resume();
