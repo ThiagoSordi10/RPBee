@@ -1,13 +1,10 @@
 package com.rpbee.Scenes;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
@@ -64,13 +61,13 @@ public class Hud implements Disposable {
         //timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label(Integer.toString(Anthon.getLevel()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelTextLabel = new Label("Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        healthLabel = new Label(myFormat(Float.toString(Anthon.getHealth()))+"/"+myFormat(Float.toString(Anthon.getMaxHealth())), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        healthLabel = new Label(Float.toString(Anthon.getHealth())+"/"+Float.toString(Anthon.getMaxHealth()), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         healthTextLabel = new Label("Vida", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        flyBarLabel = new Label((myFormat(Float.toString(Anthon.getFlyEnergy()))+"/"+myFormat(Float.toString(Anthon.getMaxFlyEnergy()))), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        flyBarLabel = new Label((Float.toString(Anthon.getFlyEnergy())+"/"+Float.toString(Anthon.getMaxFlyEnergy())), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         flyBarTextLabel = new Label("Voo", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         anthonLabel = new Label("Anthon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         watchfulTextLabel = new Label("Modo Atento", new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
-        watchfulLabel = new Label(myFormat(Float.toString(Anthon.getWatchfulEnergy())), new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
+        watchfulLabel = new Label(Float.toString(Anthon.getWatchfulEnergy()), new Label.LabelStyle(new BitmapFont(), Color.ORANGE));
         messageTextLabel = new Label("Mensagem:", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
         messageLabel = new Label("Info", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
 
@@ -101,22 +98,11 @@ public class Hud implements Disposable {
         tableMessage.center();
 
     }
-    
-    public static String myFormat(String string){
-        String aux;
-        if(string.charAt(1)=='.'){
-            aux = string.substring(0, 3);
-        }else{
-            aux = string.substring(0, 4);
-        }
-        aux = aux.replace(".", ",");
-        return aux;
-    }
 
     public void update(float delta){
-        healthLabel.setText((myFormat(Float.toString(Anthon.getHealth()))+"/"+myFormat(Float.toString(Anthon.getMaxHealth()))));
-        flyBarLabel.setText((myFormat(Float.toString(Anthon.getFlyEnergy()))+"/"+myFormat(Float.toString(Anthon.getMaxFlyEnergy()))));
-        watchfulLabel.setText(myFormat(Float.toString(Anthon.getWatchfulEnergy())));
+        healthLabel.setText(Float.toString(Anthon.getHealth())+"/"+Float.toString(Anthon.getMaxHealth()));
+        flyBarLabel.setText(Float.toString(Anthon.getFlyEnergy())+"/"+Float.toString(Anthon.getMaxFlyEnergy()));
+        watchfulLabel.setText(Float.toString(Anthon.getWatchfulEnergy()));
         xpLabel.setText(Integer.toString(Anthon.getExp()));
         levelLabel.setText(Integer.toString(Anthon.getLevel()));
 
