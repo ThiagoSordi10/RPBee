@@ -1,18 +1,6 @@
 # RPBee
  
 
-<ul>Samuel
- <li>sistema de inventario (FUTURO)</li>
- <li>sistema de save -> Salvar checkpoint estado atual</li>
-</ul>
-<ul>Pretto
- <li>sistema de arvore de habilidades e nivel (exp) -> Alterar objeto abelha, exemplo: aumentar vida, aumentar dano, duração de poderes; Para pegá-los: Derrotar inimigos, passar de fase e pegar itens que deem EXP</li>
- <li> Desenhos de personagens</li>
-</ul>
-<ul>Thiago
- <li>sistema de quest (FUTURO)</li>
- <li>sistema de batalha -> Ferroada, Antenas, Mel, Voar</li>
- <li>desenhos e sons -> Tilesets prontos e assets de som</li>
-</ul>
+Trabalho realizado utilizando a libGDX Java - grupo composto por <a href+"https://github.com/smfinkler"> Samuel Finkler, </a> <a href="https://github.com/GuilhermePretto"> Guilherme Pretto</a> e eu, Thiago Sordi
 
 
